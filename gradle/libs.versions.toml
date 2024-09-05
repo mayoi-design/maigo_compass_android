@@ -15,7 +15,7 @@ wearToolingPreview = "1.0.0"
 coreSplashscreen = "1.0.1"
 tiles = "1.4.0"
 tilesMaterial = "1.4.0"
-horologistComposeTools = "0.4.8"
+horologistComposeTools = "0.6.18"
 horologistTiles = "0.4.8"
 watchfaceComplicationsDataSourceKtx = "1.2.1"
 
