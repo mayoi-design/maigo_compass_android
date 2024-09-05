@@ -17,7 +17,7 @@ tiles = "1.1.0"
 tilesMaterial = "1.1.0"
 horologistComposeTools = "0.4.8"
 horologistTiles = "0.4.8"
-watchfaceComplicationsDataSourceKtx = "1.1.1"
+watchfaceComplicationsDataSourceKtx = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
