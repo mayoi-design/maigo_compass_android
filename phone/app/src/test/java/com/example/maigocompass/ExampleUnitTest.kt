@@ -1,4 +1,4 @@
-package com.example.maigocompass
+package jp.ac.maigocompass
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.example.maigocompass
+package jp.ac.maigocompass
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.maigocompass.ui.theme.MaigoCompassTheme
+import jp.ac.maigocompass.ui.theme.MaigoCompassTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

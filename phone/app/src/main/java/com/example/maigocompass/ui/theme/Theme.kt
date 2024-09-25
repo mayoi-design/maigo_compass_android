@@ -1,4 +1,4 @@
-package com.example.maigocompass.ui.theme
+package jp.ac.maigocompass.ui.theme
 
 import android.app.Activity
 import android.os.Build

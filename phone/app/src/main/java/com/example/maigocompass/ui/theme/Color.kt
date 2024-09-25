@@ -1,4 +1,4 @@
-package com.example.maigocompass.ui.theme
+package jp.ac.maigocompass.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
