@@ -20,5 +20,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Maigo Compass"
-include(":phone")
-include(":wear")
+include(
+    ":phone:app",
+    ":wear:app",
+)
