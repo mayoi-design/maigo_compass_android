@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.maigocompass"
+    namespace = "jp.ac.mayoi.maigocompass"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "jp.ac.maigocompass"
+        applicationId = "jp.ac.mayoi.maigocompass"
         minSdk = 28
         targetSdk = 34
         versionCode = 1
