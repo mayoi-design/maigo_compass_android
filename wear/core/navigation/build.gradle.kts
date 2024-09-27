@@ -30,6 +30,7 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.navigation)
     implementation(libs.play.services.wearable)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
