@@ -21,6 +21,7 @@ watchfaceComplicationsDataSourceKtx = "1.2.1"
 jetbrainsKotlinJvm = "1.9.25"
 appcompat = "1.7.0"
 material = "1.12.0"
+navigationCompose= "2.8.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,6 +50,7 @@ horologist-tiles = { group = "com.google.android.horologist", name = "horologist
 androidx-watchface-complications-data-source-ktx = { group = "androidx.wear.watchface", name = "watchface-complications-data-source-ktx", version.ref = "watchfaceComplicationsDataSourceKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
