@@ -29,7 +29,12 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.androidx.wear.tooling.preview)
+    implementation(project(":wear:app"))
+    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.foundation)
     implementation(libs.play.services.wearable)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
