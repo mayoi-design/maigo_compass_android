@@ -11,24 +11,21 @@ import androidx.wear.tooling.preview.devices.WearDevices
 
 
 @Composable
-fun Greeting(greetingName: String) {
-    Text(
-        modifier = Modifier.padding(),
-
-        text = "ようこそ"
-    )
-}
-@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
-@Composable
-fun DefaultPreview() {
+fun WaitingScreen() {
     Text(
         modifier = Modifier.padding(
-           start = 65.dp,
+            start = 65.dp,
             top = 86.dp,
-           ),
+        ),
         text = "ようこそ",
 
         color = MaterialTheme.colors.primary,
     )
+}
+
+@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
+@Composable
+fun DefaultPreview() {
+    WaitingScreen()
 
 }
