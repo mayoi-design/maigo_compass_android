@@ -31,6 +31,7 @@ android {
 
 dependencies {
 
+    implementation(libs.kotlinx.serialization)
     implementation(libs.androidx.navigation)
     implementation(libs.play.services.wearable)
     implementation(platform(libs.androidx.compose.bom))
