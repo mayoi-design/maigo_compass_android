@@ -4,29 +4,25 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import jp.ac.mayoi.wear.core.navigation.Pairing
 import jp.ac.mayoi.wear.core.navigation.Settings
-import jp.ac.mayoi.wear.core.navigation.Trip
+import jp.ac.mayoi.wear.core.navigation.TripNavigation
+import jp.ac.mayoi.wear.core.navigation.Waiting
 
 @Composable
 fun WearNavigation(
     navController: NavHostController
 ) {
-
     NavHost(
         navController = navController,
-        startDestination = Pairing
+        startDestination = Waiting
     ) {
-        composable<Trip> {
-
+        composable<TripNavigation> {
         }
 
-        composable<Pairing> {
-
+        composable<Waiting> {
         }
 
         composable<Settings> {
-
         }
     }
 }

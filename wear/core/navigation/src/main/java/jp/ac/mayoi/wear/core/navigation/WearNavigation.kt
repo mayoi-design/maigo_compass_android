@@ -3,12 +3,12 @@ package jp.ac.mayoi.wear.core.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object Trip
+data object TripNavigation
 
 @Serializable
-object Pairing
+data object Waiting
 
 @Serializable
-object Settings
+data object Settings
 
 
