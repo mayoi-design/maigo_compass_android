@@ -6,13 +6,13 @@ import jp.ac.mayoi.common.resource.colorAccentCommon
 import jp.ac.mayoi.common.resource.colorAccentSecondaryCommon
 import jp.ac.mayoi.common.resource.colorBackgroundPrimaryLightCommon
 import jp.ac.mayoi.common.resource.colorBackgroundSecondaryLightCommon
-import jp.ac.mayoi.common.resource.colorTextCaptionLightCommon
+import jp.ac.mayoi.common.resource.colorTextCaptionCommon
 import jp.ac.mayoi.common.resource.colorTextMainLightCommon
 
 val colorBackgroundPrimary = colorBackgroundPrimaryLightCommon
 val colorBackgroundSecondary = colorBackgroundSecondaryLightCommon
 val colorTextMain = colorTextMainLightCommon
-val colorTextCaption = colorTextCaptionLightCommon
+val colorTextCaption = colorTextCaptionCommon
 val colorAccent = colorAccentCommon
 val colorAccentSecondary = colorAccentSecondaryCommon
 

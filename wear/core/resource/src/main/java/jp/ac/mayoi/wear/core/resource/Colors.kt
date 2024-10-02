@@ -6,7 +6,7 @@ import jp.ac.mayoi.common.resource.colorAccentCommon
 import jp.ac.mayoi.common.resource.colorAccentSecondaryCommon
 import jp.ac.mayoi.common.resource.colorBackgroundPrimaryDarkCommon
 import jp.ac.mayoi.common.resource.colorBackgroundSecondaryDarkCommon
-import jp.ac.mayoi.common.resource.colorTextCaptionLightCommon
+import jp.ac.mayoi.common.resource.colorTextCaptionCommon
 import jp.ac.mayoi.common.resource.colorTextMainDarkCommon
 
 // Template Colors
@@ -14,7 +14,7 @@ import jp.ac.mayoi.common.resource.colorTextMainDarkCommon
 val colorBackgroundPrimary = colorBackgroundPrimaryDarkCommon
 val colorBackgroundSecondary = colorBackgroundSecondaryDarkCommon
 val colorTextMain = colorTextMainDarkCommon
-val colorTextCaption = colorTextCaptionLightCommon
+val colorTextCaption = colorTextCaptionCommon
 val colorAccent = colorAccentCommon
 val colorAccentSecondary = colorAccentSecondaryCommon
 
