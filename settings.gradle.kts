@@ -45,4 +45,5 @@ include(
     ":wear:repository:interfaces",
     ":wear:repository:implementations",
     ":common:model",
+    ":common:resource",
 )

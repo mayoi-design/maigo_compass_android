@@ -4,13 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "jp.ac.mayoi.wear.core.resource"
+    namespace = "jp.ac.mayoi.core.resource"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 28
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -29,11 +27,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":common:resource"))
 
-    implementation(libs.play.services.wearable)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.bundles.composeKit)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

@@ -1,4 +1,4 @@
-package jp.ac.mayoi.core.resource
+package jp.ac.mayoi.wear.core.resource
 
 import jp.ac.mayoi.common.resource.spacingDoubleCommon
 import jp.ac.mayoi.common.resource.spacingHalfCommon
