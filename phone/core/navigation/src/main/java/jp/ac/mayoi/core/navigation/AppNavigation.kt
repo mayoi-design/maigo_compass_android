@@ -7,11 +7,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
 
-//目的地選択
+//インプレッションを見る
 @Serializable
-object SelectDestination
+object Impressions
 
-//歩いてる時
+//オンボーディング
 @Serializable
 object Onboarding
 
@@ -19,9 +19,13 @@ object Onboarding
 @Serializable
 object Ranking
 
-//おもいで
+//シェア
 @Serializable
-object MyMemory
+object Share
+
+//歩いてる時
+@Serializable
+object Traveling
 
 @Composable
 fun PhoneNavHost(
@@ -37,10 +41,13 @@ fun PhoneNavHost(
         composable<Ranking>{
 
         }
-        composable<SelectDestination>{
+        composable<Impressions>{
 
         }
-        composable<MyMemory>{
+        composable<Share>{
+
+        }
+        composable<Traveling>{
 
         }
     }
