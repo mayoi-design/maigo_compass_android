@@ -50,7 +50,6 @@ android {
 
 dependencies {
 
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.wearComposeKit)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.tiles)
