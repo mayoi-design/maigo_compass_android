@@ -23,6 +23,7 @@ jetbrainsKotlinJvm = "1.9.25"
 appcompat = "1.7.0"
 material = "1.12.0"
 navigationCompose = "2.8.1"
+coilKt = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,6 +54,8 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-core-jvm", version.ref = "kotlinxSerialization" }
+coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coilKt" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilKt" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -79,4 +82,9 @@ wearComposeKit = [
     "androidx-wear-tooling-preview",
     "androidx-ui",
     "androidx-ui-graphics"
+]
+
+coil = [
+    "coil-kt",
+    "coil-compose",
 ]
