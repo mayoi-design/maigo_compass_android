@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data object TripNavigation
 
 @Serializable
-data object Waiting
+data object WatchWaitNavigation
 
 @Serializable
 data object Settings

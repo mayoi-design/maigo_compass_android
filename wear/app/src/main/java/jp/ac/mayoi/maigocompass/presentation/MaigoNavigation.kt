@@ -6,7 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import jp.ac.mayoi.wear.core.navigation.Settings
 import jp.ac.mayoi.wear.core.navigation.TripNavigation
-import jp.ac.mayoi.wear.core.navigation.Waiting
+import jp.ac.mayoi.wear.core.navigation.WatchWaitNavigation
+
 
 @Composable
 fun WearNavigation(
@@ -14,14 +15,12 @@ fun WearNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Waiting
+        startDestination = WatchWaitNavigation,
     ) {
         composable<TripNavigation> {
         }
-
-        composable<Waiting> {
+        composable<WatchWaitNavigation> {
         }
-
         composable<Settings> {
         }
     }
