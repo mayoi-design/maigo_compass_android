@@ -50,14 +50,7 @@ android {
 
 dependencies {
 
-    implementation(libs.play.services.wearable)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.compose.material)
-    implementation(libs.androidx.compose.foundation)
-    implementation(libs.androidx.wear.tooling.preview)
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.bundles.wearComposeKit)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.tiles)
     implementation(libs.androidx.tiles.material)
