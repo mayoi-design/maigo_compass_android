@@ -67,3 +67,13 @@ composeKit = [
     "androidx-ui-tooling-preview",
     "androidx-material3",
 ]
+
+wearComposeKit = [
+    "play-services-wearable",
+    "androidx-activity-compose",
+    "androidx-compose-material",
+    "androidx-compose-foundation",
+    "androidx-wear-tooling-preview",
+    "androidx-ui",
+    "androidx-ui-graphics"
+]
