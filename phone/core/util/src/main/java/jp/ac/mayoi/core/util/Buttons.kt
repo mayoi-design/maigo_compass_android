@@ -16,10 +16,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun MaigoButton(
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    colors: ButtonColors = ButtonDefaults.buttonColors(), //後からアプリ側で設定したやつに置き換える
     enabled: Boolean = true,
+    colors: ButtonColors = ButtonDefaults.buttonColors(), //後からアプリ側で設定したやつに置き換える
+    modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit,
 ) {
     Button(
