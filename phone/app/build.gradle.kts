@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":phone:core:resource"))
 
     implementation(project(":phone:core:navigation"))
     implementation(libs.androidx.navigation)
