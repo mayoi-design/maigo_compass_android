@@ -49,7 +49,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.bundles.wearComposeKit)
     implementation(project(":wear:core:navigation"))
     implementation(libs.androidx.core.splashscreen)
