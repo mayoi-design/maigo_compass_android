@@ -9,6 +9,6 @@ data object TripNavigation
 data object WatchWaitNavigation
 
 @Serializable
-data object Settings
+data object SettingsNavigation
 
 
