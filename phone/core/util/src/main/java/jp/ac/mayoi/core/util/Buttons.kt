@@ -1,7 +1,6 @@
 package jp.ac.mayoi.core.util
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -19,7 +18,7 @@ fun MaigoButton(
     colors: ButtonColors = ButtonDefaults.buttonColors(), //後からアプリ側で設定したやつに置き換える
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    content: @Composable BoxScope.() -> Unit,
+    content: @Composable RowScope.() -> Unit,
 ) {
     Button(
         onClick = onClick,
@@ -28,12 +27,8 @@ fun MaigoButton(
             .padding(horizontal = 16.dp, vertical = 16.dp)
             .defaultMinSize(minWidth = 120.dp, minHeight = 60.dp),
         enabled = enabled,
-    ) {
-
-        Box() {
-            content()
-        }
-    }
+        content = content,
+    )
 }
 
 @Preview(showBackground = true)
@@ -42,7 +37,6 @@ fun ButtonPreview() {
     MaigoButton(
         onClick = { },
         content = {
-
             Text("ボタン")
         }
     )
