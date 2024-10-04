@@ -26,18 +26,14 @@ fun MaigoButton(
     enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(8.dp),
     content: @Composable BoxScope.() -> Unit,
-
-
-    ) {
+) {
     Button(
         onClick = onClick,
         enabled = enabled,
         modifier = modifier,
         colors = colors,
         shape = shape
-
     ) {
-
         content()
     }
 }
@@ -47,21 +43,16 @@ fun MaigoButtonStyle() {
     Box(
         modifier = Modifier
             .fillMaxSize(),  // 画面全体を埋める
-        contentAlignment = Alignment.Center  // 中央に配置
-
+        contentAlignment = Alignment.Center // 中央に配置
     ) {
         MaigoButton(
             onClick = {/*押した後の処理を書く*/ },
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(18.dp),
             modifier = Modifier.width(100.dp)
-
         ) {
             Text(
                 text = "ボタン",
-
-                )
-
-
+            )
         }
     }
 }
@@ -71,5 +62,4 @@ fun MaigoButtonStyle() {
 fun MaigoButtonPreview() {
     MaigoButtonStyle()
 }
-
 
