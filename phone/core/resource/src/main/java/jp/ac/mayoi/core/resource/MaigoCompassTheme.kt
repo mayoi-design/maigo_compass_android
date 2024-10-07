@@ -1,4 +1,4 @@
-package jp.ac.mayoi.maigocompass.ui.theme
+package jp.ac.mayoi.core.resource
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
