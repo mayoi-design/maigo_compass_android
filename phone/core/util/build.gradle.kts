@@ -27,6 +27,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":phone:core:resource"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.composeKit)
