@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "jp.ac.mayoi.resource"
+    namespace = "jp.ac.mayoi.core.resource"
     compileSdk = 34
 
     defaultConfig {
@@ -29,6 +29,7 @@ android {
 dependencies {
     implementation(project(":common:resource"))
 
+    implementation(libs.androidx.material3)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
