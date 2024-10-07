@@ -24,7 +24,6 @@ import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TimeText
 import androidx.wear.tooling.preview.devices.WearDevices
-import jp.ac.mayoi.maigocompass.presentation.theme.MaigoCompassTheme
 import jp.ac.mayoi.wear.core.resource.StringR
 
 class MainActivity : ComponentActivity() {
@@ -43,7 +42,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun WearApp(greetingName: String) {
-    MaigoCompassTheme {
+    MaterialTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()
