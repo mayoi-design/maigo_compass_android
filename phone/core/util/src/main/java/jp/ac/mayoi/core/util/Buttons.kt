@@ -13,12 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import jp.ac.mayoi.core.resource.MaigoCompassTheme
+import jp.ac.mayoi.core.resource.buttonColorsDefault
 
 @Composable
 fun MaigoButton(
     onClick: () -> Unit,
     enabled: Boolean = true,
-    colors: ButtonColors = ButtonDefaults.buttonColors(), //後からアプリ側で設定したやつに置き換える
+    colors: ButtonColors = buttonColorsDefault,
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -42,10 +44,12 @@ fun MaigoButton(
 @Preview(showBackground = true)
 @Composable
 fun ButtonPreview() {
-    MaigoButton(
-        onClick = { },
-        content = {
-            Text("ボタン")
-        }
-    )
+    MaigoCompassTheme {
+        MaigoButton(
+            onClick = { },
+            content = {
+                Text("ボタン")
+            }
+        )
+    }
 }
