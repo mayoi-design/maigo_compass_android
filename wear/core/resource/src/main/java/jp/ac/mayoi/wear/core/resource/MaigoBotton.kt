@@ -17,7 +17,6 @@ import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.Text
 import androidx.wear.tooling.preview.devices.WearDevices
 
-
 @Composable
 fun MaigoButton(
     onClick: () -> Unit,
@@ -38,11 +37,13 @@ fun MaigoButton(
     }
 }
 
+@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
 @Composable
-fun MaigoButtonStyle() {
+fun MaigoButtonPreview() {
     Box(
+        // 画面全体を埋める
         modifier = Modifier
-            .fillMaxSize(),  // 画面全体を埋める
+            .fillMaxSize(),
         contentAlignment = Alignment.Center // 中央に配置
     ) {
         MaigoButton(
@@ -56,10 +57,3 @@ fun MaigoButtonStyle() {
         }
     }
 }
-
-@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
-@Composable
-fun MaigoButtonPreview() {
-    MaigoButtonStyle()
-}
-
