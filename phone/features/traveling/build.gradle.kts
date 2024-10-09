@@ -22,8 +22,10 @@ android {
 }
 
 dependencies {
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.activity.compose)
+    implementation(project(":phone:core:util"))
+    implementation(project(":phone:core:resource"))
+    implementation(libs.bundles.composeKit)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.runtime.ktx)
