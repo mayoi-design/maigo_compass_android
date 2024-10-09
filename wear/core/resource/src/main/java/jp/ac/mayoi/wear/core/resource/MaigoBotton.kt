@@ -43,13 +43,11 @@ fun MaigoButton(
                     horizontal = 16.dp,
                     vertical = 16.dp
                 )
-
         ) {
             content()
         }
     }
 }
-
 
 @Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
 @Composable
