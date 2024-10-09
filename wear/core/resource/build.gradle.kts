@@ -31,6 +31,7 @@ android {
 dependencies {
     implementation(project(":common:resource"))
 
+    implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.play.services.wearable)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3)
@@ -38,6 +39,10 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.compose.material)
+    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.androidx.wear.tooling.preview)
+    implementation(libs.androidx.compose.foundation)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
