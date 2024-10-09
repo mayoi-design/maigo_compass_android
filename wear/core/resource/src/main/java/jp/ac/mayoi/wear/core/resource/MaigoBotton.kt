@@ -2,8 +2,9 @@ package jp.ac.mayoi.wear.core.resource
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,17 +24,29 @@ fun MaigoButton(
     modifier: Modifier = Modifier,
     colors: ButtonColors = ButtonDefaults.primaryButtonColors(),
     enabled: Boolean = true,
-    shape: Shape = RoundedCornerShape(8.dp),
+    shape: Shape = RoundedCornerShape(32.dp),
     content: @Composable BoxScope.() -> Unit,
 ) {
     Button(
         onClick = onClick,
         enabled = enabled,
-        modifier = modifier,
+        modifier = modifier
+            .defaultMinSize(
+                minWidth = 120.dp,
+                minHeight = 60.dp
+            ),
         colors = colors,
         shape = shape
     ) {
-        content()
+        Box(
+            modifier = Modifier
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 16.dp
+                )
+        ) {
+            content()
+        }
     }
 }
 
@@ -48,8 +61,6 @@ fun MaigoButtonPreview() {
     ) {
         MaigoButton(
             onClick = {/*押した後の処理を書く*/ },
-            shape = RoundedCornerShape(18.dp),
-            modifier = Modifier.width(100.dp)
         ) {
             Text(
                 text = "ボタン",
