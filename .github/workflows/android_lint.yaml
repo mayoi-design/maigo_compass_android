@@ -19,6 +19,10 @@ jobs:
           gem install nokogiri
           gem install danger
           gem install danger-android_lint
+      - uses: actions/setup-java
+        with:
+          java-version: '17'
+          distribution: 'adopt'
       - name: lint
         run: |
           chmod +x ./gradlew
