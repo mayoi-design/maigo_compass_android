@@ -182,6 +182,11 @@ private fun SpotCardPreview() {
                     "この場合はカードが縦方向に伸びることでどうにかなる"
         )
 
+        val wrongTimeFormatSpot = spot.copy(
+            message = "createdAtのparseに失敗するとこうなる",
+            createdAt = "2024-10-09T23:31:15+0900",
+        )
+
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
@@ -203,6 +208,14 @@ private fun SpotCardPreview() {
 
             SpotCard(
                 spot = veryLongMessageSpot,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.size(spacingSingle))
+
+            SpotCard(
+                spot = wrongTimeFormatSpot,
                 modifier = Modifier
                     .fillMaxWidth()
             )
