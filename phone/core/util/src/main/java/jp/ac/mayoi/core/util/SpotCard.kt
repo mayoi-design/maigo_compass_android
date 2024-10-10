@@ -2,6 +2,7 @@ package jp.ac.mayoi.core.util
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -42,6 +43,8 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun SpotCard(
     spot: LocalSpot,
+    onCardClicked: () -> Unit,
+    isClickEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -49,6 +52,10 @@ fun SpotCard(
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
             .background(colorBackgroundPrimary)
+            .clickable(
+                enabled = isClickEnabled,
+                onClick = onCardClicked,
+            )
             .padding(spacingDouble)
     ) {
         AsyncImage(
@@ -192,6 +199,8 @@ private fun SpotCardPreview() {
         ) {
             SpotCard(
                 spot = spot,
+                onCardClicked = {},
+                isClickEnabled = true,
                 modifier = Modifier
                     .fillMaxWidth()
             )
@@ -200,6 +209,8 @@ private fun SpotCardPreview() {
 
             SpotCard(
                 spot = longMessageSpot,
+                onCardClicked = {},
+                isClickEnabled = true,
                 modifier = Modifier
                     .fillMaxWidth()
             )
@@ -208,6 +219,8 @@ private fun SpotCardPreview() {
 
             SpotCard(
                 spot = veryLongMessageSpot,
+                onCardClicked = {},
+                isClickEnabled = true,
                 modifier = Modifier
                     .fillMaxWidth()
             )
@@ -216,6 +229,8 @@ private fun SpotCardPreview() {
 
             SpotCard(
                 spot = wrongTimeFormatSpot,
+                onCardClicked = {},
+                isClickEnabled = true,
                 modifier = Modifier
                     .fillMaxWidth()
             )
