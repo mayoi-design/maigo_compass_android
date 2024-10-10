@@ -169,7 +169,7 @@ private fun SpotCardPreview() {
             imageUrl = "",
             postUserId = "",
             reachedCount = 100,
-            createdAt = "2024-10-09T23:31:15+0900"
+            createdAt = "2024-10-09T23:31:15+09:00",
         )
 
         val longMessageSpot = spot.copy(
