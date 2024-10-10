@@ -50,6 +50,7 @@ android {
     lint {
         disable += "ExtraTranslation"
         disable += "ObsoleteLintCustomCheck"
+        disable += "OldTargetAPI"
         xmlReport = true
         xmlOutput = rootProject.file("./build-report/lint-results-${project.displayName}.xml")
     }
