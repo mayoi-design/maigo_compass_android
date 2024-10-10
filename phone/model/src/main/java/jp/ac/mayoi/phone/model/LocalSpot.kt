@@ -6,5 +6,6 @@ data class LocalSpot(
     val message: String,
     val imageUrl: String,
     val postUserId: String,
+    val reachedCount: Int?,
     val createdAt: String?,
 )
