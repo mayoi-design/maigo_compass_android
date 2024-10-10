@@ -29,6 +29,7 @@ android {
     }
 
     lint {
+        disable += "ObsoleteLintCustomCheck"
         xmlReport = true
         xmlOutput = rootProject.file("./build-report/lint-results-${project.displayName}.xml")
     }
