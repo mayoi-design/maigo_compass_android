@@ -24,6 +24,13 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"
     }
+
+    lint {
+        disable += "ExtraTranslation"
+        disable += "ObsoleteLintCustomCheck"
+        xmlReport = true
+        xmlOutput = rootProject.file("./build-report/lint-results-${project.displayName}.xml")
+    }
 }
 
 dependencies {

@@ -20,6 +20,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    lint {
+        disable += "ObsoleteLintCustomCheck"
+        xmlReport = true
+        xmlOutput = rootProject.file("./build-report/lint-results-${project.displayName}.xml")
+    }
 }
 
 dependencies {
