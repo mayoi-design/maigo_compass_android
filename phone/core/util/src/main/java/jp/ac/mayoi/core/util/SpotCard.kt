@@ -182,7 +182,9 @@ private fun SpotCardPreview() {
                     "この場合はカードが縦方向に伸びることでどうにかなる"
         )
 
-        Column {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
             SpotCard(
                 spot = spot,
                 modifier = Modifier
