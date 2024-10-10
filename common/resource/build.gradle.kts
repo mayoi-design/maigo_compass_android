@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "jp.ac.mayoi.core.resource"
+    namespace = "jp.ac.mayoi.common.resource"
     compileSdk = 34
 
     defaultConfig {
