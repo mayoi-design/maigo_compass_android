@@ -1,0 +1,30 @@
+name: Android Lint
+
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 3.3.5
+      - name: gem install
+        run: |
+          gem install nokogiri
+          gem install danger
+          gem install danger-android_lint
+      - name: lint
+        run: |
+          chmod +x ./gradlew
+          ./gradlew lint --continue
+          ruby ./scripts/merge_lint_report.rb
+      - name: comment with danger
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        run: danger
