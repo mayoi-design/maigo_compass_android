@@ -1,9 +1,8 @@
 package jp.ac.mayoi.util
 
+import jp.ac.mayoi.core.util.parseIso8601
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -11,28 +10,6 @@ import java.time.format.DateTimeFormatter
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class DateParseTest {
-    private fun parseIso8601(
-        dateTime: String?,
-    ): String {
-        if (dateTime == null) {
-            return "Unknown Date"
-        } else {
-            try {
-                val res = LocalDateTime
-                    .parse(
-                        dateTime,
-                        DateTimeFormatter.ISO_OFFSET_DATE_TIME
-                    )
-                    .format(
-                        DateTimeFormatter.ofPattern("yyyy/MM/dd")
-                    )
-
-                return res
-            } catch (_: Exception) {
-                return "Unknown Date"
-            }
-        }
-    }
 
     @Test
     fun can_parse_iso8601() {

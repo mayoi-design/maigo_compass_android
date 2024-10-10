@@ -135,7 +135,7 @@ private fun ReachCounter(
     }
 }
 
-private fun parseIso8601(
+internal fun parseIso8601(
     dateTime: String?,
 ): String {
     if (dateTime == null) {
