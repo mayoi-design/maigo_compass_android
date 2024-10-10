@@ -46,6 +46,11 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    lint {
+        xmlReport = true
+        xmlOutput = rootProject.file("./build-report/lint-results-${project.displayName}.xml")
+    }
 }
 
 dependencies {
