@@ -13,6 +13,6 @@ fail("fdescribe left in tests") if `grep -r fdescribe specs/ `.length > 1
 fail("fit left in tests") if `grep -r fit specs/ `.length > 1
 
 android_lint.skip_gradle_task=true
-android_lint.filtering=false
+android_lint.filtering=true
 android_lint.report_file="build-report/lint-results.xml"
 android_lint.lint(inline_mode: true)
