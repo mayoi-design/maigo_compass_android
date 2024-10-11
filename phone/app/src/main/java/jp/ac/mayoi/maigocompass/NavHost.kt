@@ -24,7 +24,7 @@ fun PhoneNavHost(
         composable<Screen.RankingNavigation>{
 
         }
-        composable<Screen.ImpressionsNavigation>{
+        composable<Screen.MemoryNavigation>{
 
         }
         composable<Screen.ShareNavigation>{

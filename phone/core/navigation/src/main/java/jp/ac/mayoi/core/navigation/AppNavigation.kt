@@ -1,13 +1,12 @@
 package jp.ac.mayoi.core.navigation
 
-import androidx.annotation.DrawableRes
 import kotlinx.serialization.Serializable
 
 sealed class Screen{
 
-    //インプレッションを見る
+    //おもいで画面
     @Serializable
-    data object ImpressionsNavigation:Screen()
+    data object MemoryNavigation:Screen()
 
     //オンボーディング
     @Serializable

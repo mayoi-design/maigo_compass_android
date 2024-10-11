@@ -18,9 +18,9 @@ enum class BottomNavigationItemList(
         icon = R.drawable.navbaritem_ranking,
         route = Screen.RankingNavigation
     ),
-    IMPRESSIONS(
+    MEMORY(
         label = "おもいで",
-        icon = R.drawable.navbaritem_impressions,
-        route = Screen.ImpressionsNavigation
+        icon = R.drawable.navbaritem_memory,
+        route = Screen.MemoryNavigation
     )
 }
