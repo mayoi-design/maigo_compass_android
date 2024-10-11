@@ -27,7 +27,7 @@ jobs:
       - name: lint
         run: |
           chmod +x ./gradlew
-          ./gradlew lint --continue
+          ./gradlew lint
           ruby ./scripts/merge_lint_report.rb
       - name: comment with danger
         env:

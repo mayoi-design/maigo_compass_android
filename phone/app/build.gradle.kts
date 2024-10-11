@@ -52,6 +52,8 @@ android {
         disable += "ExtraTranslation"
         disable += "ObsoleteLintCustomCheck"
         disable += "OldTargetApi"
+        disable += "ComposeModifierMissing"
+        abortOnError = false
         xmlReport = true
         xmlOutput = rootProject.file("./build-report/lint-results-${project.displayName}.xml")
     }
@@ -77,4 +79,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    lintChecks(libs.slack.compose.lints)
 }

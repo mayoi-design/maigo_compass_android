@@ -23,6 +23,8 @@ android {
 
     lint {
         disable += "ObsoleteLintCustomCheck"
+        disable += "ComposeModifierMissing"
+        abortOnError = false
         xmlReport = true
         xmlOutput = rootProject.file("./build-report/lint-results-${project.displayName}.xml")
     }
@@ -36,4 +38,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    lintChecks(libs.slack.compose.lints)
 }
