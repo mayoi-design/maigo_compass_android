@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.colorAccent
 import jp.ac.mayoi.core.resource.colorTextCaption
 import jp.ac.mayoi.maigocompass.bottomNavigation.BottomNavItem
@@ -57,5 +58,7 @@ fun RootScreen(){
 @Preview
 @Composable
 fun BottomNavigationPreview(){
-    RootScreen()
+    MaigoCompassTheme {
+        RootScreen()
+    }
 }
