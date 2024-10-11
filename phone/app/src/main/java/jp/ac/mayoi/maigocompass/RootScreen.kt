@@ -49,7 +49,7 @@ fun RootScreen(){
     ) { innerPadding ->
         PhoneNavHost(
             navController = navController,
-            modifier = Modifier.padding(innerPadding),
+            innerPadding = innerPadding,
         )
     }
 }
