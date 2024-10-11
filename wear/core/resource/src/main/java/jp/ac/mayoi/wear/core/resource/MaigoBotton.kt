@@ -14,7 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.ButtonColors
-import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.Text
 import androidx.wear.tooling.preview.devices.WearDevices
 
@@ -22,7 +21,7 @@ import androidx.wear.tooling.preview.devices.WearDevices
 fun MaigoButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    colors: ButtonColors = ButtonDefaults.primaryButtonColors(),
+    colors: ButtonColors = buttonColorsDefault,
     enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(32.dp),
     content: @Composable BoxScope.() -> Unit,
