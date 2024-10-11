@@ -17,6 +17,7 @@ fun PhoneNavHost(
     NavHost(
         navController = navController,
         startDestination = Screen.OnboardingNavigation,
+        modifier = modifier
     ){
         composable<Screen.OnboardingNavigation>{
 
