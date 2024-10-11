@@ -29,7 +29,6 @@ internal fun SpotEmptyScreen(
     ) {
         Text(
             fontWeight = FontWeight.Bold,
-            //textAlign = TextAlign.Center,
             text = "この近くにはまだスポットがないようです",
             fontSize = 16.sp,
             lineHeight = 24.sp
