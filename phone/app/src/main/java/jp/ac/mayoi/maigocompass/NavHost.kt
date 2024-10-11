@@ -1,37 +1,36 @@
 package jp.ac.mayoi.maigocompass
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import jp.ac.mayoi.core.navigation.ImpressionsNavigation
-import jp.ac.mayoi.core.navigation.OnboardingNavigation
-import jp.ac.mayoi.core.navigation.RankingNavigation
-import jp.ac.mayoi.core.navigation.ShareNavigation
-import jp.ac.mayoi.core.navigation.TravelingNavigation
+import jp.ac.mayoi.core.navigation.Screen
+
 
 @Composable
 fun PhoneNavHost(
     navController: NavHostController = rememberNavController(),
+    modifier: Modifier,
 ){
     NavHost(
         navController = navController,
-        startDestination = OnboardingNavigation,
+        startDestination = Screen.OnboardingNavigation,
     ){
-        composable<OnboardingNavigation>{
+        composable<Screen.OnboardingNavigation>{
 
         }
-        composable<RankingNavigation>{
+        composable<Screen.RankingNavigation>{
 
         }
-        composable<ImpressionsNavigation>{
+        composable<Screen.ImpressionsNavigation>{
 
         }
-        composable<ShareNavigation>{
+        composable<Screen.ShareNavigation>{
 
         }
-        composable<TravelingNavigation>{
+        composable<Screen.TravelingNavigation>{
 
         }
     }
