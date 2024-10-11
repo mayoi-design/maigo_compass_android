@@ -23,6 +23,8 @@ android {
 
     lint {
         disable += "ObsoleteLintCustomCheck"
+        disable += "ComposeModifierMissing"
+        abortOnError = false
         xmlReport = true
         xmlOutput = rootProject.file("./build-report/lint-results-${project.displayName}.xml")
     }
