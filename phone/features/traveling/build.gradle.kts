@@ -39,4 +39,5 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.lifecycle.runtime.ktx)
+    lintChecks(libs.slack.compose.lints)
 }
