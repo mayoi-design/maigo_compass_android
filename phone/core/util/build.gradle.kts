@@ -33,11 +33,12 @@ android {
 }
 
 dependencies {
+    implementation(project(":phone:model"))
     implementation(project(":phone:core:resource"))
+    implementation(libs.bundles.composeKit)
+    implementation(libs.bundles.coil)
 
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.bundles.composeKit)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
