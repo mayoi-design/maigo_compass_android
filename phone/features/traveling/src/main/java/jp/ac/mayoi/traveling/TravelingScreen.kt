@@ -18,7 +18,9 @@ import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.util.MaigoButton
 
 @Composable
-internal fun SpotEmptyScreen(onSubmitSpot: () -> Unit) {
+internal fun SpotEmptyScreen(
+    onSubmitSpotButtonClick: () -> Unit
+) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -27,7 +29,7 @@ internal fun SpotEmptyScreen(onSubmitSpot: () -> Unit) {
     ) {
         Text(
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
+            //textAlign = TextAlign.Center,
             text = "この近くにはまだスポットがないようです",
             fontSize = 16.sp,
             lineHeight = 24.sp
@@ -35,12 +37,14 @@ internal fun SpotEmptyScreen(onSubmitSpot: () -> Unit) {
         Spacer(modifier = Modifier.size(24.dp))
         Text(
             fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
             text = "あなたが最初のスポットを\n登録してみませんか？",
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            lineHeight = 24.sp
         )
         Spacer(modifier = Modifier.size(24.dp))
         MaigoButton(
-            onClick = { },
+            onClick = onSubmitSpotButtonClick,
             modifier = Modifier
                 .width(240.dp),
         ) {
@@ -58,7 +62,7 @@ internal fun SpotEmptyScreen(onSubmitSpot: () -> Unit) {
 fun TripPreview() {
     MaigoCompassTheme {
         SpotEmptyScreen(
-            onSubmitSpot = { }
+            onSubmitSpotButtonClick = { }
         )
     }
 }
