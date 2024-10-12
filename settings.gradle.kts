@@ -37,6 +37,7 @@ include(
     ":phone:service:interfaces",
     ":phone:model",
     ":wear:app",
+    ":wear:core:application",
     ":wear:core:navigation",
     ":wear:core:resource",
     ":wear:features:waiting",

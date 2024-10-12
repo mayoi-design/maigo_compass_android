@@ -36,11 +36,12 @@ android {
 
 dependencies {
 
+    implementation(libs.bundles.composeKit)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
