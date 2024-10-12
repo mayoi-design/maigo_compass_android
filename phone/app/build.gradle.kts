@@ -63,6 +63,8 @@ dependencies {
     implementation(project(":phone:core:resource"))
 
     implementation(project(":phone:core:navigation"))
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

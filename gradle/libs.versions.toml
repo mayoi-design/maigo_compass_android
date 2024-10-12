@@ -102,7 +102,6 @@ coil = [
 ]
 
 koin = [
-    "koin-bom",
     "koin-core",
     "koin-android",
     "koin-compose",

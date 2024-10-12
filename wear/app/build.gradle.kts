@@ -62,6 +62,8 @@ dependencies {
     implementation(project(":wear:core:resource"))
 
     implementation(libs.bundles.wearComposeKit)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
     implementation(project(":wear:core:navigation"))
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.tiles)
