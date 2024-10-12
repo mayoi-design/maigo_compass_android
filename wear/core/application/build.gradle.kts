@@ -1,22 +1,17 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
 
 android {
-    namespace = "com.example.maigocompass"
+    namespace = "jp.ac.mayoi.wear.core.application"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.maigocompass"
         minSdk = 28
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
 
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -41,11 +36,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
 
     lint {
         disable += "ExtraTranslation"
@@ -59,23 +49,15 @@ android {
 }
 
 dependencies {
-    implementation(project(":wear:core:resource"))
-    implementation(project(":wear:core:application"))
 
     implementation(libs.bundles.wearComposeKit)
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
-    implementation(project(":wear:core:navigation"))
-    implementation(libs.androidx.core.splashscreen)
-    implementation(libs.androidx.tiles)
-    implementation(libs.androidx.tiles.material)
-    implementation(libs.horologist.compose.tools)
-    implementation(libs.horologist.tiles)
-    implementation(libs.androidx.watchface.complications.data.source.ktx)
-    implementation(libs.androidx.navigation)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
     lintChecks(libs.slack.compose.lints)
 }
