@@ -1,0 +1,1 @@
+extra["MAIGO_COMPASS_API_URL"] = "" // 環境変数を使わずにAPIURLを入れるときはここを迷子コンパスAPIのURLで置き換える

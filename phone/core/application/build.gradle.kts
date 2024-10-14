@@ -1,14 +1,22 @@
+apply(from = "secrets.gradle.kts")
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
 
 android {
+    buildFeatures.buildConfig = true
     namespace = "jp.ac.mayoi.core.application"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 28
+
+        val apiUrl: String =
+            System.getenv("MAIGO_COMPASS_API_URL")
+                ?: project.extra["MAIGO_COMPASS_API_URL"] as String
+        buildConfigField("String", "MAIGO_COMPASS_API_URL", "\"$apiUrl\"")
     }
 
     compileOptions {
@@ -42,6 +50,10 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.okhttp3)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.kotlinx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
