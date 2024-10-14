@@ -43,6 +43,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":phone:service:interfaces"))
 
     implementation(libs.bundles.composeKit)
     implementation(platform(libs.koin.bom))
