@@ -3,6 +3,7 @@ package jp.ac.mayoi.core.application
 import android.app.Application
 import jp.ac.mayoi.service.interfaces.HealthService
 import jp.ac.mayoi.service.interfaces.RankingService
+import jp.ac.mayoi.service.interfaces.SpotService
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import org.koin.android.ext.android.inject
@@ -57,6 +58,7 @@ abstract class BaseApplication : Application() {
     private val serviceKoinModule = module {
         factory { retrofit.create(HealthService::class.java) }
         factory { retrofit.create(RankingService::class.java) }
+        factory { retrofit.create(SpotService::class.java) }
     }
 
     private val repositoryKoinModule = module {
