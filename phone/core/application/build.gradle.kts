@@ -1,14 +1,22 @@
+apply(from = "secrets.gradle.kts")
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
 
 android {
+    buildFeatures.buildConfig = true
     namespace = "jp.ac.mayoi.core.application"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 28
+
+        val apiUrl: String =
+            System.getenv("MAIGO_COMPASS_API_URL")
+                ?: project.extra["MAIGO_COMPASS_API_URL"] as String
+        buildConfigField("String", "MAIGO_COMPASS_API_URL", "\"$apiUrl\"")
     }
 
     compileOptions {
