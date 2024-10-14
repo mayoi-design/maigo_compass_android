@@ -1,11 +1,15 @@
 package jp.ac.mayoi.core.application
 
 import android.app.Application
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 abstract class BaseApplication : Application() {
     override fun onCreate() {
@@ -22,11 +26,26 @@ abstract class BaseApplication : Application() {
 
             modules(
                 listOf(
+                    coreKoinModule,
                     serviceKoinModule,
                     repositoryKoinModule,
                     viewModelKoinModule,
                 )
             )
+        }
+    }
+
+    private val coreKoinModule = module {
+        single {
+            // UAなどの設定も後からBuilderに追加する
+            Retrofit.Builder()
+                .baseUrl(BuildConfig.MAIGO_COMPASS_API_URL)
+                .addConverterFactory(
+                    Json.asConverterFactory(
+                        "application/json".toMediaType()
+                    )
+                )
+                .build()
         }
     }
 
