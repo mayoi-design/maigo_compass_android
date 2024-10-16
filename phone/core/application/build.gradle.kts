@@ -17,6 +17,10 @@ android {
             System.getenv("MAIGO_COMPASS_API_URL")
                 ?: project.extra["MAIGO_COMPASS_API_URL"] as String
         buildConfigField("String", "MAIGO_COMPASS_API_URL", "\"$apiUrl\"")
+
+        val mapsApiKey: String =
+            System.getenv("MAPS_API_KEY") ?: project.extra["MAPS_API_KEY"] as String
+        resValue("string", "GOOGLE_MAPS_API_KEY", mapsApiKey)
     }
 
     compileOptions {
