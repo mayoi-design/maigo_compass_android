@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,7 +18,7 @@ import jp.ac.mayoi.core.resource.colorBackgroundPrimary
 import jp.ac.mayoi.core.resource.colorTextCaption
 
 @Composable
-fun CustomToggleButtons() {
+private fun CustomToggleButtons() {
     val buttonLabels = listOf("エリア名", "とてもながいエリア名", "さらに長いエリア名が続きます")
     var selectedButtonIndex by remember { mutableStateOf(0) }
 
@@ -41,7 +40,7 @@ fun CustomToggleButtons() {
 }
 
 @Composable
-fun RankingButtonChip(
+private fun RankingButtonChip(
     label: String,
     isSelected: Boolean,
     onClick: () -> Unit
@@ -50,23 +49,40 @@ fun RankingButtonChip(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = if (isSelected) colorAccent else colorBackgroundPrimary,
-            contentColor = if (isSelected) colorBackgroundPrimary else colorTextCaption
         ),
         shape = RoundedCornerShape(16.dp),
         border = if (isSelected) null else BorderStroke(1.dp, colorAccentSecondary),
         modifier = Modifier
-            .padding(horizontal = 4.dp)
-            .height(48.dp)
-            .wrapContentWidth()
+            .height(48.dp) // ボタンの幅を文字の長さに応じて調整
     ) {
-        Text(text = label, style = TextStyle(fontSize = 14.sp))
+        Text(
+            text = label,
+            fontSize = 14.sp,
+            color = if (isSelected) colorBackgroundPrimary else colorTextCaption
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun CustomToggleButtonsPreview() {
+private fun CustomToggleButtonsPreview() {
     MaigoCompassTheme {
         CustomToggleButtons()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SelectedRankingButtonChipPreview() {
+    MaigoCompassTheme {
+        RankingButtonChip(label = "エリア名", isSelected = true, onClick = {})
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun UnselectedRankingButtonChipPreview() {
+    MaigoCompassTheme {
+        RankingButtonChip(label = "エリア名", isSelected = false, onClick = {})
     }
 }
