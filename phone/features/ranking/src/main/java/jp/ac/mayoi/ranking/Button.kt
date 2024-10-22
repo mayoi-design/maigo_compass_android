@@ -19,7 +19,7 @@ import jp.ac.mayoi.core.resource.colorTextCaption
 
 
 @Composable
-public fun RankingButtonChip(
+fun RankingButtonChip(
     label: String,
     isSelected: Boolean,
     onClick: () -> Unit
