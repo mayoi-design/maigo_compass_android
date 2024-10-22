@@ -9,38 +9,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.colorAccent
 import jp.ac.mayoi.core.resource.colorAccentSecondary
 import jp.ac.mayoi.core.resource.colorBackgroundPrimary
 import jp.ac.mayoi.core.resource.colorTextCaption
 
-@Composable
-private fun CustomToggleButtons() {
-    val buttonLabels = listOf("エリア名", "とてもながいエリア名", "さらに長いエリア名が続きます")
-    var selectedButtonIndex by remember { mutableStateOf(0) }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        buttonLabels.forEachIndexed { index, label ->
-            RankingButtonChip(
-                label = label,
-                isSelected = selectedButtonIndex == index,
-                onClick = { selectedButtonIndex = index }
-            )
-        }
-    }
-}
 
 @Composable
-private fun RankingButtonChip(
+public fun RankingButtonChip(
     label: String,
     isSelected: Boolean,
     onClick: () -> Unit
@@ -53,7 +32,7 @@ private fun RankingButtonChip(
         shape = RoundedCornerShape(16.dp),
         border = if (isSelected) null else BorderStroke(1.dp, colorAccentSecondary),
         modifier = Modifier
-            .height(48.dp) // ボタンの幅を文字の長さに応じて調整
+            .height(48.dp)
     ) {
         Text(
             text = label,
@@ -67,9 +46,28 @@ private fun RankingButtonChip(
 @Composable
 private fun CustomToggleButtonsPreview() {
     MaigoCompassTheme {
-        CustomToggleButtons()
+
+
+        val buttonLabels = listOf("エリア名", "とてもながいエリア名", "さらに長いエリア名が続きます")
+        var selectedButtonIndex by remember { mutableStateOf(0) }
+
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            itemsIndexed(buttonLabels) { index, label ->
+                RankingButtonChip(
+                    label = label,
+                    isSelected = selectedButtonIndex == index,
+                    onClick = { selectedButtonIndex = index }
+                )
+            }
+        }
     }
+
 }
+
 
 @Preview(showBackground = true)
 @Composable
