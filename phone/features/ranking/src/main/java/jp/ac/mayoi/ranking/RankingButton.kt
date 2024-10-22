@@ -53,7 +53,6 @@ private fun CustomToggleButtonsPreview() {
 
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
             itemsIndexed(buttonLabels) { index, label ->
