@@ -13,8 +13,8 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import jp.ac.mayoi.core.navigation.MemoryNavigation
+import jp.ac.mayoi.core.navigation.OnboardingNavigation
 import jp.ac.mayoi.core.navigation.RankingNavigation
-import jp.ac.mayoi.core.navigation.TravelingNavigation
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.maigocompass.bottomNavigation.BottomNavItem
 
@@ -35,9 +35,9 @@ fun RootScreen(){
                         label = "旅をする",
                         resId = R.drawable.navbaritem_travel,
                         isSelected = currentDestination?.any{
-                            it.route == TravelingNavigation::class.qualifiedName
+                            it.route == OnboardingNavigation::class.qualifiedName
                         } == true,
-                        onClick = { navController.navigate(TravelingNavigation)}
+                        onClick = { navController.navigate(OnboardingNavigation)}
                     )
                     BottomNavItem(
                         label = "ランキング",
