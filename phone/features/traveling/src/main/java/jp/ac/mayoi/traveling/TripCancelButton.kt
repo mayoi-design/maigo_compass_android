@@ -21,7 +21,7 @@ fun TripCancelButton(
         onClick = onTripCancelButtonClick,
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB3261E)),
         modifier = Modifier
-            .width(200.dp),
+            .width(180.dp),
     ) {
         Text(
             fontWeight = FontWeight.Bold,
@@ -33,7 +33,7 @@ fun TripCancelButton(
 
 @Preview(showBackground = true)
 @Composable
-fun TripCancelPreview() {
+private fun TripCancelPreview() {
     MaigoCompassTheme {
         TripCancelButton(
             onTripCancelButtonClick = { }
