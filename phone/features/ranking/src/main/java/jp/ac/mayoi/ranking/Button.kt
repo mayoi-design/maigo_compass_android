@@ -29,7 +29,7 @@ fun RankingButtonChip(
         colors = ButtonDefaults.buttonColors(
             containerColor = if (isSelected) colorAccent else colorBackgroundPrimary,
         ),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(32.dp),
         border = if (isSelected) null else BorderStroke(1.dp, colorAccentSecondary),
         modifier = Modifier
             .height(48.dp)
@@ -46,8 +46,6 @@ fun RankingButtonChip(
 @Composable
 private fun CustomToggleButtonsPreview() {
     MaigoCompassTheme {
-
-
         val buttonLabels = listOf("エリア名", "とてもながいエリア名", "さらに長いエリア名が続きます")
         var selectedButtonIndex by remember { mutableStateOf(0) }
 
@@ -64,7 +62,6 @@ private fun CustomToggleButtonsPreview() {
             }
         }
     }
-
 }
 
 
