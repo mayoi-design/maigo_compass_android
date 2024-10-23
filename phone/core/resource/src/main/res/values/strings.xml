@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Maigo Compass</string>
+    <string name="traveling_cancel_travel">旅行を中断</string>
 </resources>
