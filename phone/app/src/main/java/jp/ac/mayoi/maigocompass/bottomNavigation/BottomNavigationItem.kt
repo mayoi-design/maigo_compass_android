@@ -51,7 +51,7 @@ fun BottomNavItem(
 
 @Preview
 @Composable
-fun BottomNavItemPreView(){
+private fun BottomNavItemPreView(){
     BottomNavItem(
         resId = jp.ac.mayoi.maigocompass.R.drawable.navbaritem_travel,
         label = "旅をする",

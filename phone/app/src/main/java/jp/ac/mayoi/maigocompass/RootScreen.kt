@@ -68,7 +68,7 @@ fun RootScreen(){
 
 @Preview
 @Composable
-fun BottomNavigationPreview(){
+private fun BottomNavigationPreview(){
     MaigoCompassTheme {
         RootScreen()
     }

@@ -19,8 +19,8 @@ import jp.ac.mayoi.core.navigation.TravelingNavigation
 
 @Composable
 fun PhoneNavHost(
-    navController: NavHostController = rememberNavController(),
     innerPadding:PaddingValues,
+    navController: NavHostController = rememberNavController(),
 ){
     NavHost(
         navController = navController,
