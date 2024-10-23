@@ -8,7 +8,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import jp.ac.mayoi.core.navigation.Screen
+import jp.ac.mayoi.core.navigation.MemoryNavigation
+import jp.ac.mayoi.core.navigation.OnboardingNavigation
+import jp.ac.mayoi.core.navigation.RankingNavigation
+import jp.ac.mayoi.core.navigation.ShareNavigation
+import jp.ac.mayoi.core.navigation.TravelingNavigation
 
 @Composable
 fun PhoneNavHost(
@@ -17,22 +21,22 @@ fun PhoneNavHost(
 ){
     NavHost(
         navController = navController,
-        startDestination = Screen.OnboardingNavigation,
+        startDestination = OnboardingNavigation,
         modifier = Modifier.padding(innerPadding)
     ){
-        composable<Screen.OnboardingNavigation>{
+        composable<OnboardingNavigation>{
 
         }
-        composable<Screen.RankingNavigation>{
+        composable<RankingNavigation>{
 
         }
-        composable<Screen.MemoryNavigation>{
+        composable<MemoryNavigation>{
 
         }
-        composable<Screen.ShareNavigation>{
+        composable<ShareNavigation>{
 
         }
-        composable<Screen.TravelingNavigation>{
+        composable<TravelingNavigation>{
 
         }
     }
