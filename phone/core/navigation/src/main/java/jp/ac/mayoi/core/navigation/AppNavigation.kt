@@ -2,22 +2,22 @@ package jp.ac.mayoi.core.navigation
 
 import kotlinx.serialization.Serializable
 
-//インプレッションを見る
-@Serializable
-object ImpressionsNavigation
+    //おもいで画面
+    @Serializable
+    data object MemoryNavigation
 
-//オンボーディング
-@Serializable
-object OnboardingNavigation
+    //オンボーディング
+    @Serializable
+    data object OnboardingNavigation
 
-//ランキング
-@Serializable
-object RankingNavigation
+    //ランキング
+    @Serializable
+    data object RankingNavigation
 
-//シェア
-@Serializable
-object ShareNavigation
+    //シェア
+    @Serializable
+    data object ShareNavigation
 
-//歩いてる時
-@Serializable
-object TravelingNavigation
+    //歩いてる時
+    @Serializable
+    data object TravelingNavigation
