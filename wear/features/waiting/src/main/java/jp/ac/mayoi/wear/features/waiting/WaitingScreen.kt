@@ -1,6 +1,6 @@
 package jp.ac.mayoi.wear.features.waiting
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,61 +18,69 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
 import androidx.wear.tooling.preview.devices.WearDevices
-import jp.ac.mayoi.common.resource.colorBackgroundPrimaryLightCommon
 import jp.ac.mayoi.wear.core.resource.MaigoButton
+import jp.ac.mayoi.wear.core.resource.colorTextMain
+import jp.ac.mayoi.wear.core.resource.textStyleBody
 
 @Composable
-fun WaitingScreen() {
-    var isButtonView by remember { mutableStateOf(true) }
-    Box(
-        contentAlignment = Alignment.Center,
+fun WaitingScreen(
+    isButtonView: Boolean,
+    onSetDestinationButtonClick: () -> Unit,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .padding(bottom = 50.dp)
+            .padding(top = 45.dp)
             .fillMaxSize()
     ) {
         Text(
             modifier = Modifier
                 .padding(bottom = 10.dp),
             text = "目的地を設定\nしてみましょう",
-            fontSize = 13.sp,
-            color = colorBackgroundPrimaryLightCommon,
+            style = textStyleBody,
+            color = colorTextMain,
             textAlign = TextAlign.Center
         )
         if (isButtonView) {
             MaigoButton(
                 modifier = Modifier
-                    .padding(top = 95.dp)
                     .height(47.dp)
                     .width(138.dp),
                 onClick = {
-                    isButtonView = false
+                    onSetDestinationButtonClick()
                 }
             ) {
                 Text(
                     text = "目的地を設定",
                     fontSize = 12.sp,
                     textAlign = TextAlign.Center
-
                 )
             }
         } else {
             Text(
                 text = "スマートフォンの操作を\n待機しています…",
                 fontSize = 12.sp,
-                modifier = Modifier
-                    .padding(top = 90.dp),
                 textAlign = TextAlign.Center
             )
         }
-
-
     }
+}
 
+@Composable
+fun PreviewButton() {
+    var isButtonView by remember { mutableStateOf(true) }
+    val onSetDestinationButtonClick = {
+        isButtonView = false
+    }
+    WaitingScreen(
+        isButtonView = isButtonView,
+        onSetDestinationButtonClick = onSetDestinationButtonClick
+    )
 }
 
 @Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
 @Composable
 private fun DefaultPreview() {
-    WaitingScreen()
+    PreviewButton()
 }
 
