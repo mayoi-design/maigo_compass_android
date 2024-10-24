@@ -37,7 +37,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":common:resource"))
     implementation(project(":wear:core:resource"))
 
     implementation(libs.androidx.wear.tooling.preview)
