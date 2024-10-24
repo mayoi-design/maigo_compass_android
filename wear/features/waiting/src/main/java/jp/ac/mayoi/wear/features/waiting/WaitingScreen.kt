@@ -20,7 +20,6 @@ import androidx.wear.compose.material.Text
 import androidx.wear.tooling.preview.devices.WearDevices
 import jp.ac.mayoi.wear.core.resource.MaigoButton
 import jp.ac.mayoi.wear.core.resource.colorTextMain
-import jp.ac.mayoi.wear.core.resource.textStyleBody
 
 @Composable
 fun WaitingScreen(
@@ -37,7 +36,7 @@ fun WaitingScreen(
             modifier = Modifier
                 .padding(bottom = 10.dp),
             text = "目的地を設定\nしてみましょう",
-            style = textStyleBody,
+            fontSize = 13.sp,
             color = colorTextMain,
             textAlign = TextAlign.Center
         )
