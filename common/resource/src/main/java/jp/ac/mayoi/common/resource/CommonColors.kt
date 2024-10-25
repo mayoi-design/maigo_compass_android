@@ -16,6 +16,7 @@ val colorAccentSecondaryCommon = Color(0xFF20C0DD)
 val colorBackgroundPrimaryDarkCommon = Color(0xFF000000)
 val colorBackgroundSecondaryDarkCommon = Color(0xFF4A4A4A)
 val colorTextMainDarkCommon = Color(0xFFF0F0F0)
+val colorBackgroundAppSettingButtonCommon = colorTextCaptionCommon
 
 // ButtonColors
 
