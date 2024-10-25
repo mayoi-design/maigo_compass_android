@@ -7,13 +7,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,8 +23,7 @@ import jp.ac.mayoi.core.navigation.MemoryNavigation
 import jp.ac.mayoi.core.navigation.OnboardingNavigation
 import jp.ac.mayoi.core.navigation.RankingNavigation
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
-import jp.ac.mayoi.core.resource.colorAccent
-import jp.ac.mayoi.core.resource.colorTextCaption
+import jp.ac.mayoi.core.resource.maigoNavigationBarItemColors
 import jp.ac.mayoi.core.resource.textStyleCaption
 
 @Composable
@@ -52,6 +49,7 @@ fun RootScreen(
                             Icon(
                                 painter = painterResource(R.drawable.navbaritem_travel),
                                 contentDescription = null,
+                                modifier = Modifier.size(40.dp),
                             )
                         },
                         label = {
@@ -60,16 +58,7 @@ fun RootScreen(
                                 style = textStyleCaption,
                             )
                         },
-                        colors = NavigationBarItemColors(
-                            selectedIconColor = colorAccent,
-                            selectedTextColor = colorAccent,
-                            selectedIndicatorColor = Color.Transparent,
-                            unselectedIconColor = colorTextCaption,
-                            unselectedTextColor = colorTextCaption,
-                            disabledIconColor = colorTextCaption,
-                            disabledTextColor = colorTextCaption
-                        ),
-                        modifier = Modifier.size(40.dp),
+                        colors = maigoNavigationBarItemColors,
                     )
                     NavigationBarItem(
                         selected = currentDestination?.any {
@@ -79,7 +68,8 @@ fun RootScreen(
                         icon = {
                             Icon(
                                 painter = painterResource(R.drawable.navbaritem_ranking),
-                                contentDescription = null
+                                contentDescription = null,
+                                modifier = Modifier.size(40.dp),
                             )
                         },
                         label = {
@@ -88,16 +78,7 @@ fun RootScreen(
                                 style = textStyleCaption,
                             )
                         },
-                        colors = NavigationBarItemColors(
-                            selectedIconColor = colorAccent,
-                            selectedTextColor = colorAccent,
-                            selectedIndicatorColor = Color.Transparent,
-                            unselectedIconColor = colorTextCaption,
-                            unselectedTextColor = colorTextCaption,
-                            disabledIconColor = colorTextCaption,
-                            disabledTextColor = colorTextCaption
-                        ),
-                        modifier = Modifier.size(40.dp),
+                        colors = maigoNavigationBarItemColors,
                     )
                     NavigationBarItem(
                         selected = currentDestination?.any {
@@ -107,7 +88,8 @@ fun RootScreen(
                         icon = {
                             Icon(
                                 painter = painterResource(R.drawable.navbaritem_memory),
-                                contentDescription = null
+                                contentDescription = null,
+                                modifier = Modifier.size(40.dp),
                             )
                         },
                         label = {
@@ -116,16 +98,7 @@ fun RootScreen(
                                 style = textStyleCaption,
                             )
                         },
-                        colors = NavigationBarItemColors(
-                            selectedIconColor = colorAccent,
-                            selectedTextColor = colorAccent,
-                            selectedIndicatorColor = Color.Transparent,
-                            unselectedIconColor = colorTextCaption,
-                            unselectedTextColor = colorTextCaption,
-                            disabledIconColor = colorTextCaption,
-                            disabledTextColor = colorTextCaption
-                        ),
-                        modifier = Modifier.size(40.dp),
+                        colors = maigoNavigationBarItemColors,
                     )
                 }
             }
