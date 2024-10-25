@@ -23,7 +23,6 @@ fun AppSettingButton() {
         modifier = Modifier
             .width(138.dp)
             .height(47.dp)
-
     ) {
         Text(
             text = "アプリ設定",
