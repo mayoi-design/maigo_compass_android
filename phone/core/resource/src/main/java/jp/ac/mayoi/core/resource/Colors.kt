@@ -1,5 +1,6 @@
 package jp.ac.mayoi.core.resource
 
+import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import jp.ac.mayoi.common.resource.buttonColorsDefaultCommon
@@ -29,3 +30,13 @@ val colorAccentSecondary = colorAccentSecondaryCommon
 
 val buttonColorsDefault
     @Composable get() = buttonColorsDefaultCommon
+
+val maigoNavigationBarItemColors = NavigationBarItemColors(
+    selectedIconColor = colorAccent,
+    selectedTextColor = colorAccent,
+    selectedIndicatorColor = Color.Transparent,
+    unselectedIconColor = colorTextCaption,
+    unselectedTextColor = colorTextCaption,
+    disabledIconColor = colorTextCaption,
+    disabledTextColor = colorTextCaption
+)
