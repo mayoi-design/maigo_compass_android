@@ -1,6 +1,7 @@
 package jp.ac.mayoi.wear.features.waiting
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -17,6 +18,7 @@ import androidx.wear.compose.material.Text
 import androidx.wear.tooling.preview.devices.WearDevices
 import jp.ac.mayoi.wear.core.resource.MaigoButton
 import jp.ac.mayoi.wear.core.resource.colorTextMain
+import jp.ac.mayoi.wear.core.resource.spacingDouble
 
 @Composable
 fun WaitingScreen(
@@ -31,7 +33,8 @@ fun WaitingScreen(
     ) {
         Text(
             modifier = Modifier
-                .padding(bottom = 10.dp),
+                .padding(bottom = spacingDouble),
+            // .padding(bottom = 10.dp),
             text = "目的地を設定\nしてみましょう",
             fontSize = 13.sp,
             color = colorTextMain,
@@ -51,11 +54,17 @@ fun WaitingScreen(
                 )
             }
         } else {
-            Text(
-                text = "スマートフォンの操作を\n待機しています…",
-                fontSize = 12.sp,
-                textAlign = TextAlign.Center
-            )
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.height(47.dp)
+            ) {
+                Text(
+                    text = "スマートフォンの操作を\n待機しています…",
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center
+
+                )
+            }
         }
     }
 }
