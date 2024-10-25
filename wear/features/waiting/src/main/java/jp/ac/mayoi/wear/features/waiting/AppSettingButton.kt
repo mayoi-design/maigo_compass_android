@@ -37,9 +37,9 @@ fun AppSettingButton(
 @Composable
 private fun AppSettingButtonPreview() {
     Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+            .fillMaxSize()
     ) {
         AppSettingButton(
             onSettingButtonClick = {/*ボタンを押した後の処理をここに書く*/ }
