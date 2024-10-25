@@ -19,33 +19,33 @@ import jp.ac.mayoi.core.navigation.TravelingNavigation
 
 @Composable
 fun PhoneNavHost(
-    innerPadding:PaddingValues,
+    innerPadding: PaddingValues,
     navController: NavHostController = rememberNavController(),
-){
+) {
     NavHost(
         navController = navController,
         startDestination = OnboardingNavigation,
         modifier = Modifier.padding(innerPadding)
-    ){
-        composable<OnboardingNavigation>{
-            Box(modifier = Modifier.fillMaxSize()){
+    ) {
+        composable<OnboardingNavigation> {
+            Box(modifier = Modifier.fillMaxSize()) {
                 Text("OnboardingScreen")
             }
         }
-        composable<RankingNavigation>{
-            Box(modifier = Modifier.fillMaxSize()){
+        composable<RankingNavigation> {
+            Box(modifier = Modifier.fillMaxSize()) {
                 Text("RankingScreen")
             }
         }
-        composable<MemoryNavigation>{
-            Box(modifier = Modifier.fillMaxSize()){
+        composable<MemoryNavigation> {
+            Box(modifier = Modifier.fillMaxSize()) {
                 Text("MemoryScreen")
             }
         }
-        composable<ShareNavigation>{
+        composable<ShareNavigation> {
 
         }
-        composable<TravelingNavigation>{
+        composable<TravelingNavigation> {
 
         }
     }
