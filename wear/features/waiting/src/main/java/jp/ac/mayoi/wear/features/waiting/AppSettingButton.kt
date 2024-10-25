@@ -16,9 +16,11 @@ import jp.ac.mayoi.wear.core.resource.MaigoButton
 import jp.ac.mayoi.wear.core.resource.appSettingButtonColors
 
 @Composable
-fun AppSettingButton() {
+fun AppSettingButton(
+    onSettingButtonClick: () -> Unit
+) {
     MaigoButton(
-        onClick = {/*設定画面に遷移される処理*/ },
+        onClick = onSettingButtonClick,
         colors = appSettingButtonColors,
         modifier = Modifier
             .width(138.dp)
@@ -39,7 +41,8 @@ private fun AppSettingButtonPreview() {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        AppSettingButton()
+        AppSettingButton(
+            onSettingButtonClick = {/*ボタンを押した後の処理をここに書く*/ }
+        )
     }
-
 }
