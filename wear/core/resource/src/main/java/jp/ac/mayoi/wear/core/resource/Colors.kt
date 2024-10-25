@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.wear.compose.material.ButtonDefaults
 import jp.ac.mayoi.common.resource.colorAccentCommon
 import jp.ac.mayoi.common.resource.colorAccentSecondaryCommon
+import jp.ac.mayoi.common.resource.colorBackgroundAppSettingButtonCommon
 import jp.ac.mayoi.common.resource.colorBackgroundPrimaryDarkCommon
 import jp.ac.mayoi.common.resource.colorBackgroundPrimaryLightCommon
 import jp.ac.mayoi.common.resource.colorBackgroundSecondaryDarkCommon
@@ -19,6 +20,7 @@ val colorTextCaption = colorTextCaptionCommon
 val colorAccent = colorAccentCommon
 val colorAccentSecondary = colorAccentSecondaryCommon
 val colorButtonTextPrimary = colorBackgroundPrimaryLightCommon
+val colorBackgroundAppSettingButton = colorBackgroundAppSettingButtonCommon
 
 // ButtonColors
 
@@ -26,5 +28,11 @@ val buttonColorsDefault
     @Composable get() =
         ButtonDefaults.primaryButtonColors(
             backgroundColor = colorAccent,
+            contentColor = colorButtonTextPrimary
+        )
+val appSettingButtonColors
+    @Composable get() =
+        ButtonDefaults.primaryButtonColors(
+            backgroundColor = colorBackgroundAppSettingButton,
             contentColor = colorButtonTextPrimary
         )
