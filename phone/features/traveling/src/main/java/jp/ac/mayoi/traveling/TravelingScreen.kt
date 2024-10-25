@@ -10,12 +10,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
+import jp.ac.mayoi.core.resource.StringR
 import jp.ac.mayoi.core.util.MaigoButton
 
 @Composable
@@ -32,7 +34,7 @@ internal fun SpotEmptyScreen(
         ) {
             Text(
                 fontWeight = FontWeight.Bold,
-                text = "この近くにはまだスポットがないようです",
+                text = stringResource(StringR.traveling_noNear_spot),
                 fontSize = 16.sp,
                 lineHeight = 24.sp
             )
@@ -40,7 +42,7 @@ internal fun SpotEmptyScreen(
             Text(
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                text = "あなたが最初のスポットを\n登録してみませんか？",
+                text = stringResource(StringR.traveling_register_firstSpot),
                 fontSize = 16.sp,
                 lineHeight = 24.sp
             )
@@ -52,7 +54,7 @@ internal fun SpotEmptyScreen(
             ) {
                 Text(
                     fontWeight = FontWeight.Bold,
-                    text = "スポットを登録",
+                    text = stringResource(StringR.traveling_register_spot),
                     fontSize = 16.sp
                 )
             }
