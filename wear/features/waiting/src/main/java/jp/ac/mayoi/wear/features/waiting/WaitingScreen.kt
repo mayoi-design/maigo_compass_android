@@ -32,19 +32,19 @@ fun WaitingScreen(
             .fillMaxSize()
     ) {
         Text(
-            modifier = Modifier
-                .padding(bottom = spacingDouble),
             text = "目的地を設定\nしてみましょう",
             fontSize = 13.sp,
             color = colorTextMain,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(bottom = spacingDouble)
         )
         if (isButtonView) {
             MaigoButton(
+                onClick = onSetDestinationButtonClick,
                 modifier = Modifier
                     .height(47.dp)
-                    .width(138.dp),
-                onClick = onSetDestinationButtonClick
+                    .width(138.dp)
             ) {
                 Text(
                     text = "目的地を設定",
@@ -61,7 +61,6 @@ fun WaitingScreen(
                     text = "スマートフォンの操作を\n待機しています…",
                     fontSize = 12.sp,
                     textAlign = TextAlign.Center
-
                 )
             }
         }
