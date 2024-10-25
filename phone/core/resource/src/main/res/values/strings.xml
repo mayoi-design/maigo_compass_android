@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Maigo Compass</string>
+    <string name="traveling_noNear_spot">この近くにはまだスポットがないようです</string>
+    <string name="traveling_register_firstSpot">あなたが最初のスポットを\n登録してみませんか？</string>
+    <string name="traveling_register_spot">スポットを登録</string>
     <string name="traveling_cancel_travel">旅行を中断</string>
 </resources>
