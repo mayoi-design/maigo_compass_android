@@ -63,7 +63,9 @@ internal fun SpotEmptyScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
         ) {
-            TripCancelButton(onTripCancelButtonClick)
+            TripCancelButton(
+                onTripCancelButtonClick = onTripCancelButtonClick,
+            )
         }
     }
 }
