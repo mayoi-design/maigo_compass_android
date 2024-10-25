@@ -29,6 +29,18 @@ android {
             )
         }
     }
+    flavorDimensions += listOf("releasing")
+
+    productFlavors {
+        create("production") {
+            dimension = "releasing"
+        }
+        create("development") {
+            applicationIdSuffix = ".development"
+            dimension = "releasing"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

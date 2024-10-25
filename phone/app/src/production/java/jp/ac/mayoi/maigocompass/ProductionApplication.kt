@@ -1,4 +1,4 @@
-package jp.ac.mayoi.maigocompass.application
+package jp.ac.mayoi.maigocompass
 
 import jp.ac.mayoi.core.application.BaseApplication
 
