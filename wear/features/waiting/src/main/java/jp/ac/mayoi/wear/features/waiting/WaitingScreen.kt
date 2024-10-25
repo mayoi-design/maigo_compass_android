@@ -34,7 +34,6 @@ fun WaitingScreen(
         Text(
             modifier = Modifier
                 .padding(bottom = spacingDouble),
-            // .padding(bottom = 10.dp),
             text = "目的地を設定\nしてみましょう",
             fontSize = 13.sp,
             color = colorTextMain,
@@ -69,7 +68,7 @@ fun WaitingScreen(
     }
 }
 
-// ボタンがでないバージョン
+// ボタンがないバージョン
 @Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
 @Composable
 private fun InitialPreview() {
@@ -79,6 +78,7 @@ private fun InitialPreview() {
     )
 }
 
+// ボタンがあるバージョン
 @Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
 @Composable
 private fun SettingPreview() {
