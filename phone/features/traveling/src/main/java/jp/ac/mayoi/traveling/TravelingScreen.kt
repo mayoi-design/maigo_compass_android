@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,11 +17,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.StringR
-import jp.ac.mayoi.core.util.MaigoButton
 
 @Composable
 internal fun SpotEmptyScreen(
-    onSubmitSpotButtonClick: () -> Unit,
     onTripCancelButtonClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -42,22 +39,10 @@ internal fun SpotEmptyScreen(
             Text(
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                text = stringResource(StringR.traveling_register_firstSpot),
+                text = stringResource(StringR.traveling_no_spot_move),
                 fontSize = 16.sp,
                 lineHeight = 24.sp
             )
-            Spacer(modifier = Modifier.size(24.dp))
-            MaigoButton(
-                onClick = onSubmitSpotButtonClick,
-                modifier = Modifier
-                    .width(240.dp),
-            ) {
-                Text(
-                    fontWeight = FontWeight.Bold,
-                    text = stringResource(StringR.traveling_register_spot),
-                    fontSize = 16.sp
-                )
-            }
         }
         Box(
             modifier = Modifier
@@ -75,7 +60,6 @@ internal fun SpotEmptyScreen(
 private fun TripPreview() {
     MaigoCompassTheme {
         SpotEmptyScreen(
-            onSubmitSpotButtonClick = { },
             onTripCancelButtonClick = { }
         )
     }
