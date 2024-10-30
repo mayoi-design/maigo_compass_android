@@ -56,7 +56,7 @@ internal fun TravelingErrorScreen(
             ) {
                 Text(
                     fontWeight = FontWeight.Bold,
-                    text = stringResource(StringR.traveling_retry),
+                    text = stringResource(StringR.general_retry),
                     fontSize = 16.sp
                 )
             }

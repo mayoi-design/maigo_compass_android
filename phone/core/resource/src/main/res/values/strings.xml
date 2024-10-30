@@ -6,5 +6,5 @@
     <string name="traveling_cancel_travel">旅行を中断</string>
     <string name="traveling_connection_failed">インターネットの接続に失敗しました</string>
     <string name="traveling_retry_section">ネットワーク、WiFi設定を確認の上\n再度お試しください</string>
-    <string name="traveling_retry">再試行</string>
+    <string name="general_retry">再試行</string>
 </resources>
