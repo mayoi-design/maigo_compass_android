@@ -74,7 +74,7 @@ internal fun TravelingErrorScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun TripPreview() {
+private fun TravelingErrorScreenPreview() {
     MaigoCompassTheme {
         TravelingErrorScreen(
             onRetryButtonClick = { },
