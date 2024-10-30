@@ -1,6 +1,7 @@
 package jp.ac.mayoi.traveling
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,38 +21,50 @@ import jp.ac.mayoi.core.util.MaigoButton
 
 @Composable
 internal fun TravelingErrorScreen(
-    onRetryButtonClick: () -> Unit
+    onRetryButtonClick: () -> Unit,
+    onTripCancelButtonClick: () -> Unit
 ) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Text(
-            fontWeight = FontWeight.Bold,
-            text = "インターネットの接続に失敗しました",
-            fontSize = 16.sp,
-            lineHeight = 24.sp
-        )
-        Spacer(modifier = Modifier.size(24.dp))
-        Text(
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            text = "ネットワーク、WiFi設定を確認の上\n再度お試しください",
-            fontSize = 16.sp,
-            lineHeight = 24.sp
-        )
-        Spacer(modifier = Modifier.size(24.dp))
-        MaigoButton(
-            onClick = onRetryButtonClick,
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .width(240.dp),
+                .fillMaxSize()
         ) {
             Text(
                 fontWeight = FontWeight.Bold,
-                text = "再試行",
-                fontSize = 16.sp
+                text = "インターネットの接続に失敗しました",
+                fontSize = 16.sp,
+                lineHeight = 24.sp
+            )
+            Spacer(modifier = Modifier.size(24.dp))
+            Text(
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                text = "ネットワーク、WiFi設定を確認の上\n再度お試しください",
+                fontSize = 16.sp,
+                lineHeight = 24.sp
+            )
+            Spacer(modifier = Modifier.size(24.dp))
+            MaigoButton(
+                onClick = onRetryButtonClick,
+                modifier = Modifier
+                    .width(240.dp),
+            ) {
+                Text(
+                    fontWeight = FontWeight.Bold,
+                    text = "再試行",
+                    fontSize = 16.sp
+                )
+            }
+        }
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+        ) {
+            TripCancelButton(
+                onTripCancelButtonClick = onTripCancelButtonClick,
             )
         }
     }
@@ -63,6 +76,7 @@ private fun TripPreview() {
     MaigoCompassTheme {
         TravelingErrorScreen(
             onRetryButtonClick = { },
+            onTripCancelButtonClick = { }
         )
     }
 }
