@@ -4,4 +4,7 @@
     <string name="traveling_register_firstSpot">あなたが最初のスポットを\n登録してみませんか？</string>
     <string name="traveling_register_spot">スポットを登録</string>
     <string name="traveling_cancel_travel">旅行を中断</string>
+    <string name="traveling_connection_failed">インターネットの接続に失敗しました</string>
+    <string name="traveling_retry_section">ネットワーク、WiFi設定を確認の上\n再度お試しください</string>
+    <string name="traveling_retry">再試行</string>
 </resources>
