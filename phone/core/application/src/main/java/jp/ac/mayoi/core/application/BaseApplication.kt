@@ -1,6 +1,7 @@
 package jp.ac.mayoi.core.application
 
 import android.app.Application
+import jp.ac.mayoi.core.datastore.UserInfoDataStoreWrapper
 import jp.ac.mayoi.service.interfaces.HealthService
 import jp.ac.mayoi.service.interfaces.ImageService
 import jp.ac.mayoi.service.interfaces.RankingService
@@ -54,6 +55,7 @@ abstract class BaseApplication : Application() {
                 )
                 .build()
         }
+        single { UserInfoDataStoreWrapper(get()) }
     }
 
     private val serviceKoinModule = module {

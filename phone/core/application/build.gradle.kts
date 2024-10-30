@@ -48,6 +48,7 @@ android {
 
 dependencies {
     implementation(project(":phone:service:interfaces"))
+    implementation(project(":phone:core:datastore"))
 
     implementation(libs.bundles.composeKit)
     implementation(platform(libs.koin.bom))
