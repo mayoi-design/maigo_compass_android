@@ -38,9 +38,9 @@ internal fun AreaSelectButtons(
 @Composable
 private fun RankingScreen() {
     val areas = listOf(
-        RemoteRankingArea("1", "エリアA"),
-        RemoteRankingArea("2", "エリアB"),
-        RemoteRankingArea("3", "名前がちょっと長いエリア")
+        RemoteRankingArea("エリア名", "1"),
+        RemoteRankingArea("エリア名", "2"),
+        RemoteRankingArea("名前がちょっと長いエリア", "3")
     ).toImmutableList()
     var selectedArea by remember { mutableStateOf<RemoteRankingArea?>(null) }
 
@@ -51,7 +51,7 @@ private fun RankingScreen() {
             onAreaSelectButtonClick = { selectedArea = it }
         )
 
-        Text(text = "選択されたエリア: ${selectedArea?.areaName ?: "未選択"}") // ?.name でアクセス
+        Text(text = "選択されたエリア: ${selectedArea?.areaName ?: "未選択"}")
     }
 }
 
