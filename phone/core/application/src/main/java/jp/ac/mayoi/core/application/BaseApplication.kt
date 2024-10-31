@@ -32,6 +32,7 @@ abstract class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        // RetrofitのbuildにUserIdが必要なのでここで先にUserIdを作る
         uniqueUserIdStarter()
         koinStarter()
     }
