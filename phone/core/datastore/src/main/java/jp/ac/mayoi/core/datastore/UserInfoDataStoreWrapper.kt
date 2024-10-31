@@ -19,8 +19,10 @@ class UserInfoDataStoreWrapper(
         preferences[userId] ?: ""
     }
 
-    suspend fun setUserId(newUserId: String) = appContext.dataStore.edit { settings ->
-        settings[userId] = newUserId
+    suspend fun setUserId(newUserId: String) {
+        appContext.dataStore.edit { settings ->
+            settings[userId] = newUserId
+        }
     }
 
     private companion object PreferenceKey {
