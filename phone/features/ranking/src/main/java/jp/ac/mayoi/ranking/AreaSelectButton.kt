@@ -27,7 +27,7 @@ internal fun AreaSelectButtons(
         items(areas) { area ->
             RankingButtonChip(
                 label = area.areaName,
-                isSelected = area == currentSelection,
+                isSelected = area.areaId == currentSelection?.areaId, // areaIdで比較
                 onClick = { onAreaSelectButtonClick(area) }
             )
         }
@@ -45,16 +45,19 @@ private fun RankingScreen() {
     var selectedArea by remember { mutableStateOf<RemoteRankingArea?>(null) }
 
     Column {
-        AreaSelectButtons(
-            areas = areas,
-            currentSelection = selectedArea,
-            onAreaSelectButtonClick = { selectedArea = it }
-        )
 
-        Text(text = "選択されたエリア: ${selectedArea?.areaName ?: "未選択"}")
+        if (areas.isEmpty()) {
+            Text("エリアがありません")
+        } else {
+            AreaSelectButtons(
+                areas = areas,
+                currentSelection = selectedArea,
+                onAreaSelectButtonClick = { selectedArea = it }
+            )
+
+            Text(text = "選択されたエリア: ${selectedArea?.areaName ?: "未選択"}")
+        }
     }
 }
-
-
 
 
