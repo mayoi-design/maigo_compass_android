@@ -25,12 +25,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
-    }
     lint {
         disable += "ExtraTranslation"
         disable += "ObsoleteLintCustomCheck"
@@ -45,7 +39,6 @@ android {
 dependencies {
 
     implementation(libs.androidx.preference.datastore)
-    implementation(libs.androidx.datastore.core)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
