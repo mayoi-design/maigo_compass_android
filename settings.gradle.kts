@@ -31,6 +31,7 @@ include(
     ":phone:service",
     ":phone:core:resource",
     ":phone:core:util",
+    ":phone:core:datastore",
     ":phone:repository:implementations",
     ":phone:repository:interfaces",
     ":phone:core:application",
