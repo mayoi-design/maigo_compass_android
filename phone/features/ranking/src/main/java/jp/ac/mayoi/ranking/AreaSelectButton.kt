@@ -27,7 +27,7 @@ internal fun AreaSelectButtons(
         items(areas) { area ->
             RankingButtonChip(
                 label = area.areaName,
-                isSelected = area.areaId == currentSelection?.areaId, // areaIdで比較
+                isSelected = area.areaId == currentSelection?.areaId,
                 onClick = { onAreaSelectButtonClick(area) }
             )
         }
