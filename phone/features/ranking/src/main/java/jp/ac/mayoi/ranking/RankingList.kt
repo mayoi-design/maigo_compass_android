@@ -1,6 +1,7 @@
 package jp.ac.mayoi.ranking
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +24,8 @@ import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.colorAccent
 import jp.ac.mayoi.core.resource.colorAccentSecondary
 import jp.ac.mayoi.core.resource.colorTextCaption
+import jp.ac.mayoi.core.resource.spacingSingle
+import jp.ac.mayoi.core.resource.spacingTriple
 import jp.ac.mayoi.core.resource.textStyleTitle
 import jp.ac.mayoi.core.util.SpotCard
 import jp.ac.mayoi.phone.model.LocalSpot
@@ -30,17 +33,19 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun RankingList(
+internal fun RankingList(
     spotList: ImmutableList<LocalSpot>,
-    onCardClicked: () -> Unit,
     isClickEnabled: Boolean,
+    onCardClicked: () -> Unit,
 ) {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(24.dp)) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(spacingTriple),
+        contentPadding = PaddingValues(vertical = spacingTriple),
+    ) {
         itemsIndexed(spotList) { index_, spot ->
             val index = index_ + 1
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceAround,
                 modifier = Modifier
                     .padding(horizontal = 25.dp),
             ) {
@@ -59,11 +64,11 @@ fun RankingList(
                         else -> colorTextCaption
                     },
                 )
-                Spacer(modifier = Modifier.size(8.dp))
+                Spacer(modifier = Modifier.size(spacingSingle))
                 SpotCard(
                     spot = spot,
-                    onCardClicked = onCardClicked,
-                    isClickEnabled = isClickEnabled,
+                    onCardClicked = {},
+                    isClickEnabled = false,
                     modifier = Modifier
                         .shadow(
                             elevation = 4.dp,

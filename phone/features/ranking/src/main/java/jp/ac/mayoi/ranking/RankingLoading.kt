@@ -14,16 +14,12 @@ import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.colorAccentSecondary
 
 @Composable
-fun RankingLoading() {
+internal fun RankingLoading() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator(
-            modifier = Modifier.width(50.dp),
-            color = colorAccentSecondary,
-            trackColor = Color.Transparent,
-        )
+        CircularProgressIndicator()
     }
 }
 
