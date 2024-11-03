@@ -74,6 +74,8 @@ android {
 dependencies {
     implementation(project(":phone:core:resource"))
     implementation(project(":phone:core:application"))
+    implementation(project(":phone:model"))
+    implementation(project(":phone:repository:interfaces"))
 
     implementation(project(":phone:core:navigation"))
     implementation(platform(libs.koin.bom))
