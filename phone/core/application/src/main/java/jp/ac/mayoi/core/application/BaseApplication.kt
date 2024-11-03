@@ -37,7 +37,7 @@ abstract class BaseApplication : Application() {
         koinStarter()
     }
 
-    private fun koinStarter() {
+    protected open fun koinStarter() {
         startKoin {
             androidLogger()
             androidContext(this@BaseApplication)
