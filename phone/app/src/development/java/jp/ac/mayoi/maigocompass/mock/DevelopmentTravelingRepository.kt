@@ -5,8 +5,17 @@ import jp.ac.mayoi.repository.interfaces.TravelingRepository
 import kotlinx.coroutines.delay
 
 class DevelopmentTravelingRepository : TravelingRepository {
+    private var nearSpotsGetCount = 0
+
     override suspend fun getNearSpots(lat: Double, lng: Double): List<RemoteSpot> {
         delay(2000)
+
+        if (nearSpotsGetCount % 3 == 2) {
+            throw Exception("Development Error")
+        }
+
+        nearSpotsGetCount += 1
+
         return List(10) {
             RemoteSpot(
                 lat = 0.0f,

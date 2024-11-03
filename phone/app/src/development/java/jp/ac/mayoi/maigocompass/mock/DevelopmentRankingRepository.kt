@@ -6,9 +6,17 @@ import jp.ac.mayoi.repository.interfaces.RankingRepository
 import kotlinx.coroutines.delay
 
 class DevelopmentRankingRepository : RankingRepository {
+    private var availAreaGetCount = 0
+    private var rankingGetCount = 0
+
     override suspend fun getAvailArea(): List<RemoteRankingArea> {
         delay(2000)
 
+        if (availAreaGetCount % 3 == 2) {
+            throw Exception("Development Error")
+        }
+
+        availAreaGetCount += 1
         return List(6) {
             RemoteRankingArea(
                 areaId = "$it",
@@ -21,6 +29,11 @@ class DevelopmentRankingRepository : RankingRepository {
         val idrem = areaId.toIntOrNull() ?: 0
         delay(2000)
 
+        if (availAreaGetCount % 3 == 2) {
+            throw Exception("Development Error")
+        }
+
+        rankingGetCount += 1
         return when (idrem % 3) {
             0 -> {
                 List(15) {

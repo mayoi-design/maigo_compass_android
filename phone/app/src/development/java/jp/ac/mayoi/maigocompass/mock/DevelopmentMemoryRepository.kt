@@ -7,6 +7,7 @@ import kotlinx.coroutines.delay
 
 class DevelopmentMemoryRepository : MemoryRepository {
     override suspend fun getUserMemory(): UserMemory {
+        // この関数はExceptionを吐かない
         delay(1000)
 
         return UserMemory(
