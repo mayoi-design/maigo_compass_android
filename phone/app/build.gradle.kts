@@ -78,6 +78,7 @@ dependencies {
     implementation(project(":phone:repository:interfaces"))
 
     implementation(project(":phone:core:navigation"))
+    implementation(libs.kotlinx.coroutine.android)
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
     implementation(libs.androidx.navigation)

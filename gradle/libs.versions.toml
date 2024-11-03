@@ -2,6 +2,7 @@
 agp = "8.7.1"
 kotlin = "1.9.25"
 kotlinxSerialization = "1.6.3"
+kotlinxCoroutines = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -76,6 +77,7 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 retrofit-converter-kotlinx = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 google-maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "googlemaps-compose" }
 androidx-preference-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+kotlinx-coroutine-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
