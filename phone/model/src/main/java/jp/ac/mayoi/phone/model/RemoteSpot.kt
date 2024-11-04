@@ -25,5 +25,5 @@ data class RemoteSpot(
     val reachedCount: Int,
 
     @JsonNames("spot_id") @SerialName("spot_id")
-    val spotId: Int,
+    val spotId: String,
 )
