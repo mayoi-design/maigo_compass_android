@@ -1,3 +1,5 @@
+package jp.ac.mayoi.ranking
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -8,7 +10,6 @@ import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.spacingDouble
 import jp.ac.mayoi.core.resource.spacingSingle
 import jp.ac.mayoi.phone.model.RemoteRankingArea
-import jp.ac.mayoi.ranking.RankingButtonChip
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -27,7 +28,7 @@ internal fun AreaSelectButtons(
         items(areas) { area ->
             RankingButtonChip(
                 label = area.areaName,
-                isSelected = area.areaId == currentSelection?.areaId,
+                isSelected = area.areaId == currentSelection.areaId,
                 onClick = { onAreaSelectButtonClick(area) }
             )
         }
