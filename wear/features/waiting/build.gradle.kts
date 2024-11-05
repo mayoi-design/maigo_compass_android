@@ -39,8 +39,6 @@ android {
 dependencies {
     implementation(project(":wear:core:resource"))
 
-    implementation("androidx.viewpager2:viewpager2:1.0.0")
-
     implementation(libs.androidx.wear.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.ui.tooling.preview)

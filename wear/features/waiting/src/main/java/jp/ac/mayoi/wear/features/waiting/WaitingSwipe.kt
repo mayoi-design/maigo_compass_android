@@ -1,19 +1,40 @@
 package jp.ac.mayoi.wear.features.waiting
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 
-// 画面を横スクロールした際の処理
-class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
-    FragmentStateAdapter(fragmentActivity) {
-    override fun getItemCount(): Int = 2
+@Composable
+fun WaitingSwipe() {
+    val pagerState = rememberPagerState(initialPage = 0) { 2 }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        ) { page ->
+            when (page) {
+                0 -> WaitingScreen(
+                    isButtonView = true,
+                    onSetDestinationButtonClick = { /* ボタン遷移後の処理 */ }
+                )
 
-    override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0    -> WaitingFragment()
-            1    -> SettingFragment()
-            else -> WaitingFragment()
+                1 -> AppSettingButton(
+                    onSettingButtonClick = { /* ボタン遷移後の処理 */ }
+                )
+
+            }
         }
     }
 }
