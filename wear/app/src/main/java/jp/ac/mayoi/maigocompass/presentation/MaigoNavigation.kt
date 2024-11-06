@@ -7,12 +7,14 @@ import androidx.navigation.compose.composable
 import jp.ac.mayoi.wear.core.navigation.SettingsNavigation
 import jp.ac.mayoi.wear.core.navigation.TripNavigation
 import jp.ac.mayoi.wear.core.navigation.WatchWaitNavigation
+import jp.ac.mayoi.wear.features.waiting.WaitingSwipe
 
 
 @Composable
 fun WearNavigation(
     navController: NavHostController
 ) {
+
     NavHost(
         navController = navController,
         startDestination = WatchWaitNavigation,
@@ -20,6 +22,13 @@ fun WearNavigation(
         composable<TripNavigation> {
         }
         composable<WatchWaitNavigation> {
+            WaitingSwipe(
+                onSettingButtonClick = {
+                    navController.navigate(
+                        SettingsNavigation
+                    )
+                }
+            )
         }
         composable<SettingsNavigation> {
         }
