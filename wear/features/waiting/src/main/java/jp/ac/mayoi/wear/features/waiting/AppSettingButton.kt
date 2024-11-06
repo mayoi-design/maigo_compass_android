@@ -19,30 +19,30 @@ import jp.ac.mayoi.wear.core.resource.appSettingButtonColors
 internal fun AppSettingButton(
     onSettingButtonClick: () -> Unit
 ) {
-    MaigoButton(
-        onClick = onSettingButtonClick,
-        colors = appSettingButtonColors,
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
-            .width(138.dp)
-            .height(47.dp)
+            .fillMaxSize()
     ) {
-        Text(
-            text = "アプリ設定",
-            fontSize = 12.sp,
-        )
+        MaigoButton(
+            onClick = onSettingButtonClick,
+            colors = appSettingButtonColors,
+            modifier = Modifier
+                .width(138.dp)
+                .height(47.dp)
+        ) {
+            Text(
+                text = "アプリ設定",
+                fontSize = 12.sp,
+            )
+        }
     }
 }
 
 @Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
 @Composable
 private fun AppSettingButtonPreview() {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        AppSettingButton(
+    AppSettingButton(
             onSettingButtonClick = {/*ボタンを押した後の処理をここに書く*/ }
-        )
-    }
+    )
 }
