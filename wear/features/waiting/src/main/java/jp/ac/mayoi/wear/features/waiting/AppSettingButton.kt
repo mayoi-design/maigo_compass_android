@@ -16,7 +16,7 @@ import jp.ac.mayoi.wear.core.resource.MaigoButton
 import jp.ac.mayoi.wear.core.resource.appSettingButtonColors
 
 @Composable
-fun AppSettingButton(
+internal fun AppSettingButton(
     onSettingButtonClick: () -> Unit
 ) {
     Box(

@@ -3,7 +3,6 @@ package jp.ac.mayoi.wear.features.waiting
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,28 +18,30 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import jp.ac.mayoi.wear.core.resource.colorButtonTextPrimary
 import jp.ac.mayoi.wear.core.resource.colorTextCaption
+import jp.ac.mayoi.wear.core.resource.spacingHalf
 
 @Composable
-fun WaitingSwipe() {
-    val pagerState = rememberPagerState(initialPage = 0) { 2 }
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween,
+fun WaitingSwipe(
+    onSetDestinationButtonClick: () -> Unit,
+    onSettingButtonClick: () -> Unit
+) {
+    val pagerState = rememberPagerState(pageCount = { 2 })
+    Box(
+        contentAlignment = Alignment.BottomCenter,
         modifier = Modifier.fillMaxSize()
     ) {
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
                 .fillMaxSize()
-                .weight(1f)
         ) { page ->
             when (page) {
                 0 -> WaitingScreen(
                     isButtonView = true,
-                    onSetDestinationButtonClick = { /* ボタン遷移後の処理 */ }
+                    onSetDestinationButtonClick = onSetDestinationButtonClick
                 )
                 1 -> AppSettingButton(
-                    onSettingButtonClick = { /* ボタン遷移後の処理 */ }
+                    onSettingButtonClick = onSettingButtonClick
                 )
             }
         }
@@ -56,7 +57,7 @@ fun WaitingSwipe() {
                     if (iteration == pagerState.currentPage) colorButtonTextPrimary else colorTextCaption
                 Box(
                     modifier = Modifier
-                        .padding(2.dp)
+                        .padding(spacingHalf)
                         .clip(CircleShape)
                         .background(color)
                         .size(7.dp)
