@@ -20,7 +20,6 @@ internal fun AreaSelectButtons(
     onAreaSelectButtonClick: (RemoteRankingArea) -> Unit
 ) {
     LazyRow(
-
         horizontalArrangement = Arrangement.spacedBy(spacingSingle),
         contentPadding = PaddingValues(horizontal = spacingDouble),
         modifier = Modifier
