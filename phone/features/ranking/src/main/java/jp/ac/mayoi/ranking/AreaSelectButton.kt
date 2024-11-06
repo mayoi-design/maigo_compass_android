@@ -25,8 +25,6 @@ internal fun AreaSelectButtons(
         contentPadding = PaddingValues(horizontal = spacingDouble),
         modifier = Modifier
             .fillMaxWidth()
-
-
     ) {
         items(areas) { area ->
             RankingButtonChip(
