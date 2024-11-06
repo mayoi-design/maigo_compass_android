@@ -1,8 +1,10 @@
 package jp.ac.mayoi.traveling
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,29 +27,40 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 internal fun TravelingSpotScreen(
     spotList: ImmutableList<LocalSpot>,
+    onTripCancelButtonClick: () -> Unit,
 ) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(spacingTriple),
-        contentPadding = PaddingValues(vertical = spacingTriple),
-    ) {
-        itemsIndexed(spotList) { index_, spot ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .padding(horizontal = spacingDouble),
-            ) {
-                SpotCard(
-                    spot = spot,
-                    onCardClicked = {},
-                    isClickEnabled = false,
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(spacingTriple),
+            contentPadding = PaddingValues(vertical = spacingTriple),
+        ) {
+            itemsIndexed(spotList) { _, spot ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .shadow(
-                            elevation = 4.dp,
-                            shape = RoundedCornerShape(16.dp)
-                        )
-                        .fillMaxWidth()
-                )
+                        .padding(horizontal = spacingDouble),
+                ) {
+                    SpotCard(
+                        spot = spot,
+                        onCardClicked = {},
+                        isClickEnabled = false,
+                        modifier = Modifier
+                            .shadow(
+                                elevation = 4.dp,
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                            .fillMaxWidth()
+                    )
+                }
             }
+        }
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+        ) {
+            TripCancelButton(
+                onTripCancelButtonClick = onTripCancelButtonClick,
+            )
         }
     }
 }
@@ -72,7 +85,7 @@ private fun TripPreview() {
             }.toImmutableList()
         TravelingSpotScreen(
             spotList = rankingTestList,
-
+            onTripCancelButtonClick = { },
             )
     }
 }
