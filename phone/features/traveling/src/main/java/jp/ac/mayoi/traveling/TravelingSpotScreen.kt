@@ -3,10 +3,8 @@ package jp.ac.mayoi.traveling
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.spacingDouble
-import jp.ac.mayoi.core.resource.spacingSingle
 import jp.ac.mayoi.core.resource.spacingTriple
 import jp.ac.mayoi.core.util.SpotCard
 import jp.ac.mayoi.phone.model.LocalSpot
@@ -39,7 +36,6 @@ internal fun TravelingSpotScreen(
                 modifier = Modifier
                     .padding(horizontal = spacingDouble),
             ) {
-                Spacer(modifier = Modifier.size(spacingSingle))
                 SpotCard(
                     spot = spot,
                     onCardClicked = {},
