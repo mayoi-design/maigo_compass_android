@@ -34,7 +34,6 @@ internal fun TravelingSpotScreen(
         contentPadding = PaddingValues(vertical = spacingTriple),
     ) {
         itemsIndexed(spotList) { index_, spot ->
-            val index = index_ + 1
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
