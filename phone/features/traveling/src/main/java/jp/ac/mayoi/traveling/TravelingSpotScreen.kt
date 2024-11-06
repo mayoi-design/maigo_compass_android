@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.spacingDouble
-import jp.ac.mayoi.core.resource.spacingTriple
 import jp.ac.mayoi.core.util.SpotCard
 import jp.ac.mayoi.phone.model.LocalSpot
 import kotlinx.collections.immutable.ImmutableList
@@ -31,8 +30,8 @@ internal fun TravelingSpotScreen(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(spacingTriple),
-            contentPadding = PaddingValues(vertical = spacingTriple),
+            verticalArrangement = Arrangement.spacedBy(spacingDouble),
+            contentPadding = PaddingValues(vertical = spacingDouble),
         ) {
             itemsIndexed(spotList) { _, spot ->
                 Row(
