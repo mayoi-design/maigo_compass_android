@@ -7,7 +7,7 @@ android {
     namespace = "jp.ac.mayoi.onboarding"
     compileSdk = 34
     defaultConfig {
-        minSdk = 28
+        minSdk = 30
     }
 
     kotlinOptions {
