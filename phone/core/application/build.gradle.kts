@@ -11,7 +11,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 28
+        minSdk = 30
 
         val apiUrl: String =
             System.getenv("MAIGO_COMPASS_API_URL")

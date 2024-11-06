@@ -7,7 +7,7 @@ android {
     namespace = "ja.ac.mayoi.traveling"
     compileSdk = 34
     defaultConfig {
-        minSdk = 28
+        minSdk = 30
     }
 
     kotlinOptions {
