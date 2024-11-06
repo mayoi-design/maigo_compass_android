@@ -20,10 +20,13 @@ internal fun AreaSelectButtons(
     onAreaSelectButtonClick: (RemoteRankingArea) -> Unit
 ) {
     LazyRow(
+
+        horizontalArrangement = Arrangement.spacedBy(spacingSingle),
+        contentPadding = PaddingValues(horizontal = spacingDouble),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = spacingDouble),
-        horizontalArrangement = Arrangement.spacedBy(spacingSingle)
+
+
     ) {
         items(areas) { area ->
             RankingButtonChip(
