@@ -24,6 +24,7 @@ import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.colorAccent
 import jp.ac.mayoi.core.resource.colorAccentSecondary
 import jp.ac.mayoi.core.resource.colorTextCaption
+import jp.ac.mayoi.core.resource.spacingDouble
 import jp.ac.mayoi.core.resource.spacingSingle
 import jp.ac.mayoi.core.resource.spacingTriple
 import jp.ac.mayoi.core.resource.textStyleTitle
@@ -47,7 +48,7 @@ internal fun RankingList(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(horizontal = 25.dp),
+                    .padding(horizontal = spacingDouble),
             ) {
                 Text(
                     text = "$index.",
