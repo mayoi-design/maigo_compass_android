@@ -23,7 +23,8 @@ import jp.ac.mayoi.wear.core.resource.spacingHalf
 @Composable
 fun WaitingSwipe(
     onSetDestinationButtonClick: () -> Unit,
-    onSettingButtonClick: () -> Unit
+    onSettingButtonClick: () -> Unit,
+    isButtonView: Boolean = true,
 ) {
     val pagerState = rememberPagerState(pageCount = { 2 })
     Box(
@@ -37,7 +38,7 @@ fun WaitingSwipe(
         ) { page ->
             when (page) {
                 0 -> WaitingScreen(
-                    isButtonView = true,
+                    isButtonView = isButtonView,
                     onSetDestinationButtonClick = onSetDestinationButtonClick
                 )
                 1 -> AppSettingButton(
