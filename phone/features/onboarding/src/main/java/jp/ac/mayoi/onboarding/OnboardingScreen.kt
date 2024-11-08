@@ -42,7 +42,7 @@ fun OnboardingScreen(
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             uiSettings = MapUiSettings(
-                zoomControlsEnabled = false
+                zoomControlsEnabled = false,
             ),
             cameraPositionState = cameraPositionState,
         )
@@ -60,14 +60,14 @@ fun OnboardingScreen(
                 shape = CircleShape,
                 containerColor = Color.White,
                 elevation = FloatingActionButtonDefaults.elevation(
-                    defaultElevation = 4.dp
+                    defaultElevation = 4.dp,
                 )
             ) {
                 Icon(
                     painter = painterResource(R.drawable.icon_current_position),
                     contentDescription = null,
                     tint = colorAccentSecondary,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(32.dp),
                 )
             }
             MaigoButton(
@@ -75,7 +75,7 @@ fun OnboardingScreen(
                 content = {
                     Text("目的地を決定")
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
