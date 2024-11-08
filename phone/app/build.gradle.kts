@@ -76,7 +76,7 @@ dependencies {
     implementation(project(":phone:core:application"))
     implementation(project(":phone:model"))
     implementation(project(":phone:repository:interfaces"))
-
+    implementation(project(":phone:features:onboarding"))
     implementation(project(":phone:core:navigation"))
     implementation(libs.kotlinx.coroutine.android)
     implementation(platform(libs.koin.bom))
