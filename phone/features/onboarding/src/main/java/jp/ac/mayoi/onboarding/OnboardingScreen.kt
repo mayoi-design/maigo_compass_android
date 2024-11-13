@@ -2,6 +2,7 @@ package jp.ac.mayoi.onboarding
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,7 @@ import jp.ac.mayoi.core.resource.StringR
 import jp.ac.mayoi.core.resource.colorAccentSecondary
 import jp.ac.mayoi.core.resource.spacingDouble
 import jp.ac.mayoi.core.resource.spacingSingle
+import jp.ac.mayoi.core.resource.textStyleTitle
 import jp.ac.mayoi.core.util.MaigoButton
 
 @Composable
@@ -47,6 +49,10 @@ fun OnboardingScreen(
                 zoomControlsEnabled = false,
             ),
             cameraPositionState = cameraPositionState,
+            contentPadding = PaddingValues(
+                bottom = 92.dp,
+                start = spacingDouble
+            ),
             modifier = Modifier.fillMaxSize()
         )
         Column(
@@ -76,7 +82,10 @@ fun OnboardingScreen(
             MaigoButton(
                 onClick = onDecideClicked,
                 content = {
-                    Text(text = stringResource(StringR.onboarding_decide))
+                    Text(
+                        text = stringResource(StringR.onboarding_decide),
+                        style = textStyleTitle
+                    )
                 },
                 modifier = Modifier.fillMaxWidth(),
             )
