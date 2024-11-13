@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "jp.ac.mayoi.wear.core.navigation"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 30

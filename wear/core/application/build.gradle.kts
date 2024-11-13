@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "jp.ac.mayoi.wear.core.application"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 30
