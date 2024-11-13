@@ -8,9 +8,8 @@ import retrofit2.http.Part
 
 interface ImageService {
     @Multipart
-    @POST("upload_image")
+    @POST("image")
     suspend fun upload_image(
         @Part("image") image: RequestBody,
-        @Part("user_id") userId: RequestBody,
     ): RemoteImage
 }
