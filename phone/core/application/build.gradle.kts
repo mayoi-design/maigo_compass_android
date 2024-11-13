@@ -8,7 +8,7 @@ plugins {
 android {
     buildFeatures.buildConfig = true
     namespace = "jp.ac.mayoi.core.application"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 30

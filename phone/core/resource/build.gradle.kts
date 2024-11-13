@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "jp.ac.mayoi.core.resource"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 30
