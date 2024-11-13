@@ -89,4 +89,3 @@ private fun TripPreview() {
         )
     }
 }
-
