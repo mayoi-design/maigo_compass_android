@@ -15,13 +15,11 @@ data class RemoteSpot(
     @JsonNames("image_url") @SerialName("image_url")
     val imageUrl: String,
 
-    @JsonNames("post_user_id") @SerialName("post_user_id")
-    val postUserId: String,
-
     @JsonNames("created_at") @SerialName("created_at")
     val createdAt: String,
 
-    @JsonNames("reached_count") @SerialName("reached_count")
+    // todo: JsonNameと変数名がズレてるのは歴史的経緯。直せるなら直す
+    @JsonNames("reach_count") @SerialName("reach_count")
     val reachedCount: Int,
 
     @JsonNames("spot_id") @SerialName("spot_id")
