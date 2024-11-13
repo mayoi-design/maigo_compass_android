@@ -7,5 +7,5 @@ import kotlinx.serialization.json.JsonNames
 @Serializable
 @OptIn(ExperimentalSerializationApi::class)
 data class RemoteImage(
-    @JsonNames("image_url") val imageUrl: String,
+    @JsonNames("image_id") val imageId: String,
 )
