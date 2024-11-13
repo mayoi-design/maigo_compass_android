@@ -31,7 +31,10 @@ internal fun TravelingSpotScreen(
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(spacingDouble),
-            contentPadding = PaddingValues(vertical = spacingDouble),
+            contentPadding = PaddingValues(
+                top = spacingDouble,
+                bottom = 92.dp,
+            )
         ) {
             itemsIndexed(spotList) { _, spot ->
                 Row(
