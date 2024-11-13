@@ -16,6 +16,7 @@ import jp.ac.mayoi.core.navigation.OnboardingNavigation
 import jp.ac.mayoi.core.navigation.RankingNavigation
 import jp.ac.mayoi.core.navigation.ShareNavigation
 import jp.ac.mayoi.core.navigation.TravelingNavigation
+import jp.ac.mayoi.onboarding.OnboardingScreen
 
 @Composable
 fun PhoneNavHost(
@@ -28,9 +29,10 @@ fun PhoneNavHost(
         modifier = Modifier.padding(innerPadding)
     ) {
         composable<OnboardingNavigation> {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Text("OnboardingScreen")
-            }
+            OnboardingScreen(
+                onDecideClicked = {},
+                onCurrentPositionClicked = {},
+            )
         }
         composable<RankingNavigation> {
             Box(modifier = Modifier.fillMaxSize()) {
