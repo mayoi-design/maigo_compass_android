@@ -29,7 +29,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun RankingSuccessScreen(
+internal fun RankingSuccessScreen(
     areas: ImmutableList<RemoteRankingArea>,
     currentSelection: RemoteRankingArea,
     rankingState: LoadState<ImmutableList<LocalSpot>>,
