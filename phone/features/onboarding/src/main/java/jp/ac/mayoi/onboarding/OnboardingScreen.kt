@@ -30,7 +30,6 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import jp.ac.mayoi.core.resource.DrawableR
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.StringR
-import jp.ac.mayoi.core.resource.colorAccent
 import jp.ac.mayoi.core.resource.colorAccentSecondary
 import jp.ac.mayoi.core.resource.spacingDouble
 import jp.ac.mayoi.core.resource.spacingSingle
@@ -65,15 +64,14 @@ fun OnboardingScreen(
             modifier = Modifier.fillMaxSize()
         )
 
-        //画像で真ん中さしてみるマーカー
         Icon(
-            painter = painterResource(jp.ac.mayoi.core.resource.R.drawable.position_set),
+            painter = painterResource(DrawableR.location_fill),
             contentDescription = null,
-            tint = colorAccent,
+            tint = Color.Red,
             modifier = Modifier
                 .size(48.dp)
                 .align(Alignment.Center)
-                .offset(y = (-24).dp)
+                .offset(y = (-24).dp) // アイコンの下が現在のtargetになるようずらす
         )
 
         Column(
