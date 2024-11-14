@@ -8,9 +8,6 @@ import jp.ac.mayoi.common.resource.colorBackgroundAppSettingButtonCommon
 import jp.ac.mayoi.common.resource.colorBackgroundPrimaryDarkCommon
 import jp.ac.mayoi.common.resource.colorBackgroundPrimaryLightCommon
 import jp.ac.mayoi.common.resource.colorBackgroundSecondaryDarkCommon
-import jp.ac.mayoi.common.resource.colorBlueTriangleCommon
-import jp.ac.mayoi.common.resource.colorDarkTriangleCommon
-import jp.ac.mayoi.common.resource.colorRedTriangleCommon
 import jp.ac.mayoi.common.resource.colorTextCaptionCommon
 import jp.ac.mayoi.common.resource.colorTextMainDarkCommon
 
@@ -24,9 +21,6 @@ val colorAccent = colorAccentCommon
 val colorAccentSecondary = colorAccentSecondaryCommon
 val colorButtonTextPrimary = colorBackgroundPrimaryLightCommon
 val colorBackgroundAppSettingButton = colorBackgroundAppSettingButtonCommon
-val colorRedTriangle = colorRedTriangleCommon
-val colorBlueTriangle = colorBlueTriangleCommon
-val colorDarkTriangle = colorDarkTriangleCommon
 
 // ButtonColors
 
