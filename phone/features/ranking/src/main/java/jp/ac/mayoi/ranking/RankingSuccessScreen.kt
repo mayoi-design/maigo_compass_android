@@ -45,7 +45,6 @@ fun RankingSuccessScreen(
                 areas = areas,
                 currentSelection = currentSelection,
                 onAreaSelectButtonClick = onAreaSelected,
-
             )
         }
 
