@@ -32,6 +32,7 @@ android {
 dependencies {
     implementation(project(":phone:core:util"))
     implementation(project(":phone:core:resource"))
+    implementation(project(":phone:model"))
     implementation(libs.bundles.composeKit)
 
     implementation(libs.androidx.core.ktx)
