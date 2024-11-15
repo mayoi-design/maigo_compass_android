@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
 
 class OnboardingViewModel : ViewModel() {
-    var currentPosition: LatLng by mutableStateOf(LatLng(0.0, 0.0))
+    var destination: LatLng by mutableStateOf(LatLng(0.0, 0.0))
         private set
 
     fun onCameraChanged(newPosition: LatLng) {
-        currentPosition = newPosition
+        destination = newPosition
     }
 }
