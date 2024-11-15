@@ -161,7 +161,6 @@ fun TextInCircle(
             color = textColor,
             modifier = Modifier
                 .padding(start = 50.dp, top = 18.dp)
-
         )
     }
 }
@@ -219,7 +218,6 @@ fun BestSpotTextInCircle(
             color = textColor,
             modifier = Modifier
                 .padding(start = 30.dp, top = 90.dp)
-
         )
     }
 }
