@@ -1,6 +1,10 @@
 package jp.ac.mayoi.traveling
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.util.LoadState
@@ -9,13 +13,29 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
+fun ParentScreen() {
+    var spotListState by remember {
+        mutableStateOf<LoadState<ImmutableList<LocalSpot>>>(
+            LoadState.Loading(null)
+        )
+    }
+    TravelingScreen(
+        spotListState = spotListState,
+        onRetryButtonClick = {
+            spotListState = LoadState.Loading(null)
+        }
+    )
+}
+
+@Composable
 internal fun TravelingScreen(
-    spotListState: LoadState<ImmutableList<LocalSpot>>
+    spotListState: LoadState<ImmutableList<LocalSpot>>,
+    onRetryButtonClick: () -> Unit
 ) {
     when (spotListState) {
         is LoadState.Error -> {
             TravelingErrorScreen(
-                onRetryButtonClick = { },
+                onRetryButtonClick = onRetryButtonClick,
                 onTripCancelButtonClick = { }
             )
         }
@@ -59,8 +79,13 @@ internal fun TravelingScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun TripPreview() {
+private fun TravelingScreenPreview() {
+    val spotlistState: LoadState<ImmutableList<LocalSpot>> =
+        LoadState.Error(null, Throwable())
     MaigoCompassTheme {
-        //TravelingScreen()
+        TravelingScreen(
+            spotListState = spotlistState,
+            onRetryButtonClick = {}
+        )
     }
 }
