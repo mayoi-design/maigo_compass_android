@@ -26,13 +26,10 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import jp.ac.mayoi.core.resource.DrawableR
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.StringR
-import jp.ac.mayoi.core.resource.colorAccent
 import jp.ac.mayoi.core.resource.colorAccentSecondary
 import jp.ac.mayoi.core.resource.spacingDouble
 import jp.ac.mayoi.core.resource.spacingSingle
@@ -54,31 +51,27 @@ fun OnboardingScreen(
         onCameraPositionChanged(cameraPositionState.position.target)
     }
 
-    Box() {
+    Box {
         GoogleMap(
             uiSettings = MapUiSettings(
                 zoomControlsEnabled = false,
             ),
             cameraPositionState = cameraPositionState,
             contentPadding = PaddingValues(
-                bottom = 92.dp,
-                start = spacingDouble
+                vertical = 92.dp,
+                horizontal = spacingDouble,
             ),
             modifier = Modifier.fillMaxSize()
-        ) {
-            //GoogleMapのマーカーで真ん中をさしたい
-            Marker(state = MarkerState(cameraPositionState.position.target))
-        }
+        )
 
-        //画像で真ん中さしてみるマーカー
         Icon(
-            painter = painterResource(jp.ac.mayoi.core.resource.R.drawable.position_set),
+            painter = painterResource(DrawableR.location_fill),
             contentDescription = null,
-            tint = colorAccent,
+            tint = Color.Red,
             modifier = Modifier
                 .size(48.dp)
                 .align(Alignment.Center)
-                .offset(y = (-24).dp)
+                .offset(y = (-24).dp) // アイコンの下が現在のtargetになるようずらす
         )
 
         Column(
