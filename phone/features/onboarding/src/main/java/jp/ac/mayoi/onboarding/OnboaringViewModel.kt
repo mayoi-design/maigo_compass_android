@@ -1,6 +1,5 @@
 package jp.ac.mayoi.onboarding
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,6 +12,5 @@ class OnboardingViewModel : ViewModel() {
 
     fun onCameraChanged(newPosition: LatLng) {
         currentPosition = newPosition
-        Log.d("onboarding", currentPosition.toString())
     }
 }

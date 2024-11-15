@@ -33,7 +33,9 @@ fun PhoneNavHost(
             val viewModel = OnboardingViewModel()
             OnboardingScreen(
                 onCameraPositionChanged = viewModel::onCameraChanged,
-                onDecideClicked = {},
+                onDecideClicked = {
+                    navController.navigate(TravelingNavigation)
+                },
                 onCurrentPositionClicked = {},
             )
         }
