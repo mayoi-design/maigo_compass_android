@@ -212,7 +212,7 @@ fun BestSpotTextInCircle(
         Text(
             text = "1.8",
             fontSize = fontSizeTitle,
-            modifier = Modifier.padding(end = spacingTriple, top = 87.dp)
+            modifier = Modifier.padding(end = spacingTriple, top = 85.dp)
         )
         Text(
             text = "km",
