@@ -27,7 +27,9 @@ import jp.ac.mayoi.wear.core.resource.colorButtonTextPrimary
 import jp.ac.mayoi.wear.core.resource.colorDarkTriangle
 import jp.ac.mayoi.wear.core.resource.colorRedTriangle
 import jp.ac.mayoi.wear.core.resource.colorTextMain
-import jp.ac.mayoi.wear.core.resource.spacingHalf
+import jp.ac.mayoi.wear.core.resource.fontSizeCaption
+import jp.ac.mayoi.wear.core.resource.fontSizeTitle
+import jp.ac.mayoi.wear.core.resource.spacingDouble
 import jp.ac.mayoi.wear.core.resource.spacingSingle
 import jp.ac.mayoi.wear.core.resource.spacingTriple
 
@@ -146,7 +148,7 @@ fun TextInCircle(
             text = text,
             fontSize = fontSize.sp,
             color = textColor,
-            modifier = Modifier.padding(bottom = 90.dp, start = spacingHalf / 2)
+            modifier = Modifier.padding(bottom = 90.dp, start = 2.dp)
         )
         Text(
             text = "3.5",
@@ -160,7 +162,7 @@ fun TextInCircle(
             text = "km",
             color = textColor,
             modifier = Modifier
-                .padding(start = 50.dp, top = 18.dp)
+                .padding(start = 50.dp, top = spacingDouble)
         )
     }
 }
@@ -191,7 +193,7 @@ fun BestSpotTextInCircle(
             text = text,
             fontSize = fontSize.sp,
             color = textColor,
-            modifier = Modifier.padding(bottom = 90.dp, start = spacingHalf / 2)
+            modifier = Modifier.padding(bottom = 90.dp, start = 2.dp)
         )
         Image(
             painter = painterResource(id = R.drawable.smail),
@@ -209,12 +211,12 @@ fun BestSpotTextInCircle(
         )
         Text(
             text = "1.8",
-            fontSize = 20.sp,
-            modifier = Modifier.padding(end = spacingTriple, top = 85.dp)
+            fontSize = fontSizeTitle,
+            modifier = Modifier.padding(end = spacingTriple, top = 87.dp)
         )
         Text(
             text = "km",
-            fontSize = 10.sp,
+            fontSize = fontSizeCaption,
             color = textColor,
             modifier = Modifier
                 .padding(start = 30.dp, top = 90.dp)
