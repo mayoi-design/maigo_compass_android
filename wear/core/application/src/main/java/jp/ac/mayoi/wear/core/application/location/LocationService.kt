@@ -7,16 +7,22 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.IBinder
 import android.os.Looper
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import jp.ac.mayoi.wear.core.resource.locationIntentAction
+import jp.ac.mayoi.wear.core.resource.locationIntentLatitude
+import jp.ac.mayoi.wear.core.resource.locationIntentLongitude
 
 
 class LocationService : Service() {
+
     private lateinit var locationClient: FusedLocationProviderClient
 
     private var locationRequest: LocationRequest =
@@ -25,14 +31,12 @@ class LocationService : Service() {
             1000L
         ).build()
 
-    private val locationCallBack = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult) {
-            for (location in locationResult.locations){
-                val latitude = location.latitude
-                val longitude = location.longitude
-            }
+    private val locationListener = LocationListener { p0 ->
+        val currentLatitude = p0.latitude
+        val currentLongitude = p0.longitude
+        Log.d("Location", "$currentLongitude, $currentLatitude")
 
-        }
+        broadcastLocation(currentLatitude, currentLongitude)
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -49,7 +53,7 @@ class LocationService : Service() {
             locationClient = LocationServices.getFusedLocationProviderClient(this)
             locationClient.requestLocationUpdates(
                 locationRequest,
-                locationCallBack,
+                locationListener,
                 Looper.getMainLooper()
             )
         }
@@ -57,8 +61,14 @@ class LocationService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-
-
+    private fun broadcastLocation(latitude: Double, longitude: Double) {
+        val intent = Intent()
+        intent.putExtra(locationIntentLatitude, latitude)
+        intent.putExtra(locationIntentLongitude, longitude)
+        intent.setAction(locationIntentAction)
+        Log.d("Location", "sendlocation")
+        this.sendBroadcast(intent)
+    }
 
 }
 

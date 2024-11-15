@@ -15,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault">
         <service
+            android:name="jp.ac.mayoi.wear.core.application.location.LocationService"
+            android:foregroundServiceType="location"
+            />
+        <service
             android:name="jp.ac.mayoi.maigocompass.complication.MainComplicationService"
             android:exported="true"
             android:label="@string/complication_label"
