@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -150,7 +151,7 @@ fun TextInCircle(
 }
 
 @Composable
-fun DistanceText(distanceTexts: List<String>) {
+fun DistanceText(distanceTexts: SnapshotStateList<String>) {
     val distanceText =
         remember { mutableStateOf(distanceTexts.firstOrNull() ?: "0.0") }
     Text(
@@ -160,17 +161,6 @@ fun DistanceText(distanceTexts: List<String>) {
             end = spacingTriple,
             top = spacingSingle
         )
-    )
-}
-
-@Composable
-fun BestSpotDistanceText(distanceTexts: List<String>) {
-    val distanceText =
-        remember { mutableStateOf(distanceTexts.firstOrNull() ?: "0.0") }
-    Text(
-        text = distanceText.value,
-        fontSize = fontSizeTitle,
-        modifier = Modifier.padding(end = spacingTriple, top = 85.dp)
     )
 }
 
@@ -251,6 +241,17 @@ fun BestSpotTextInCircle(
                 .padding(start = 30.dp, top = 90.dp)
         )
     }
+}
+
+@Composable
+fun BestSpotDistanceText(distanceTexts: SnapshotStateList<String>) {
+    val distanceText =
+        remember { mutableStateOf(distanceTexts.firstOrNull() ?: "0.0") }
+    Text(
+        text = distanceText.value,
+        fontSize = fontSizeTitle,
+        modifier = Modifier.padding(end = spacingTriple, top = 85.dp)
+    )
 }
 
 // 目的地の方角を指す赤い三角形の実装
