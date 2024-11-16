@@ -35,6 +35,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":phone:service:interfaces"))
+    implementation(project(":phone:repository:interfaces"))
+    implementation(project(":phone:model"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)

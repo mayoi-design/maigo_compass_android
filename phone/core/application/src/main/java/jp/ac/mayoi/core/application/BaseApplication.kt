@@ -2,8 +2,11 @@ package jp.ac.mayoi.core.application
 
 import android.app.Application
 import android.util.Log
+import com.google.maps.android.ktx.BuildConfig
 import jp.ac.mayoi.core.datastore.UserInfoDataStoreWrapper
 import jp.ac.mayoi.onboarding.OnboardingViewModel
+import jp.ac.mayoi.repository.implementations.RankingRepositoryImpl
+import jp.ac.mayoi.repository.interfaces.RankingRepository
 import jp.ac.mayoi.service.interfaces.HealthService
 import jp.ac.mayoi.service.interfaces.ImageService
 import jp.ac.mayoi.service.interfaces.RankingService
