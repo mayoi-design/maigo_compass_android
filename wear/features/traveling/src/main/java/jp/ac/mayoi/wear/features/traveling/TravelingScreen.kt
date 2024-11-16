@@ -6,13 +6,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -40,10 +38,13 @@ import jp.ac.mayoi.wear.core.resource.fontSizeTitle
 import jp.ac.mayoi.wear.core.resource.spacingDouble
 import jp.ac.mayoi.wear.core.resource.spacingSingle
 import jp.ac.mayoi.wear.core.resource.spacingTriple
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 // 目的地に向かっている際のUI実装
 @Composable
 fun TravelingScreen(
+    isDarkRedTriangle: Boolean
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -53,31 +54,20 @@ fun TravelingScreen(
         CommonTravelingScreen(
             onRedTriangleClick = {/**/ },
             onBlueTriangleClick = {/**/ },
-            isDarkRedTriangleView = false,
-            isDarkBlueTriangleView = true
+            isDarkTriangleView = isDarkRedTriangle
         )
-        TextInCircle(
-            distanceText = "",
-            text = "目的地",
-        )
-    }
-}
-
-// おすすめスポットに向かっているときのUI実装
-@Composable
-fun BestSpotScreen() {
-    Box {
-        CommonTravelingScreen(
-            onBlueTriangleClick = {/**/ },
-            onRedTriangleClick = {/**/ },
-            isDarkRedTriangleView = true,
-            isDarkBlueTriangleView = false
-        )
-        BestSpotTextInCircle(
-            text = "おすすめスポット",
-            distanceText = "",
-            fontSize = 6,
-        )
+        if (!isDarkRedTriangle) {
+            TextInCircle(
+                distanceText = "",
+                text = "目的地"
+            )
+        } else {
+            BestSpotTextInCircle(
+                distanceText = "",
+                text = "おすすめスポット",
+                fontSize = 6,
+            )
+        }
     }
 }
 
@@ -86,8 +76,7 @@ fun BestSpotScreen() {
 fun CommonTravelingScreen(
     onBlueTriangleClick: () -> Unit,
     onRedTriangleClick: () -> Unit,
-    isDarkBlueTriangleView: Boolean,
-    isDarkRedTriangleView: Boolean
+    isDarkTriangleView: Boolean,
 ) {
     val items = remember { mutableStateListOf<Int>() }
     Box(
@@ -96,17 +85,15 @@ fun CommonTravelingScreen(
             .fillMaxSize()
     ) {
         // 青い三角形を無数に作成する場合
-        LazyColumn {
-            items(items) { index ->
+        for (recommend in items) {
                 BlueTriangle(
                     onClick = { onBlueTriangleClick() },
-                    isDarkBlueTriangleView = isDarkBlueTriangleView
+                    isDarkBlueTriangleView = !isDarkTriangleView
                 )
             }
-        }
         RedTriangle(
             onClick = onRedTriangleClick,
-            isDarkRedTriangleView = isDarkRedTriangleView
+            isDarkRedTriangleView = isDarkTriangleView
         )
     }
 }
@@ -118,8 +105,9 @@ fun TextInCircle(
     text: String,
     textColor: Color = colorTextMain,
 ) {
-    val distances =
-        remember { mutableStateListOf("1.0", "2.0", "3.0") } // 一旦これで表示
+    val distances: ImmutableList<String> by remember {
+        mutableStateOf(persistentListOf("1.0", "2.0", "3.0"))
+    }// 一旦これで表示
     val paint = Paint().apply {
         strokeWidth = 2f
         isAntiAlias = true
@@ -151,7 +139,7 @@ fun TextInCircle(
 }
 
 @Composable
-fun DistanceText(distanceTexts: SnapshotStateList<String>) {
+fun DistanceText(distanceTexts: ImmutableList<String>) {
     val distanceText =
         remember { mutableStateOf(distanceTexts.firstOrNull() ?: "0.0") }
     Text(
@@ -196,8 +184,9 @@ fun BestSpotTextInCircle(
     fontSize: Int,
     textColor: Color = colorTextMain,
 ) {
-    val distances =
-        remember { mutableStateListOf("1.0", "2.0", "3.0") } // 一旦これで表示
+    val distances: ImmutableList<String> by remember {
+        mutableStateOf(persistentListOf("1.0", "2.0", "3.0"))
+    }// 一旦これで表示
     val paint = Paint().apply {
         strokeWidth = 2f
         isAntiAlias = true
@@ -244,7 +233,7 @@ fun BestSpotTextInCircle(
 }
 
 @Composable
-fun BestSpotDistanceText(distanceTexts: SnapshotStateList<String>) {
+fun BestSpotDistanceText(distanceTexts: ImmutableList<String>) {
     val distanceText =
         remember { mutableStateOf(distanceTexts.firstOrNull() ?: "0.0") }
     Text(
@@ -338,12 +327,16 @@ fun BlueTriangle(
 @Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
 @Composable
 private fun TravelingScreenPreview() {
-    TravelingScreen()
+    TravelingScreen(
+        isDarkRedTriangle = false
+    )
 }
 
 // おすすめスポットを指す際のPreview
 @Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
 @Composable
 private fun TravelingScreenBestPreview() {
-    BestSpotScreen()
+    TravelingScreen(
+        isDarkRedTriangle = true
+    )
 }
