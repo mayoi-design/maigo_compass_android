@@ -1,5 +1,4 @@
-package jp.ac.mayoi.wear.core.application.location
-
+package jp.ac.mayoi.wear.service
 
 import android.Manifest
 import android.app.Service
@@ -10,16 +9,13 @@ import android.os.Looper
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import jp.ac.mayoi.wear.core.resource.locationIntentAction
 import jp.ac.mayoi.wear.core.resource.locationIntentLatitude
 import jp.ac.mayoi.wear.core.resource.locationIntentLongitude
-
 
 class LocationService : Service() {
 
@@ -43,13 +39,13 @@ class LocationService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        if(ActivityCompat.checkSelfPermission(
-            this,Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED &&
+        if (ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(
-            this,Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-            ){
+                this, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             locationClient = LocationServices.getFusedLocationProviderClient(this)
             locationClient.requestLocationUpdates(
                 locationRequest,
@@ -66,10 +62,6 @@ class LocationService : Service() {
         intent.putExtra(locationIntentLatitude, latitude)
         intent.putExtra(locationIntentLongitude, longitude)
         intent.setAction(locationIntentAction)
-        Log.d("Location", "sendlocation")
         this.sendBroadcast(intent)
     }
-
 }
-
-

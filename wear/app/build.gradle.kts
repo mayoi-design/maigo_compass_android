@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.maigocompass"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.maigocompass"
         minSdk = 30
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         vectorDrawables {
@@ -61,6 +61,8 @@ android {
 dependencies {
     implementation(project(":wear:core:resource"))
     implementation(project(":wear:core:application"))
+    implementation(project(":wear:service"))
+    implementation(project(":wear:features:traveling"))
     implementation(project(":wear:features:waiting"))
 
     implementation(libs.bundles.wearComposeKit)

@@ -37,7 +37,12 @@ android {
 }
 
 dependencies {
+    implementation(project(":wear:repository:interfaces"))
+    implementation(project(":wear:service"))
+    implementation(project(":wear:core:resource"))
 
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.wear.tooling.preview)
     implementation(libs.bundles.wearComposeKit)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

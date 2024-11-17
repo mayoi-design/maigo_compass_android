@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault">
         <service
-            android:name="jp.ac.mayoi.wear.core.application.location.LocationService"
+            android:name="jp.ac.mayoi.wear.service.LocationService"
             android:foregroundServiceType="location"
             />
         <service
