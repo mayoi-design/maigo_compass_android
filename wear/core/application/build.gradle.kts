@@ -50,6 +50,9 @@ android {
 
 dependencies {
     implementation(project(":wear:core:resource"))
+    implementation(project(":wear:repository:interfaces"))
+    implementation(project(":wear:repository:implementations"))
+
     implementation(libs.bundles.wearComposeKit)
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
