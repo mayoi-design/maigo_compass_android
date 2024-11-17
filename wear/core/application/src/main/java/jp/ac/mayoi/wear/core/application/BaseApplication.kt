@@ -2,6 +2,7 @@ package jp.ac.mayoi.wear.core.application
 
 import android.app.Application
 import jp.ac.mayoi.wear.repository.implementations.CompassRepositoryImpl
+import jp.ac.mayoi.wear.repository.implementations.LocationRepositoryImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
@@ -32,6 +33,7 @@ abstract class BaseApplication : Application() {
 
     private val repositoryKoinModule = module {
         factory { CompassRepositoryImpl() }
+        factory { LocationRepositoryImpl() }
     }
 
     private val viewModelKoinModule = module {
