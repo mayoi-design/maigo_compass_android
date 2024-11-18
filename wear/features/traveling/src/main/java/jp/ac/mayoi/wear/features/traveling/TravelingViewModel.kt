@@ -28,7 +28,7 @@ class TravelingViewModel(
     private val sensorManager: SensorManager,
     private val compassRepository: CompassRepository,
     private val locationRepository: LocationRepository, // あとで使うのでとりあえず
-) : ViewModel(), SensorEventListener {
+) : ViewModel() {
     var azimuth by mutableDoubleStateOf(0.0)
         private set
 
@@ -42,12 +42,19 @@ class TravelingViewModel(
     private val rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
 
     fun startSensor(context: Context) {
-        sensorManager.registerListener(this, rotationVectorSensor, SensorManager.SENSOR_DELAY_UI)
+        sensorManager.registerListener(
+            sensorCallbackListener,
+            rotationVectorSensor,
+            SensorManager.SENSOR_DELAY_UI
+        )
         registerLocationBroadcastReceiver(context)
     }
 
     fun stopSensor(context: Context) {
-        sensorManager.unregisterListener(this, rotationVectorSensor)
+        sensorManager.unregisterListener(
+            sensorCallbackListener,
+            rotationVectorSensor
+        )
         context.applicationContext.stopService(
             Intent(context.applicationContext, LocationService::class.java)
         )
@@ -78,20 +85,22 @@ class TravelingViewModel(
         }
     }
 
-    override fun onSensorChanged(event: SensorEvent?) {
-        if (event == null) return
+    private val sensorCallbackListener = object : SensorEventListener {
+        override fun onSensorChanged(event: SensorEvent?) {
+            if (event == null) return
 
-        when (event.sensor.type) {
-            Sensor.TYPE_ROTATION_VECTOR -> {
-                azimuth = compassRepository.getCurrentAzimuth(
-                    event.values.dropLast(1).toFloatArray()
-                )
+            when (event.sensor.type) {
+                Sensor.TYPE_ROTATION_VECTOR -> {
+                    azimuth = compassRepository.getCurrentAzimuth(
+                        event.values.dropLast(1).toFloatArray()
+                    )
+                }
             }
         }
-    }
 
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        // todo: 精度が低い時に「キャリブレーションしてください」みたいな警告をUIに出すようにしたい。
+        override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+            // todo: 精度が低い時に「キャリブレーションしてください」みたいな警告をUIに出すようにしたい。
+        }
     }
 
     private val broadcastReceiver = object : BroadcastReceiver() {
