@@ -1,6 +1,5 @@
 package jp.ac.mayoi.ranking
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -12,13 +11,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import jp.ac.mayoi.core.resource.MaigoCompassTheme
-import jp.ac.mayoi.core.resource.colorAccent
-import jp.ac.mayoi.core.resource.colorAccentSecondary
-import jp.ac.mayoi.core.resource.colorTextCaption
-import jp.ac.mayoi.core.resource.textStyleTitle
+import jp.ac.mayoi.core.resource.*
 import jp.ac.mayoi.core.util.LoadState
 import jp.ac.mayoi.core.util.SpotCard
 import jp.ac.mayoi.phone.model.LocalSpot
@@ -27,80 +21,81 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun RankingSuccessScreen(
     areas: ImmutableList<RemoteRankingArea>,
     currentSelection: RemoteRankingArea,
     rankingState: LoadState<ImmutableList<LocalSpot>>,
     onAreaSelected: (RemoteRankingArea) -> Unit,
-    onCardClicked: () -> Unit
+    onCardClicked: () -> Unit //削除する？
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
-        stickyHeader {
-            AreaSelectButtons(
-                areas = areas,
-                currentSelection = currentSelection,
-                onAreaSelectButtonClick = onAreaSelected,
-            )
-        }
+        AreaSelectButtons(
+            areas = areas,
+            currentSelection = currentSelection,
+            onAreaSelectButtonClick = onAreaSelected,
+        )
 
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+        Spacer(modifier = Modifier.height(spacingDouble))
 
         when (rankingState) {
-            is LoadState.Loading, is LoadState.Error -> {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillParentMaxHeight()
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        if (rankingState is LoadState.Loading) {
-                            RankingLoading()
-                        } else {
-                            Text(text = "エリアのデータを読み込めませんでした")
-                        }
-                    }
+            is LoadState.Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    RankingLoading()
+                }
+            }
+            is LoadState.Error -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "エリアのデータを読み込めませんでした")
                 }
             }
             is LoadState.Success -> {
-                itemsIndexed(rankingState.value) { index_, spot ->
-                    val index = index_ + 1
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                    ) {
-                        Text(
-                            text = "$index.",
-                            style = textStyleTitle.copy(
-                                fontSize = 24.sp,
-                                shadow = Shadow(
-                                    color = Color(0x33000000),
-                                    offset = Offset(1f, 1f),
-                                    blurRadius = 8f,
-                                )
-                            ),
-                            color = when (index) {
-                                1 -> colorAccent
-                                2, 3 -> colorAccentSecondary
-                                else -> colorTextCaption
-                            },
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        SpotCard(
-                            spot = spot,
-                            onCardClicked = onCardClicked,
-                            isClickEnabled = true,
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    itemsIndexed(rankingState.value) { rawIndex, spot ->
+                        val index = rawIndex + 1
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
-                                .fillMaxWidth()
-                        )
+                                .padding(horizontal = spacingDouble, vertical = spacingSingle),
+                        ) {
+                            Text(
+                                text = "$index.",
+                                style = textStyleTitle.copy(
+                                    fontSize = 24.sp,
+                                    shadow = Shadow(
+                                        color = Color(0x33000000),
+                                        offset = Offset(1f, 1f),
+                                        blurRadius = 8f,
+                                    )
+                                ),
+                                color = when (index) {
+                                    1 -> colorAccent
+                                    2, 3 -> colorAccentSecondary
+                                    else -> colorTextCaption
+                                },
+                            )
+                            Spacer(modifier = Modifier.width(spacingSingle))
+                            SpotCard(
+                                spot = spot,
+                                onCardClicked = {},
+                                isClickEnabled = false,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            )
+                        }
                     }
                 }
             }
@@ -126,6 +121,31 @@ private fun RankingSuccessScreenLoadingPreview() {
         )
     }
 }
+
+@Preview(showBackground = true, name = "RankingSuccessScreen Error State")
+@Composable
+private fun RankingSuccessScreenErrorPreview() {
+    MaigoCompassTheme {
+        val areas = persistentListOf(
+            RemoteRankingArea("エリア名1", "1"),
+            RemoteRankingArea("エリア名2", "2"),
+            RemoteRankingArea("名前がちょっと長いエリア名", "3")
+        )
+        RankingSuccessScreen(
+            areas = areas,
+            currentSelection = areas[0],
+            rankingState = LoadState.Error(
+                value = null,
+                error = Exception("データの読み込みに失敗しました")
+            ),
+            onAreaSelected = {},
+            onCardClicked = {}
+        )
+    }
+}
+
+
+
 
 @Preview(showBackground = true, name = "RankingSuccessScreen Success State")
 @Composable
