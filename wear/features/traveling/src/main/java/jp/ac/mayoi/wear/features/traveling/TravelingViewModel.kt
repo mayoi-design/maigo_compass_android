@@ -17,19 +17,30 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import jp.ac.mayoi.common.model.RemoteSpotShrink
 import jp.ac.mayoi.wear.core.resource.locationIntentAction
 import jp.ac.mayoi.wear.core.resource.locationIntentLatitude
 import jp.ac.mayoi.wear.core.resource.locationIntentLongitude
 import jp.ac.mayoi.wear.repository.interfaces.CompassRepository
 import jp.ac.mayoi.wear.repository.interfaces.LocationRepository
+import jp.ac.mayoi.wear.repository.interfaces.TravelingRepository
 import jp.ac.mayoi.wear.service.LocationService
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class TravelingViewModel(
     private val sensorManager: SensorManager,
     private val compassRepository: CompassRepository,
     private val locationRepository: LocationRepository, // あとで使うのでとりあえず
+    private val travelingRepository: TravelingRepository,
+    val destination: Location, // 目的地はこのViewModelのライフタイムで不変なので受け取ってしまう
 ) : ViewModel() {
     var azimuth by mutableDoubleStateOf(0.0)
+        private set
+    var recommendSpots: ImmutableList<RemoteSpotShrink> = persistentListOf()
         private set
 
     private val currentLocation = run {
@@ -40,6 +51,52 @@ class TravelingViewModel(
     }
 
     private val rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
+
+    fun updateLocation() {
+        viewModelScope.launch {
+            try {
+                // まだgetRecommendSpotsの中身が実装されていないのでダミー処理を走らせる
+                // val recommends = travelingRepository.getRecommendSpots()
+
+                delay(2000)
+                recommendSpots = persistentListOf(
+                    RemoteSpotShrink(
+                        lat = 41.8157514360135,
+                        lng = 140.75178972310687,
+                        comment = "亀田支所前1番のりば"
+                    ),
+                    RemoteSpotShrink(
+                        lat = 41.820865711976964,
+                        lng = 140.73744810747843,
+                        comment = "湯の箱　こみち"
+                    ),
+                    RemoteSpotShrink(
+                        lat = 41.77596698394411,
+                        lng = 140.81458995914838,
+                        comment = "函館空港"
+                    ),
+                    RemoteSpotShrink(
+                        lat = 41.82529921910122,
+                        lng = 140.71956121250042,
+                        comment = "早く取らないとなぁ",
+                    ),
+                    RemoteSpotShrink(
+                        lat = 41.772790968373116,
+                        lng = 140.75495583334114,
+                        comment = "時空探偵、現る"
+                    ),
+                    RemoteSpotShrink(
+                        lat = 41.765411429266514,
+                        lng = 140.6971754353837,
+                        comment = "キレイな海が見える！",
+                    )
+                )
+            } catch (e: Exception) {
+                Log.e("UpdateLocation", "${e.message}")
+            }
+        }
+    }
+
 
     fun startSensor(context: Context) {
         sensorManager.registerListener(

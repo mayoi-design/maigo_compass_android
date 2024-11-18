@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":common:model"))
     implementation(project(":wear:repository:interfaces"))
     implementation(project(":wear:service"))
     implementation(project(":wear:core:resource"))

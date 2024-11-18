@@ -52,6 +52,8 @@ abstract class BaseApplication : Application() {
     }
 
     private val viewModelKoinModule = module {
-        viewModel { TravelingViewModel(get(), get(), get()) }
+        viewModel { parameters ->
+            TravelingViewModel(get(), get(), get(), get(), destination = parameters.get())
+        }
     }
 }
