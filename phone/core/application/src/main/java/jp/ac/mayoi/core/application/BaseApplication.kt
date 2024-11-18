@@ -81,7 +81,7 @@ abstract class BaseApplication : Application() {
         single {
             // UAなどの設定も後からBuilderに追加する
             Retrofit.Builder()
-                .baseUrl(BuildConfig.MAIGO_COMPASS_API_URL)
+                .baseUrl(BuildConfig.MAIGO_COMPASS_API_URL) //ここ、特に弄っては無いのですが、怒られてたので見て欲しいです
                 .addConverterFactory(
                     Json.asConverterFactory(
                         "application/json".toMediaType()
@@ -103,7 +103,9 @@ abstract class BaseApplication : Application() {
     }
 
     private val repositoryKoinModule = module {
-
+        single<RankingRepository> {
+            RankingRepositoryImpl(get()) //調べた感じ、今回の場合factoryよりsingleの方が良さそうな気がしたんですけどどうなんでしょう？
+        }
     }
 
     private val viewModelKoinModule = module {
