@@ -22,12 +22,13 @@ import jp.ac.mayoi.common.model.RemoteSpotShrink
 import jp.ac.mayoi.wear.core.resource.locationIntentAction
 import jp.ac.mayoi.wear.core.resource.locationIntentLatitude
 import jp.ac.mayoi.wear.core.resource.locationIntentLongitude
+import jp.ac.mayoi.wear.model.RecommendSpot
 import jp.ac.mayoi.wear.repository.interfaces.CompassRepository
 import jp.ac.mayoi.wear.repository.interfaces.LocationRepository
 import jp.ac.mayoi.wear.repository.interfaces.TravelingRepository
 import jp.ac.mayoi.wear.service.LocationService
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -36,12 +37,31 @@ class TravelingViewModel(
     private val compassRepository: CompassRepository,
     private val locationRepository: LocationRepository, // あとで使うのでとりあえず
     private val travelingRepository: TravelingRepository,
-    val destination: Location, // 目的地はこのViewModelのライフタイムで不変なので受け取ってしまう
+    private val _destination: Location,
 ) : ViewModel() {
     var azimuth by mutableDoubleStateOf(0.0)
         private set
-    var recommendSpots: ImmutableList<RemoteSpotShrink> = persistentListOf()
-        private set
+    private var remoteRecommendSpot: List<RemoteSpotShrink> = listOf()
+
+    // recommendSpotとdestinationの実装終わってるからどうにかしたい
+    // recompositionのたびに a*(len(remoteRecommendSpot) + 1) 回計算が走ることになる
+    val recommendSpot: ImmutableList<RecommendSpot>
+        get() = remoteRecommendSpot.map { spot ->
+            RecommendSpot(
+                spot,
+                currentLocation.distanceTo(spot.location).toDouble(),
+                locationRepository.getBearing(currentLocation, spot.location, azimuth)
+            )
+        }.toImmutableList()
+    val destination: RecommendSpot
+        get() = RecommendSpot(
+            lat = _destination.latitude,
+            lng = _destination.longitude,
+            comment = "",
+            distance = currentLocation.distanceTo(_destination).toDouble(),
+            headTo = locationRepository.getBearing(currentLocation, _destination, azimuth)
+        )
+
 
     private val currentLocation = run {
         Location(null).also {
@@ -59,7 +79,7 @@ class TravelingViewModel(
                 // val recommends = travelingRepository.getRecommendSpots()
 
                 delay(2000)
-                recommendSpots = persistentListOf(
+                remoteRecommendSpot = listOf(
                     RemoteSpotShrink(
                         lat = 41.8157514360135,
                         lng = 140.75178972310687,
