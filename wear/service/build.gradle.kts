@@ -4,13 +4,14 @@ plugins {
 }
 
 android {
-    namespace = "jp.ac.mayoi.wear.repository.implementations"
+    namespace = "jp.ac.mayoi.wear.service"
     compileSdk = 35
 
     defaultConfig {
         minSdk = 30
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     compileOptions {
@@ -37,17 +38,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":wear:repository:interfaces"))
+    implementation(project(":wear:core:resource"))
 
-    implementation(libs.play.services.wearable)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.bundles.wearComposeKit)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    lintChecks(libs.slack.compose.lints)
+    implementation(libs.location.service)
 }

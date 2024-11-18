@@ -49,6 +49,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":wear:core:resource"))
+    implementation(project(":wear:repository:interfaces"))
+    implementation(project(":wear:repository:implementations"))
+    implementation(project(":wear:features:traveling"))
 
     implementation(libs.bundles.wearComposeKit)
     implementation(platform(libs.koin.bom))
@@ -56,6 +60,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.location.service)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

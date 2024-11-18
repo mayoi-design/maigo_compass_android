@@ -10,20 +10,23 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.compose.rememberNavController
+import jp.ac.mayoi.wear.features.traveling.TravelingRoot
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
 
-        setTheme(android.R.style.Theme_DeviceDefault)
-
         setContent {
-            WearNavigation(
-                navController = rememberNavController()
-            )
+            KoinContext {
+                TravelingRoot(
+                    viewModel = koinViewModel()
+                )
+            }
         }
     }
 }

@@ -61,6 +61,8 @@ android {
 dependencies {
     implementation(project(":wear:core:resource"))
     implementation(project(":wear:core:application"))
+    implementation(project(":wear:service"))
+    implementation(project(":wear:features:traveling"))
     implementation(project(":wear:features:waiting"))
 
     implementation(libs.bundles.wearComposeKit)
