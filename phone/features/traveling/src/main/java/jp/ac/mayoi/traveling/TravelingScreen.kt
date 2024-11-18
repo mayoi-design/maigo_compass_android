@@ -54,21 +54,8 @@ internal fun TravelingScreen(
                     onTripCancelButtonClick = { }
                 )
             } else {
-                val spot = LocalSpot(
-                    lat = 0.0F,
-                    lng = 0.0F,
-                    message = "Hello From Preview!",
-                    imageUrl = "",
-                    postUserId = "",
-                    reachedCount = 100,
-                    createdAt = "2024-10-09T23:31:15+09:00",
-                )
-                val rankingTestList: ImmutableList<LocalSpot> =
-                    List(10) {
-                        spot
-                    }.toImmutableList()
                 TravelingSpotScreen(
-                    spotList = rankingTestList,
+                    spotList = spotListState.value,
                     onTripCancelButtonClick = { },
                 )
             }
@@ -80,12 +67,75 @@ internal fun TravelingScreen(
 @Preview(showBackground = true)
 @Composable
 private fun TravelingScreenPreview() {
-    val spotlistState: LoadState<ImmutableList<LocalSpot>> =
-        LoadState.Error(null, Throwable())
+    // エラー時の表示
+    val errorState: LoadState<ImmutableList<LocalSpot>> =
+        LoadState.Error(null, Throwable("Error occurred"))
     MaigoCompassTheme {
         TravelingScreen(
-            spotListState = spotlistState,
+            spotListState = errorState,
             onRetryButtonClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TravelingScreenLoadingPreview() {
+    // ロード中の表示
+    val loadingState: LoadState<ImmutableList<LocalSpot>> =
+        LoadState.Loading(null)
+    MaigoCompassTheme {
+        TravelingScreen(
+            spotListState = loadingState,
+            onRetryButtonClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TravelingScreenEmptySpotsPreview() {
+    val spot = LocalSpot(
+        lat = 0.0F,
+        lng = 0.0F,
+        message = "Hello From Preview!",
+        imageUrl = "",
+        postUserId = "",
+        reachedCount = 100,
+        createdAt = "2024-10-09T23:31:15+09:00",
+    )
+    val rankingTestList: ImmutableList<LocalSpot> =
+        List(0) {
+            spot
+        }.toImmutableList()
+    MaigoCompassTheme {
+        SpotEmptyScreen(
+            onTripCancelButtonClick = { }
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TravelingScreenSpotsPreview() {
+    val spot = LocalSpot(
+        lat = 0.0F,
+        lng = 0.0F,
+        message = "Hello From Preview!",
+        imageUrl = "",
+        postUserId = "",
+        reachedCount = 100,
+        createdAt = "2024-10-09T23:31:15+09:00",
+    )
+    val rankingTestList: ImmutableList<LocalSpot> =
+        List(10) {
+            spot
+        }.toImmutableList()
+
+    MaigoCompassTheme {
+        TravelingSpotScreen(
+            spotList = rankingTestList,
+            onTripCancelButtonClick = { },
         )
     }
 }
