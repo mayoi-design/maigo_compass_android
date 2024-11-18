@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":common:model"))
     implementation(project(":wear:repository:interfaces"))
 
     implementation(libs.play.services.wearable)

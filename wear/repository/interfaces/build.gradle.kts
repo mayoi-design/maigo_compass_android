@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":common:model"))
 
     implementation(libs.play.services.wearable)
     implementation(platform(libs.androidx.compose.bom))
