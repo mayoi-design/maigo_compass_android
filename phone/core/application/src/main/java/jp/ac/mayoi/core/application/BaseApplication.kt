@@ -93,10 +93,10 @@ abstract class BaseApplication : Application() {
     }
 
     private val serviceKoinModule = module {
-        factory { retrofit.create(HealthService::class.java) }
-        factory { retrofit.create(RankingService::class.java) }
-        factory { retrofit.create(SpotService::class.java) }
-        factory { retrofit.create(ImageService::class.java) }
+        factory<HealthService> { retrofit.create(HealthService::class.java) }
+        factory<RankingService> { retrofit.create(RankingService::class.java) }
+        factory<SpotService> { retrofit.create(SpotService::class.java) }
+        factory<ImageService> { retrofit.create(ImageService::class.java) }
     }
 
     private val repositoryKoinModule = module {
