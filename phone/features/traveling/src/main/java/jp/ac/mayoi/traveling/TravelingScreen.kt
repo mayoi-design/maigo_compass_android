@@ -10,6 +10,7 @@ import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.util.LoadState
 import jp.ac.mayoi.phone.model.LocalSpot
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -41,15 +42,11 @@ internal fun TravelingScreen(
                 onTripCancelButtonClick = onTripCancelButtonClick,
             )
         }
-        // エラー時の画面、処理を書く。
-        // 一応valueの値をnullableだけど参照することもできる。
         is LoadState.Loading -> {
             TravelingLoadScreen(
                 onTripCancelButtonClick = onTripCancelButtonClick,
             )
         }
-        // ロード中の画面、処理を書く
-        // 一応valueの値をnullableだけど参照することもできる。
         is LoadState.Success -> {
             if (spotListState.value.isEmpty()) {
                 SpotEmptyScreen(
@@ -61,7 +58,6 @@ internal fun TravelingScreen(
                     onTripCancelButtonClick = onTripCancelButtonClick,
                 )
             }
-            // ロード完了後の画面、処理を書く。
         }
     }
 }
@@ -99,22 +95,15 @@ private fun TravelingScreenLoadingPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun TravelingScreenEmptySpotsPreview() {
-    val spot = LocalSpot(
-        lat = 0.0F,
-        lng = 0.0F,
-        message = "Hello From Preview!",
-        imageUrl = "",
-        postUserId = "",
-        reachedCount = 100,
-        createdAt = "2024-10-09T23:31:15+09:00",
+    val emptySpotsState: LoadState<ImmutableList<LocalSpot>> =
+        LoadState.Success(
+            persistentListOf()
     )
-    val rankingTestList: ImmutableList<LocalSpot> =
-        List(0) {
-            spot
-        }.toImmutableList()
     MaigoCompassTheme {
-        SpotEmptyScreen(
-            onTripCancelButtonClick = { }
+        TravelingScreen(
+            spotListState = emptySpotsState,
+            onRetryButtonClick = {},
+            onTripCancelButtonClick = {}
         )
     }
 }
@@ -135,7 +124,6 @@ private fun TravelingScreenSpotsPreview() {
         List(10) {
             spot
         }.toImmutableList()
-
     MaigoCompassTheme {
         TravelingSpotScreen(
             spotList = rankingTestList,
