@@ -23,27 +23,29 @@ fun ParentScreen() {
         spotListState = spotListState,
         onRetryButtonClick = {
             spotListState = LoadState.Loading(null)
-        }
+        },
+        onTripCancelButtonClick = { },
     )
 }
 
 @Composable
 internal fun TravelingScreen(
     spotListState: LoadState<ImmutableList<LocalSpot>>,
-    onRetryButtonClick: () -> Unit
+    onRetryButtonClick: () -> Unit,
+    onTripCancelButtonClick: () -> Unit
 ) {
     when (spotListState) {
         is LoadState.Error -> {
             TravelingErrorScreen(
                 onRetryButtonClick = onRetryButtonClick,
-                onTripCancelButtonClick = { }
+                onTripCancelButtonClick = onTripCancelButtonClick,
             )
         }
         // エラー時の画面、処理を書く。
         // 一応valueの値をnullableだけど参照することもできる。
         is LoadState.Loading -> {
             TravelingLoadScreen(
-                onTripCancelButtonClick = { }
+                onTripCancelButtonClick = onTripCancelButtonClick,
             )
         }
         // ロード中の画面、処理を書く
@@ -51,12 +53,12 @@ internal fun TravelingScreen(
         is LoadState.Success -> {
             if (spotListState.value.isEmpty()) {
                 SpotEmptyScreen(
-                    onTripCancelButtonClick = { }
+                    onTripCancelButtonClick = onTripCancelButtonClick,
                 )
             } else {
                 TravelingSpotScreen(
                     spotList = spotListState.value,
-                    onTripCancelButtonClick = { },
+                    onTripCancelButtonClick = onTripCancelButtonClick,
                 )
             }
             // ロード完了後の画面、処理を書く。
@@ -73,7 +75,8 @@ private fun TravelingScreenPreview() {
     MaigoCompassTheme {
         TravelingScreen(
             spotListState = errorState,
-            onRetryButtonClick = {}
+            onRetryButtonClick = { },
+            onTripCancelButtonClick = { },
         )
     }
 }
@@ -87,7 +90,8 @@ private fun TravelingScreenLoadingPreview() {
     MaigoCompassTheme {
         TravelingScreen(
             spotListState = loadingState,
-            onRetryButtonClick = {}
+            onRetryButtonClick = { },
+            onTripCancelButtonClick = { },
         )
     }
 }
