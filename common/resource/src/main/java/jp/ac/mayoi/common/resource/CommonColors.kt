@@ -18,7 +18,8 @@ val colorBackgroundSecondaryDarkCommon = Color(0xFF4A4A4A)
 val colorTextMainDarkCommon = Color(0xFFF0F0F0)
 val colorRedTriangleCommon = Color(0xFFDC3535)
 val colorBlueTriangleCommon = Color(0xFF419AFF)
-val colorDarkTriangleCommon = Color(0x9A00050A)
+val colorDarkRedTriangleCommon = Color(0xFF581515)
+val colorDarkBlueTriangleCommon = Color(0xFF1A3E66)
 val colorBackgroundAppSettingButtonCommon = colorTextCaptionCommon
 
 // ButtonColors

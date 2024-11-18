@@ -3,13 +3,12 @@ package jp.ac.mayoi.wear.features.traveling
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,21 +29,17 @@ import androidx.wear.compose.material.Text
 import androidx.wear.tooling.preview.devices.WearDevices
 import jp.ac.mayoi.wear.core.resource.colorBlueTriangle
 import jp.ac.mayoi.wear.core.resource.colorButtonTextPrimary
-import jp.ac.mayoi.wear.core.resource.colorDarkTriangle
+import jp.ac.mayoi.wear.core.resource.colorDarkBlueTriangle
+import jp.ac.mayoi.wear.core.resource.colorDarkRedTriangle
 import jp.ac.mayoi.wear.core.resource.colorRedTriangle
 import jp.ac.mayoi.wear.core.resource.colorTextMain
-import jp.ac.mayoi.wear.core.resource.fontSizeCaption
 import jp.ac.mayoi.wear.core.resource.fontSizeTitle
-import jp.ac.mayoi.wear.core.resource.spacingDouble
-import jp.ac.mayoi.wear.core.resource.spacingSingle
 import jp.ac.mayoi.wear.core.resource.spacingTriple
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 
 // 目的地に向かっている際のUI実装
 @Composable
 fun TravelingScreen(
-    isDarkRedTriangle: Boolean
+    destination: Boolean
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -54,17 +49,16 @@ fun TravelingScreen(
         CommonTravelingScreen(
             onRedTriangleClick = {/**/ },
             onBlueTriangleClick = {/**/ },
-            isDarkTriangleView = isDarkRedTriangle
+            isDarkTriangleView = destination
         )
-        if (!isDarkRedTriangle) {
+        if (!destination) {
             TextInCircle(
                 distanceText = "",
-                text = "目的地"
             )
         } else {
             BestSpotTextInCircle(
+                text = "きれいな海が見える！",
                 distanceText = "",
-                text = "おすすめスポット",
                 fontSize = 6,
             )
         }
@@ -86,11 +80,11 @@ fun CommonTravelingScreen(
     ) {
         // 青い三角形を無数に作成する場合
         for (recommend in items) {
-                BlueTriangle(
-                    onClick = { onBlueTriangleClick() },
-                    isDarkBlueTriangleView = !isDarkTriangleView
-                )
-            }
+            BlueTriangle(
+                onClick = { onBlueTriangleClick() },
+                isDarkBlueTriangleView = !isDarkTriangleView
+            )
+        }
         RedTriangle(
             onClick = onRedTriangleClick,
             isDarkRedTriangleView = isDarkTriangleView
@@ -102,12 +96,7 @@ fun CommonTravelingScreen(
 @Composable
 fun TextInCircle(
     distanceText: String,
-    text: String,
-    textColor: Color = colorTextMain,
 ) {
-    val distances: ImmutableList<String> by remember {
-        mutableStateOf(persistentListOf("1.0", "2.0", "3.0"))
-    }// 一旦これで表示
     val paint = Paint().apply {
         strokeWidth = 2f
         isAntiAlias = true
@@ -125,31 +114,28 @@ fun TextInCircle(
                 )
             }
     ) {
-        SmallTextCircle(text)
-        DistanceText(
-            distanceTexts = distances,
+        SmallTextCircle(
+            text = "目的地"
         )
-        Text(
-            text = "km",
-            color = textColor,
-            modifier = Modifier
-                .padding(start = 50.dp, top = spacingDouble)
+        DistanceText(
+            distanceTexts = distanceText,
         )
     }
 }
 
 @Composable
-fun DistanceText(distanceTexts: ImmutableList<String>) {
-    val distanceText =
-        remember { mutableStateOf(distanceTexts.firstOrNull() ?: "0.0") }
-    Text(
-        text = distanceText.value,
-        fontSize = 30.sp,
-        modifier = Modifier.padding(
-            end = spacingTriple,
-            top = spacingSingle
+fun DistanceText(distanceTexts: String) {
+    Row(
+        verticalAlignment = Alignment.Bottom
+    ) {
+        Text(
+            text = distanceTexts,
+            fontSize = 30.sp,
         )
-    )
+        Text(
+            text = "km"
+        )
+    }
 }
 
 @Composable
@@ -180,13 +166,10 @@ fun SmallTextCircle(
 @Composable
 fun BestSpotTextInCircle(
     distanceText: String,
-    text: String,
     fontSize: Int,
+    text: String,
     textColor: Color = colorTextMain,
 ) {
-    val distances: ImmutableList<String> by remember {
-        mutableStateOf(persistentListOf("1.0", "2.0", "3.0"))
-    }// 一旦これで表示
     val paint = Paint().apply {
         strokeWidth = 2f
         isAntiAlias = true
@@ -204,7 +187,9 @@ fun BestSpotTextInCircle(
                 )
             }
     ) {
-        SmallTextCircle(text)
+        SmallTextCircle(
+            text = "おすすめスポット"
+        )
         Image(
             painter = painterResource(id = R.drawable.smail),
             contentDescription = "Smail Image",
@@ -213,34 +198,35 @@ fun BestSpotTextInCircle(
                 .size(35.dp)
         )
         Text(
-            text = "きれいな海が見える！",
+            text = text,
             fontSize = 10.sp,
             color = textColor,
             modifier = Modifier
                 .padding(top = 35.dp)
         )
         BestSpotDistanceText(
-            distanceTexts = distances
-        )
-        Text(
-            text = "km",
-            fontSize = fontSizeCaption,
-            color = textColor,
-            modifier = Modifier
-                .padding(start = 30.dp, top = 90.dp)
+            distanceTexts = distanceText
         )
     }
 }
 
 @Composable
-fun BestSpotDistanceText(distanceTexts: ImmutableList<String>) {
-    val distanceText =
-        remember { mutableStateOf(distanceTexts.firstOrNull() ?: "0.0") }
-    Text(
-        text = distanceText.value,
-        fontSize = fontSizeTitle,
-        modifier = Modifier.padding(end = spacingTriple, top = 85.dp)
-    )
+fun BestSpotDistanceText(distanceTexts: String) {
+    Row(
+        verticalAlignment = Alignment.Bottom,
+        modifier = Modifier
+            .padding(top = 80.dp)
+    ) {
+        Text(
+            text = distanceTexts,
+            fontSize = fontSizeTitle,
+//            modifier = Modifier.padding(top = 85.dp)
+        )
+        Text(
+            text = "km",
+            fontSize = 10.sp,
+        )
+    }
 }
 
 // 目的地の方角を指す赤い三角形の実装
@@ -261,25 +247,8 @@ fun RedTriangle(
         }
         drawPath(
             path,
-            color = colorRedTriangle,
+            color = if (isDarkRedTriangleView) colorDarkRedTriangle else colorRedTriangle
         )
-    }
-    if (isDarkRedTriangleView) {
-        Canvas(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            val path = Path().apply {
-                // 三角形の頂点を設定
-                moveTo(size.width / 2, 1f)
-                lineTo(159f, 43f)
-                lineTo(222f, 43f)
-                close()
-            }
-            drawPath(
-                path,
-                color = colorDarkTriangle,
-            )
-        }
     }
 }
 
@@ -301,25 +270,8 @@ fun BlueTriangle(
         }
         drawPath(
             path,
-            color = colorBlueTriangle
+            color = if (isDarkBlueTriangleView) colorDarkBlueTriangle else colorBlueTriangle
         )
-    }
-    if (isDarkBlueTriangleView) {
-        Canvas(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            val path = Path().apply {
-                // 三角形の頂点を設定
-                moveTo(size.width - 2, size.height / 2)
-                lineTo(337f, 159f)
-                lineTo(337f, 222f)
-                close()
-            }
-            drawPath(
-                path,
-                color = colorDarkTriangle,
-            )
-        }
     }
 }
 
@@ -328,7 +280,7 @@ fun BlueTriangle(
 @Composable
 private fun TravelingScreenPreview() {
     TravelingScreen(
-        isDarkRedTriangle = false
+        destination = false
     )
 }
 
@@ -337,6 +289,6 @@ private fun TravelingScreenPreview() {
 @Composable
 private fun TravelingScreenBestPreview() {
     TravelingScreen(
-        isDarkRedTriangle = true
+        destination = true
     )
 }
