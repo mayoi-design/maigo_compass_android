@@ -144,9 +144,6 @@ private fun RankingSuccessScreenErrorPreview() {
     }
 }
 
-
-
-
 @Preview(showBackground = true, name = "RankingSuccessScreen Success State")
 @Composable
 private fun RankingSuccessScreenSuccessPreview() {
