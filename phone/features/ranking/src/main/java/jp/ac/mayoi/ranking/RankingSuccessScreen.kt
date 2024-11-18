@@ -27,7 +27,6 @@ internal fun RankingSuccessScreen(
     currentSelection: RemoteRankingArea,
     rankingState: LoadState<ImmutableList<LocalSpot>>,
     onAreaSelected: (RemoteRankingArea) -> Unit,
-    onCardClicked: () -> Unit //削除する？
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -117,7 +116,6 @@ private fun RankingSuccessScreenLoadingPreview() {
             currentSelection = areas[0],
             rankingState = LoadState.Loading(null),
             onAreaSelected = {},
-            onCardClicked = {}
         )
     }
 }
@@ -138,8 +136,7 @@ private fun RankingSuccessScreenErrorPreview() {
                 value = null,
                 error = Exception("データの読み込みに失敗しました")
             ),
-            onAreaSelected = {},
-            onCardClicked = {}
+            onAreaSelected = {}
         )
     }
 }
@@ -169,7 +166,6 @@ private fun RankingSuccessScreenSuccessPreview() {
             currentSelection = areas[0],
             rankingState = LoadState.Success(rankingTestList),
             onAreaSelected = {},
-            onCardClicked = {}
         )
     }
 }
