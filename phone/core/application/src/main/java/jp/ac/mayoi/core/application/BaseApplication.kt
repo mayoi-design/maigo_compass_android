@@ -3,6 +3,7 @@ package jp.ac.mayoi.core.application
 import android.app.Application
 import android.util.Log
 import jp.ac.mayoi.core.datastore.UserInfoDataStoreWrapper
+import jp.ac.mayoi.onboarding.OnboardingViewModel
 import jp.ac.mayoi.service.interfaces.HealthService
 import jp.ac.mayoi.service.interfaces.ImageService
 import jp.ac.mayoi.service.interfaces.RankingService
@@ -17,6 +18,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -102,6 +104,6 @@ abstract class BaseApplication : Application() {
     }
 
     private val viewModelKoinModule = module {
-
+        viewModel { OnboardingViewModel() }
     }
 }

@@ -17,6 +17,8 @@ import jp.ac.mayoi.core.navigation.RankingNavigation
 import jp.ac.mayoi.core.navigation.ShareNavigation
 import jp.ac.mayoi.core.navigation.TravelingNavigation
 import jp.ac.mayoi.onboarding.OnboardingScreen
+import jp.ac.mayoi.onboarding.OnboardingViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PhoneNavHost(
@@ -29,8 +31,12 @@ fun PhoneNavHost(
         modifier = Modifier.padding(innerPadding)
     ) {
         composable<OnboardingNavigation> {
+            val onboardingViewModel: OnboardingViewModel = koinViewModel()
             OnboardingScreen(
-                onDecideClicked = {},
+                onCameraPositionChanged = onboardingViewModel::onCameraChanged,
+                onDecideClicked = {
+                    navController.navigate(TravelingNavigation)
+                },
                 onCurrentPositionClicked = {},
             )
         }

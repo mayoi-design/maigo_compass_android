@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -13,6 +14,7 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,25 +38,42 @@ import jp.ac.mayoi.core.util.MaigoButton
 
 @Composable
 fun OnboardingScreen(
+    onCameraPositionChanged: (LatLng) -> Unit,
     onCurrentPositionClicked: () -> Unit,
-    onDecideClicked: () -> Unit,
+    onDecideClicked: () -> Unit
 ) {
-    val singapore = LatLng(1.35, 103.87)
+    val hakodate = LatLng(41.842140, 140.767)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(singapore, 10f)
+        position = CameraPosition.fromLatLngZoom(hakodate, 15f)
     }
-    Box() {
+
+    LaunchedEffect(cameraPositionState.position.target) {
+        onCameraPositionChanged(cameraPositionState.position.target)
+    }
+
+    Box {
         GoogleMap(
             uiSettings = MapUiSettings(
                 zoomControlsEnabled = false,
             ),
             cameraPositionState = cameraPositionState,
             contentPadding = PaddingValues(
-                bottom = 92.dp,
-                start = spacingDouble
+                vertical = 92.dp,
+                horizontal = spacingDouble,
             ),
             modifier = Modifier.fillMaxSize()
         )
+
+        Icon(
+            painter = painterResource(DrawableR.location_fill),
+            contentDescription = null,
+            tint = Color.Red,
+            modifier = Modifier
+                .size(48.dp)
+                .align(Alignment.Center)
+                .offset(y = (-24).dp) // アイコンの下が現在のtargetになるようずらす
+        )
+
         Column(
             horizontalAlignment = Alignment.End,
             modifier = Modifier
@@ -98,8 +117,9 @@ fun OnboardingScreen(
 private fun OnboardingScreenPreview() {
     MaigoCompassTheme {
         OnboardingScreen(
+            onCameraPositionChanged = {},
             onDecideClicked = {},
-            onCurrentPositionClicked = {}
+            onCurrentPositionClicked = {},
         )
     }
 }
