@@ -93,9 +93,7 @@ fun CommonTravelingScreen(
 
 // TravelingScreenの大きい円の中のテキストの実装
 @Composable
-fun TextInCircle(
-    distanceText: String,
-) {
+fun TextInCircle(distanceText: String) {
     val paint = Paint().apply {
         strokeWidth = 2f
         isAntiAlias = true
@@ -215,7 +213,6 @@ fun BestSpotDistanceText(distanceTexts: String) {
         Text(
             text = distanceTexts,
             fontSize = fontSizeTitle,
-//            modifier = Modifier.padding(top = 85.dp)
         )
         Text(
             text = "km",
