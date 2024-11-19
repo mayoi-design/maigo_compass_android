@@ -39,7 +39,7 @@ class TravelingViewModel(
     private val travelingRepository: TravelingRepository,
     private val _destination: Location,
 ) : ViewModel() {
-    var azimuth by mutableDoubleStateOf(0.0)
+    var headingTo by mutableDoubleStateOf(0.0)
         private set
     private var remoteRecommendSpot: List<RemoteSpotShrink> = listOf()
 
@@ -50,7 +50,7 @@ class TravelingViewModel(
             RecommendSpot(
                 spot,
                 currentLocation.distanceTo(spot.location).toDouble(),
-                locationRepository.getBearing(currentLocation, spot.location, azimuth)
+                locationRepository.getBearing(currentLocation, spot.location, headingTo)
             )
         }.toImmutableList()
     val destination: RecommendSpot
@@ -59,7 +59,7 @@ class TravelingViewModel(
             lng = _destination.longitude,
             comment = "",
             distance = currentLocation.distanceTo(_destination).toDouble(),
-            headTo = locationRepository.getBearing(currentLocation, _destination, azimuth)
+            bearing = locationRepository.getBearing(currentLocation, _destination, headingTo)
         )
 
 
@@ -168,7 +168,7 @@ class TravelingViewModel(
 
             when (event.sensor.type) {
                 Sensor.TYPE_ROTATION_VECTOR -> {
-                    azimuth = compassRepository.getCurrentAzimuth(
+                    headingTo = compassRepository.getCurrentAzimuth(
                         event.values.dropLast(1).toFloatArray()
                     )
                 }

@@ -8,14 +8,14 @@ data class RecommendSpot(
     val comment: String,
     // val emoji: なんか,
     val distance: Double,
-    val headTo: Double,
+    val bearing: Double,
 ) {
-    constructor(remote: RemoteSpotShrink, distance: Double, headTo: Double) : this(
+    constructor(remote: RemoteSpotShrink, distance: Double, bearing: Double) : this(
         lat = remote.lat,
         lng = remote.lng,
         comment = remote.comment,
         // emoji = remote.emoji,
         distance = distance,
-        headTo = headTo,
+        bearing = bearing,
     )
 }
