@@ -32,14 +32,13 @@ import jp.ac.mayoi.wear.core.resource.colorButtonTextPrimary
 import jp.ac.mayoi.wear.core.resource.colorDarkBlueTriangle
 import jp.ac.mayoi.wear.core.resource.colorDarkRedTriangle
 import jp.ac.mayoi.wear.core.resource.colorRedTriangle
-import jp.ac.mayoi.wear.core.resource.colorTextMain
 import jp.ac.mayoi.wear.core.resource.fontSizeTitle
 import jp.ac.mayoi.wear.core.resource.spacingTriple
 
 // 目的地に向かっている際のUI実装
 @Composable
 fun TravelingScreen(
-    destination: Boolean
+    isHeadingDestination: Boolean
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -49,9 +48,9 @@ fun TravelingScreen(
         CommonTravelingScreen(
             onRedTriangleClick = {/**/ },
             onBlueTriangleClick = {/**/ },
-            isDarkTriangleView = destination
+            isDarkTriangleView = isHeadingDestination
         )
-        if (!destination) {
+        if (!isHeadingDestination) {
             TextInCircle(
                 distanceText = "",
             )
@@ -141,13 +140,11 @@ fun DistanceText(distanceTexts: String) {
 @Composable
 fun SmallTextCircle(
     text: String,
-    textColor: Color = colorTextMain,
     circleColor: Color = colorButtonTextPrimary,
 ) {
     Text(
         text = text,
         style = TextStyle(fontSize = 6.sp),
-        color = textColor,
         modifier = Modifier
             .drawBehind {
                 drawRoundRect(
@@ -168,7 +165,6 @@ fun BestSpotTextInCircle(
     distanceText: String,
     fontSize: Int,
     text: String,
-    textColor: Color = colorTextMain,
 ) {
     val paint = Paint().apply {
         strokeWidth = 2f
@@ -200,7 +196,6 @@ fun BestSpotTextInCircle(
         Text(
             text = text,
             fontSize = 10.sp,
-            color = textColor,
             modifier = Modifier
                 .padding(top = 35.dp)
         )
@@ -280,7 +275,7 @@ fun BlueTriangle(
 @Composable
 private fun TravelingScreenPreview() {
     TravelingScreen(
-        destination = false
+        isHeadingDestination = false
     )
 }
 
@@ -289,6 +284,6 @@ private fun TravelingScreenPreview() {
 @Composable
 private fun TravelingScreenBestPreview() {
     TravelingScreen(
-        destination = true
+        isHeadingDestination = true
     )
 }
