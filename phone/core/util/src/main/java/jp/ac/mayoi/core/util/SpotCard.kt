@@ -174,7 +174,7 @@ private fun SpotCardPreview() {
             lng = 0.0F,
             message = "Hello From Preview!",
             imageUrl = "",
-            postUserId = "",
+            spotId = "",
             reachedCount = 100,
             createdAt = "2024-10-09T23:31:15+09:00",
         )
