@@ -5,10 +5,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import jp.ac.mayoi.core.util.LoadState
 import jp.ac.mayoi.phone.model.LocalSpot
 import jp.ac.mayoi.repository.interfaces.TravelingRepository
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.launch
 
 class TravelingViewModel(
     private val travelingRepository: TravelingRepository,
@@ -25,5 +28,17 @@ class TravelingViewModel(
 
     fun getNearSpot() {
         // todo: repositoryから取得できる現在地のlat, lngをつかって、spotListStateを更新する
+        val currentLat = currentLocation.latitude
+        val currentLng = currentLocation.longitude
+        spotListState = LoadState.Loading(null)
+        viewModelScope.launch {
+            try {
+                val spots =
+                    travelingRepository.getNearSpots(currentLat, currentLng)
+                spotListState = LoadState.Success(spots.toImmutableList())
+            } catch (exception: Exception) {
+                spotListState = LoadState.Error(null, exception)
+            }
+        }
     }
 }
