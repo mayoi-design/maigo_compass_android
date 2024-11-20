@@ -14,9 +14,6 @@ class RankingRepositoryImpl(
     }
 
     override suspend fun getRanking(areaId: String): List<RemoteSpot> {
-        val areaIdInt = areaId.toIntOrNull()
-            ?: throw IllegalArgumentException("Invalid areaId: $areaId")
-
-        return rankingService.getRanking(areaIdInt)
+        return rankingService.getRanking(areaId)
     }
 }

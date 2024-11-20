@@ -49,7 +49,9 @@ android {
 dependencies {
     implementation(project(":phone:service:interfaces"))
     implementation(project(":phone:core:datastore"))
+    implementation(project(":phone:repository:implementations"))
     implementation(project(":phone:features:onboarding"))
+
     implementation(libs.bundles.composeKit)
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
@@ -61,8 +63,6 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.kotlinx)
     implementation(libs.maps.ktx)
-    implementation(project(":phone:repository:interfaces"))
-    implementation(project(":phone:repository:implementations"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
