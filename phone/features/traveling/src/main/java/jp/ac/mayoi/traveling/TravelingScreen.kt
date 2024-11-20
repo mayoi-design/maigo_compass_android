@@ -1,67 +1,133 @@
 package jp.ac.mayoi.traveling
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Text
+
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
-import jp.ac.mayoi.core.resource.StringR
+import jp.ac.mayoi.core.util.LoadState
+import jp.ac.mayoi.phone.model.LocalSpot
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-internal fun SpotEmptyScreen(
+fun ParentScreen() {
+    var spotListState by remember {
+        mutableStateOf<LoadState<ImmutableList<LocalSpot>>>(
+            LoadState.Loading(null)
+        )
+    }
+    TravelingScreen(
+        spotListState = spotListState,
+        onRetryButtonClick = {
+            spotListState = LoadState.Loading(null)
+        },
+        onTripCancelButtonClick = { },
+    )
+}
+
+@Composable
+internal fun TravelingScreen(
+    spotListState: LoadState<ImmutableList<LocalSpot>>,
+    onRetryButtonClick: () -> Unit,
     onTripCancelButtonClick: () -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Text(
-                fontWeight = FontWeight.Bold,
-                text = stringResource(StringR.traveling_noNear_spot),
-                fontSize = 16.sp,
-                lineHeight = 24.sp
-            )
-            Spacer(modifier = Modifier.size(24.dp))
-            Text(
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                text = stringResource(StringR.traveling_no_spot_move),
-                fontSize = 16.sp,
-                lineHeight = 24.sp
-            )
-        }
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-        ) {
-            TripCancelButton(
+    when (spotListState) {
+        is LoadState.Error -> {
+            TravelingErrorScreen(
+                onRetryButtonClick = onRetryButtonClick,
                 onTripCancelButtonClick = onTripCancelButtonClick,
             )
+        }
+        is LoadState.Loading -> {
+            TravelingLoadScreen(
+                onTripCancelButtonClick = onTripCancelButtonClick,
+            )
+        }
+        is LoadState.Success -> {
+            if (spotListState.value.isEmpty()) {
+                SpotEmptyScreen(
+                    onTripCancelButtonClick = onTripCancelButtonClick,
+                )
+            } else {
+                TravelingSpotScreen(
+                    spotList = spotListState.value,
+                    onTripCancelButtonClick = onTripCancelButtonClick,
+                )
+            }
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun TripPreview() {
+private fun TravelingScreenPreview() {
+    // エラー時の表示
+    val errorState: LoadState<ImmutableList<LocalSpot>> =
+        LoadState.Error(null, Throwable("Error occurred"))
     MaigoCompassTheme {
-        SpotEmptyScreen(
-            onTripCancelButtonClick = { }
+        TravelingScreen(
+            spotListState = errorState,
+            onRetryButtonClick = { },
+            onTripCancelButtonClick = { },
         )
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+private fun TravelingScreenLoadingPreview() {
+    // ロード中の表示
+    val loadingState: LoadState<ImmutableList<LocalSpot>> =
+        LoadState.Loading(null)
+    MaigoCompassTheme {
+        TravelingScreen(
+            spotListState = loadingState,
+            onRetryButtonClick = { },
+            onTripCancelButtonClick = { },
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TravelingScreenEmptySpotsPreview() {
+    val emptySpotsState: LoadState<ImmutableList<LocalSpot>> =
+        LoadState.Success(
+            persistentListOf()
+    )
+    MaigoCompassTheme {
+        TravelingScreen(
+            spotListState = emptySpotsState,
+            onRetryButtonClick = {},
+            onTripCancelButtonClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TravelingScreenSpotsPreview() {
+    val spot = LocalSpot(
+        lat = 0.0F,
+        lng = 0.0F,
+        message = "Hello From Preview!",
+        imageUrl = "",
+        postUserId = "",
+        reachedCount = 100,
+        createdAt = "2024-10-09T23:31:15+09:00",
+    )
+    val rankingTestList: ImmutableList<LocalSpot> =
+        List(10) {
+            spot
+        }.toImmutableList()
+    MaigoCompassTheme {
+        TravelingSpotScreen(
+            spotList = rankingTestList,
+            onTripCancelButtonClick = { },
+        )
+    }
+}
