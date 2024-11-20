@@ -48,9 +48,9 @@ fun TravelingScreen(
         CommonTravelingScreen(
             onRedTriangleClick = {/**/ },
             onBlueTriangleClick = {/**/ },
-            isDarkTriangleView = isHeadingDestination
+            isDarkTriangleView = !isHeadingDestination
         )
-        if (!isHeadingDestination) {
+        if (isHeadingDestination) {
             TextInCircle(
                 distanceText = "",
             )
@@ -58,7 +58,6 @@ fun TravelingScreen(
             BestSpotTextInCircle(
                 text = "きれいな海が見える！",
                 distanceText = "",
-                fontSize = 6,
             )
         }
     }
@@ -161,7 +160,6 @@ fun SmallTextCircle(
 @Composable
 fun BestSpotTextInCircle(
     distanceText: String,
-    fontSize: Int,
     text: String,
 ) {
     val paint = Paint().apply {
@@ -233,8 +231,8 @@ fun RedTriangle(
         val path = Path().apply {
             // 三角形の頂点を設定
             moveTo(size.width / 2, 1f)
-            lineTo(159f, 43f)
-            lineTo(222f, 43f)
+            lineTo(163f, 40f)
+            lineTo(220f, 40f)
             close()
         }
         drawPath(
@@ -256,8 +254,8 @@ fun BlueTriangle(
         val path = Path().apply {
             // 三角形の頂点を設定
             moveTo(size.width - 2, size.height / 2)
-            lineTo(337f, 159f)
-            lineTo(337f, 222f)
+            lineTo(340f, 163f)
+            lineTo(340f, 220f)
             close()
         }
         drawPath(
