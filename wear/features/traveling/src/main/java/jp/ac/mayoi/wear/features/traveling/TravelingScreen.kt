@@ -270,7 +270,7 @@ fun BlueTriangle(
 @Composable
 private fun TravelingScreenPreview() {
     TravelingScreen(
-        isHeadingDestination = false
+        isHeadingDestination = true
     )
 }
 
@@ -279,6 +279,6 @@ private fun TravelingScreenPreview() {
 @Composable
 private fun TravelingScreenBestPreview() {
     TravelingScreen(
-        isHeadingDestination = true
+        isHeadingDestination = false
     )
 }
