@@ -60,7 +60,7 @@ fun TravelingRoot(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(text = "Yay! Permitted!")
-            Text(text = "Heading: ${viewModel.azimuth.toInt()}")
+            Text(text = "Heading: ${viewModel.headingTo.toInt()}")
         }
     } else {
         PermissionLackingScreen(

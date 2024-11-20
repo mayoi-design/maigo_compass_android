@@ -5,8 +5,10 @@ import android.hardware.SensorManager
 import jp.ac.mayoi.wear.features.traveling.TravelingViewModel
 import jp.ac.mayoi.wear.repository.implementations.CompassRepositoryImpl
 import jp.ac.mayoi.wear.repository.implementations.LocationRepositoryImpl
+import jp.ac.mayoi.wear.repository.implementations.TravelingRepositoryImpl
 import jp.ac.mayoi.wear.repository.interfaces.CompassRepository
 import jp.ac.mayoi.wear.repository.interfaces.LocationRepository
+import jp.ac.mayoi.wear.repository.interfaces.TravelingRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
@@ -46,9 +48,12 @@ abstract class BaseApplication : Application() {
     private val repositoryKoinModule = module {
         factory<CompassRepository> { CompassRepositoryImpl() }
         factory<LocationRepository> { LocationRepositoryImpl() }
+        factory<TravelingRepository> { TravelingRepositoryImpl() }
     }
 
     private val viewModelKoinModule = module {
-        viewModel { TravelingViewModel(get(), get(), get()) }
+        viewModel { parameters ->
+            TravelingViewModel(get(), get(), get(), get(), _destination = parameters.get())
+        }
     }
 }

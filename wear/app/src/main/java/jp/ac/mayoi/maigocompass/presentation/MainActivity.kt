@@ -10,8 +10,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import jp.ac.mayoi.wear.features.traveling.TravelingRoot
-import org.koin.androidx.compose.koinViewModel
+import androidx.navigation.compose.rememberNavController
 import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
@@ -23,8 +22,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             KoinContext {
-                TravelingRoot(
-                    viewModel = koinViewModel()
+                WearNavigation(
+                    navController = rememberNavController()
                 )
             }
         }

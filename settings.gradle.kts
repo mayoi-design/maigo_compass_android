@@ -46,6 +46,7 @@ include(
     ":wear:features:settings",
     ":wear:repository:interfaces",
     ":wear:repository:implementations",
+    ":wear:model",
     ":wear:service",
     ":common:model",
     ":common:resource",

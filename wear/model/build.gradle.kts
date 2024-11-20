@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "jp.ac.mayoi.wear.features.traveling"
+    namespace = "jp.ac.mayoi.wear.model"
     compileSdk = 35
 
     defaultConfig {
@@ -13,6 +13,11 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -38,22 +43,13 @@ android {
 
 dependencies {
     implementation(project(":common:model"))
-    implementation(project(":wear:repository:interfaces"))
-    implementation(project(":wear:service"))
-    implementation(project(":wear:model"))
-    implementation(project(":wear:core:resource"))
 
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.wear.tooling.preview)
     implementation(libs.bundles.wearComposeKit)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(project(":wear:core:resource"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     lintChecks(libs.slack.compose.lints)
 }
