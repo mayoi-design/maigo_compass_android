@@ -1,6 +1,7 @@
 package jp.ac.mayoi.traveling
 
 import android.location.Location
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -37,6 +38,7 @@ class TravelingViewModel(
                     travelingRepository.getNearSpots(currentLat, currentLng)
                 spotListState = LoadState.Success(spots.toImmutableList())
             } catch (exception: Exception) {
+                Log.e("getNearSpot", "${exception.message}")
                 spotListState = LoadState.Error(null, exception)
             }
         }
