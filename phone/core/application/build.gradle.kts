@@ -63,8 +63,6 @@ dependencies {
     implementation(libs.okhttp3)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.kotlinx)
-    implementation(project(":phone:repository:interfaces"))
-    implementation(project(":phone:repository:interfaces"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
