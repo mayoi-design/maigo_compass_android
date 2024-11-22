@@ -8,6 +8,7 @@ import jp.ac.mayoi.service.interfaces.HealthService
 import jp.ac.mayoi.service.interfaces.ImageService
 import jp.ac.mayoi.service.interfaces.RankingService
 import jp.ac.mayoi.service.interfaces.SpotService
+import jp.ac.mayoi.traveling.TravelingViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -105,5 +106,6 @@ abstract class BaseApplication : Application() {
 
     private val viewModelKoinModule = module {
         viewModel { OnboardingViewModel() }
+        viewModel { TravelingViewModel(get()) }
     }
 }
