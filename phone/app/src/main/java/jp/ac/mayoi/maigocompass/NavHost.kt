@@ -51,10 +51,14 @@ fun PhoneNavHost(
             }
         }
         composable<ShareNavigation> {
-
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text("ShareScreen")
+            }
         }
         composable<TravelingNavigation> {
-
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text("TravelingScreen")
+            }
         }
     }
 }
