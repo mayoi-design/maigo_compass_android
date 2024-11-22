@@ -1,10 +1,8 @@
 package jp.ac.mayoi.traveling
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.util.LoadState
@@ -12,20 +10,28 @@ import jp.ac.mayoi.phone.model.LocalSpot
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
-fun ParentScreen() {
-    var spotListState by remember {
-        mutableStateOf<LoadState<ImmutableList<LocalSpot>>>(
-            LoadState.Loading(null)
-        )
+fun ParentScreen(
+    viewModel: TravelingViewModel,
+    onRetryButtonClick: () -> Unit,
+    onTripCancelButtonClick: () -> Unit,
+) {
+    val coroutineScope = rememberCoroutineScope()
+    LaunchedEffect(Unit) {
+        coroutineScope.launch {
+            while (true) {
+                viewModel.getNearSpot()
+                delay(10000)
+            }
+        }
     }
     TravelingScreen(
-        spotListState = spotListState,
-        onRetryButtonClick = {
-            spotListState = LoadState.Loading(null)
-        },
-        onTripCancelButtonClick = { },
+        spotListState = viewModel.spotListState,
+        onRetryButtonClick = onRetryButtonClick,
+        onTripCancelButtonClick = onTripCancelButtonClick,
     )
 }
 
@@ -43,9 +49,16 @@ internal fun TravelingScreen(
             )
         }
         is LoadState.Loading -> {
-            TravelingLoadScreen(
-                onTripCancelButtonClick = onTripCancelButtonClick,
-            )
+            if (spotListState.value.isNullOrEmpty()) {
+                TravelingLoadScreen(
+                    onTripCancelButtonClick = onTripCancelButtonClick,
+                )
+            } else {
+                TravelingSpotScreen(
+                    spotList = spotListState.value!!,
+                    onTripCancelButtonClick = onTripCancelButtonClick,
+                )
+            }
         }
         is LoadState.Success -> {
             if (spotListState.value.isEmpty()) {
