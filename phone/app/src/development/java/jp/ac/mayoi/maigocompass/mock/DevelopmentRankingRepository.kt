@@ -1,5 +1,6 @@
 package jp.ac.mayoi.maigocompass.mock
 
+import jp.ac.mayoi.phone.model.LocalSpot
 import jp.ac.mayoi.phone.model.RemoteRankingArea
 import jp.ac.mayoi.phone.model.RemoteSpot
 import jp.ac.mayoi.repository.interfaces.RankingRepository
@@ -25,7 +26,7 @@ class DevelopmentRankingRepository : RankingRepository {
         }
     }
 
-    override suspend fun getRanking(areaId: String): List<RemoteSpot> {
+    override suspend fun getRanking(areaId: String): List<LocalSpot> {
         val idrem = areaId.toIntOrNull() ?: 0
         delay(2000)
 
@@ -34,7 +35,7 @@ class DevelopmentRankingRepository : RankingRepository {
         }
 
         rankingGetCount += 1
-        return when (idrem % 3) {
+        val remoteSpots = when (idrem % 3) {
             0 -> {
                 List(15) {
                     RemoteSpot(
@@ -48,7 +49,6 @@ class DevelopmentRankingRepository : RankingRepository {
                     )
                 }
             }
-
             1 -> {
                 List(3) {
                     RemoteSpot(
@@ -62,14 +62,24 @@ class DevelopmentRankingRepository : RankingRepository {
                     )
                 }
             }
-
             2 -> {
                 listOf()
             }
-
             else -> {
                 listOf() // Unreachable
             }
+        }
+
+        return remoteSpots.map { spot ->
+            LocalSpot(
+                lat = spot.lat,
+                lng = spot.lng,
+                message = spot.message,
+                imageUrl = spot.imageUrl,
+                spotId = spot.spotId,
+                reachedCount = spot.reachedCount,
+                createdAt = spot.createdAt,
+            )
         }
     }
 }

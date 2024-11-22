@@ -36,8 +36,6 @@ location-service = "21.3.0"
 viewmodelCompose = "2.8.7"
 uiToolingPreviewAndroid = "1.7.5"
 uiTestAndroid = "1.7.5"
-mapsKtx = "5.1.1"
-mapsKtxVersion = "5.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -88,8 +86,6 @@ kotlinx-coroutine-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-c
 location-service = { group = "com.google.android.gms", name = "play-services-location", version.ref = "location-service"}
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
 androidx-ui-test-android = { group = "androidx.compose.ui", name = "ui-test-android", version.ref = "uiTestAndroid" }
-maps-ktx = { group = "com.google.maps.android", name = "maps-ktx", version.ref = "mapsKtx" }
-maps-ktx = { group = "com.google.maps.android", name = "maps-ktx", version.ref = "mapsKtxVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
