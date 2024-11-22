@@ -4,6 +4,8 @@ import android.app.Application
 import android.util.Log
 import jp.ac.mayoi.core.datastore.UserInfoDataStoreWrapper
 import jp.ac.mayoi.onboarding.OnboardingViewModel
+import jp.ac.mayoi.repository.implementations.TravelingRepositoryImpl
+import jp.ac.mayoi.repository.interfaces.TravelingRepository
 import jp.ac.mayoi.service.interfaces.HealthService
 import jp.ac.mayoi.service.interfaces.ImageService
 import jp.ac.mayoi.service.interfaces.RankingService
@@ -101,7 +103,7 @@ abstract class BaseApplication : Application() {
     }
 
     private val repositoryKoinModule = module {
-
+        factory<TravelingRepository> { TravelingRepositoryImpl(get()) }
     }
 
     private val viewModelKoinModule = module {

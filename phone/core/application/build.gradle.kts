@@ -52,6 +52,7 @@ dependencies {
     implementation(project(":phone:core:datastore"))
     implementation(project(":phone:features:onboarding"))
     implementation(project(":phone:features:traveling"))
+    implementation(project(":phone:repository:implementations"))
     implementation(libs.bundles.composeKit)
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)

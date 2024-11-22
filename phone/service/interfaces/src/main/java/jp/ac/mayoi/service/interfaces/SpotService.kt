@@ -18,8 +18,8 @@ interface SpotService {
 
     @GET("spots/by_cood")
     suspend fun getSpotByLatLng(
-        @Query("lat") lat: Float,
-        @Query("lng") lng: Float,
+        @Query("lat") lat: Double,
+        @Query("lng") lng: Double,
     ): List<RemoteSpot>
 
     @GET("spots/by_user/{user_id}")
