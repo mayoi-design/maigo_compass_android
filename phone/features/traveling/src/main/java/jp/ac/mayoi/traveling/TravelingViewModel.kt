@@ -31,7 +31,7 @@ class TravelingViewModel(
         // todo: repositoryから取得できる現在地のlat, lngをつかって、spotListStateを更新する
         val currentLat = currentLocation.latitude
         val currentLng = currentLocation.longitude
-        spotListState = LoadState.Loading(null)
+        spotListState = LoadState.Loading(spotListState.value)
         viewModelScope.launch {
             try {
                 val spots =
@@ -39,7 +39,7 @@ class TravelingViewModel(
                 spotListState = LoadState.Success(spots.toImmutableList())
             } catch (exception: Exception) {
                 Log.e("getNearSpot", "${exception.message}")
-                spotListState = LoadState.Error(null, exception)
+                spotListState = LoadState.Error(spotListState.value, exception)
             }
         }
     }
