@@ -9,9 +9,10 @@ class LocationRepositoryImplTest {
     // 1. 現在地と目的地と向いている方位角を決める
     // 2. 方位角を方位系から数学系に直す
     // 3. (x, y) = (1, 0)を回転行列を用いて2で求めた数学系の角度だけ回す
-    // 3.1. 新しい点の位置を ax, ay とする
+    //   3.1. 新しい点の位置を ax, ay とする
     // 4. 目的地に向かうベクトルを計算し、その座標をbx, byとする
     // 5. θ = acos((ax*bx + ay*by) / (sqrt(ax**2 + ay**2)*sqrt(bx**2 + by**2))) を計算する
+    //   5.1 偏角のうち小さい方がθになるので、適宜外角に直したりする
 
     @Test
     fun `365から函館駅へ`() {
@@ -77,7 +78,7 @@ class LocationRepositoryImplTest {
         // 昭和ターミナル方面を向く (数学系では120°)
         val currentHeading = 330.0
 
-        // 亀田支所前から昭和ターミナル方面を向いた時、函館空港はほぼ真後ろにあるはず
+        // 亀田支所前から昭和ターミナル方面を向いた時、函館空港は南南東か南東にあるはず
         val expected = 360.0 - 151.6443253181512
         val actual = LocationRepositoryImpl()
             .getBearing(
