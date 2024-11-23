@@ -39,10 +39,8 @@ class LocationRepositoryImpl : LocationRepository {
         val convertedLatitude = destinationLat - currentLat
         val convertedLongitude = destinationLng - currentLng
         val thetaInRad = atan2(convertedLatitude, convertedLongitude)
-        // Log.d("getHeddingTo", "phiInRad: $thetaInRad")
         val theta = Math.toDegrees(thetaInRad).mod(360.0)
-        // Log.d("getHeddingTo", "headTo: $theta")
 
-        return (theta - currentHeading).mod(360.0)
+        return (theta - 90.0 + currentHeading).mod(360.0)
     }
 }
