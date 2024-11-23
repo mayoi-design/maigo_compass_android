@@ -1,6 +1,7 @@
 package jp.ac.mayoi.wear.repository.implementations
 
 import android.location.Location
+import android.util.Log
 import jp.ac.mayoi.wear.repository.interfaces.LocationRepository
 import kotlin.math.atan2
 
@@ -10,9 +11,33 @@ class LocationRepositoryImpl : LocationRepository {
         destination: Location,
         currentHeading: Double,
     ): Double {
-        val convertedLatitude = destination.latitude - current.latitude
-        val convertedLongitude = destination.longitude - current.longitude
-        // Log.d("getHeaddingTo", "converted: ($convertedLatitude, $convertedLongitude)")
+        val bearing = getBearing(
+            currentLat = current.latitude,
+            currentLng = current.longitude,
+            destinationLat = destination.latitude,
+            destinationLng = destination.longitude,
+            currentHeading = currentHeading,
+        )
+
+        Log.d(
+            "LocationRepository",
+            "CurrentLocation: (lat = ${current.latitude}, lng = ${current.longitude}), " +
+                    "Destination: (lat = ${destination.latitude}, lng = ${current.longitude}), " +
+                    "HeadingTo: $currentHeading, Bearing: $bearing"
+        )
+
+        return bearing
+    }
+
+    internal fun getBearing(
+        currentLat: Double,
+        currentLng: Double,
+        destinationLat: Double,
+        destinationLng: Double,
+        currentHeading: Double,
+    ): Double {
+        val convertedLatitude = destinationLat - currentLat
+        val convertedLongitude = destinationLng - currentLng
         val thetaInRad = atan2(convertedLatitude, convertedLongitude)
         // Log.d("getHeddingTo", "phiInRad: $thetaInRad")
         val theta = Math.toDegrees(thetaInRad).mod(360.0)
