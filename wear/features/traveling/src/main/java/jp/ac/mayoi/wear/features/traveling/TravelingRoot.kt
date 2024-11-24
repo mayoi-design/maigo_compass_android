@@ -36,7 +36,9 @@ import jp.ac.mayoi.wear.core.resource.textStyleBody
 
 @Composable
 fun TravelingRoot(
-    viewModel: TravelingViewModel
+    viewModel: TravelingViewModel,
+    onRedTriangleClick: () -> Unit,
+    onBlueTriangleClick: () -> Unit
 ) {
     val context = LocalContext.current
     var permitted by remember { mutableStateOf(checkTravelingPermission(context)) }
@@ -56,7 +58,10 @@ fun TravelingRoot(
         // todo: あとでrykaの作ってる画面が入る
         TravelingScreen(
             isHeadingDestination = true,
-            travelingViewModel = viewModel
+            travelingViewModel = viewModel,
+            onRedTriangleClick = onRedTriangleClick,
+            onBlueTriangleClick = onBlueTriangleClick
+
         )
 //        Column(
 //            horizontalAlignment = Alignment.CenterHorizontally,

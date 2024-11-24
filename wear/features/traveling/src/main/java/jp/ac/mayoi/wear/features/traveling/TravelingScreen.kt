@@ -9,8 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -34,21 +33,27 @@ import jp.ac.mayoi.wear.core.resource.colorDarkRedTriangle
 import jp.ac.mayoi.wear.core.resource.colorRedTriangle
 import jp.ac.mayoi.wear.core.resource.fontSizeTitle
 import jp.ac.mayoi.wear.core.resource.spacingTriple
+import jp.ac.mayoi.wear.model.RecommendSpot
 
 // 目的地に向かっている際のUI実装
 @Composable
 fun TravelingScreen(
     isHeadingDestination: Boolean,
-    travelingViewModel: TravelingViewModel
+    travelingViewModel: TravelingViewModel,
+    onRedTriangleClick: () -> Unit,
+    onBlueTriangleClick: () -> Unit
 ) {
+    LaunchedEffect(Unit) {
+        travelingViewModel.updateLocation()
+    }
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
     ) {
         CommonTravelingScreen(
-            onRedTriangleClick = {/**/ },
-            onBlueTriangleClick = {/**/ },
+            onRedTriangleClick = onRedTriangleClick,
+            onBlueTriangleClick = onBlueTriangleClick,
             isDarkTriangleView = !isHeadingDestination,
             travelingViewModel = travelingViewModel
         )
@@ -75,17 +80,18 @@ fun CommonTravelingScreen(
     isDarkTriangleView: Boolean,
     travelingViewModel: TravelingViewModel
 ) {
-    val items = remember { mutableStateListOf<Int>() }
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
     ) {
         // 青い三角形を無数に作成する場合
-        for (recommend in items) {
+        for (recommend in travelingViewModel.recommendSpot) {
             BlueTriangle(
-                onClick = { onBlueTriangleClick() },
-                isDarkBlueTriangleView = !isDarkTriangleView
+                onClick = onBlueTriangleClick,
+                isDarkBlueTriangleView = !isDarkTriangleView,
+                recommend = recommend
+                //viewModel = travelingViewModel
             )
         }
         RedTriangle(
@@ -244,20 +250,14 @@ fun RedTriangle(
         modifier = Modifier
             .fillMaxSize()
             .rotate(viewModel.destination.bearing.toFloat())
+        //  .clickable(onClick = onClick),
     ) {
-        val destination = viewModel.destination
-        val radius = 5f
-
         val path = Path().apply {
             // 三角形の頂点を設定
             moveTo(size.width / 2, 1f)
             lineTo(163f, 40f)
             lineTo(220f, 40f)
             close()
-//            moveTo(size.width / 2  + radius*(destination.bearing).toFloat()-100f, 1f  + radius*(destination.bearing).toFloat()-100f)
-//            lineTo(163f + radius*(destination.bearing).toFloat()-100f, 40f  + radius*(destination.bearing).toFloat()-100f)
-//            lineTo(220f  + radius*(destination.bearing).toFloat()-100f, 40f + radius*(destination.bearing).toFloat()-100f)
-//            close()
         }
         drawPath(
             path,
@@ -270,24 +270,32 @@ fun RedTriangle(
 @Composable
 fun BlueTriangle(
     onClick: () -> Unit,
-    isDarkBlueTriangleView: Boolean
+    isDarkBlueTriangleView: Boolean,
+    recommend: RecommendSpot
+    //viewModel: TravelingViewModel,
 ) {
-    Canvas(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        val path = Path().apply {
-            // 三角形の頂点を設定
-            moveTo(size.width - 2, size.height / 2)
-            lineTo(340f, 163f)
-            lineTo(340f, 220f)
-            close()
+    // viewModel.recommendSpot.map { recommend ->
+    Box {
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .rotate(recommend.bearing.toFloat())
+        ) {
+            val path = Path().apply {
+                // 三角形の頂点を設定
+                moveTo(size.width - 2, size.height / 2)
+                lineTo(340f, 163f)
+                lineTo(340f, 220f)
+                close()
+            }
+            drawPath(
+                path,
+                color = if (isDarkBlueTriangleView) colorDarkBlueTriangle else colorBlueTriangle
+            )
         }
-        drawPath(
-            path,
-            color = if (isDarkBlueTriangleView) colorDarkBlueTriangle else colorBlueTriangle
-        )
     }
-}
+    }
+//}
 
 // 目的地を指す際のPreview
 //@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)

@@ -17,7 +17,8 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun WearNavigation(
-    navController: NavHostController
+    navController: NavHostController,
+
 ) {
     NavHost(
         navController = navController,
@@ -40,10 +41,12 @@ fun WearNavigation(
 
                 parametersOf(destination)
             }
-
             TravelingRoot(
                 viewModel = travelingViewModel,
+                onBlueTriangleClick = {},
+                onRedTriangleClick = {}
             )
+
         }
         composable<WatchWaitNavigation> {
             WaitingSwipe(
