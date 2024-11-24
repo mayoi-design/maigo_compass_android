@@ -15,6 +15,7 @@ import android.os.Build
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -61,6 +62,15 @@ class TravelingViewModel(
             distance = currentLocation.distanceTo(_destination).toDouble(),
             bearing = locationRepository.getBearing(currentLocation, _destination, headingTo)
         )
+    var focusing by mutableStateOf(
+        RecommendSpot(
+            lat = _destination.latitude,
+            lng = _destination.longitude,
+            comment = "",
+            distance = 0.0, // クラッシュするので一旦これで置いてます
+            bearing = 0.0 // クラッシュするので一旦これで置いてます
+        )
+    )
 
 
     private val currentLocation = run {

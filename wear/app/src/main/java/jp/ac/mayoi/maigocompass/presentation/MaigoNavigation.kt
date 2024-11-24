@@ -43,8 +43,6 @@ fun WearNavigation(
             }
             TravelingRoot(
                 viewModel = travelingViewModel,
-                onBlueTriangleClick = {},
-                onRedTriangleClick = {}
             )
 
         }

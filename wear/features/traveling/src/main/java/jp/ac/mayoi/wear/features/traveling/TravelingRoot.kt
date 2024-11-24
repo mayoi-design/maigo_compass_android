@@ -37,8 +37,6 @@ import jp.ac.mayoi.wear.core.resource.textStyleBody
 @Composable
 fun TravelingRoot(
     viewModel: TravelingViewModel,
-    onRedTriangleClick: () -> Unit,
-    onBlueTriangleClick: () -> Unit
 ) {
     val context = LocalContext.current
     var permitted by remember { mutableStateOf(checkTravelingPermission(context)) }
@@ -59,18 +57,7 @@ fun TravelingRoot(
         TravelingScreen(
             isHeadingDestination = true,
             travelingViewModel = viewModel,
-            onRedTriangleClick = onRedTriangleClick,
-            onBlueTriangleClick = onBlueTriangleClick
-
         )
-//        Column(
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//            verticalArrangement = Arrangement.Center,
-//            modifier = Modifier.fillMaxSize()
-//        ) {
-//            Text(text = "Yay! Permitted!")
-//            Text(text = "Heading: ${viewModel.headingTo.toInt()}")
-        //}
     } else {
         PermissionLackingScreen(
             onPermitted = { permitted = true }
