@@ -42,6 +42,12 @@ class TravelingViewModel(
 ) : ViewModel() {
     var headingTo by mutableDoubleStateOf(0.0)
         private set
+    private val currentLocation = run {
+        Location(null).also {
+            it.latitude = 0.0
+            it.longitude = 0.0
+        }
+    }
     private var remoteRecommendSpot: List<RemoteSpotShrink> = listOf()
 
     // recommendSpotとdestinationの実装終わってるからどうにかしたい
@@ -62,23 +68,7 @@ class TravelingViewModel(
             distance = currentLocation.distanceTo(_destination).toDouble(),
             bearing = locationRepository.getBearing(currentLocation, _destination, headingTo)
         )
-    var focusing by mutableStateOf(
-        RecommendSpot(
-            lat = _destination.latitude,
-            lng = _destination.longitude,
-            comment = "",
-            distance = 0.0, // クラッシュするので一旦これで置いてます
-            bearing = 0.0 // クラッシュするので一旦これで置いてます
-        )
-    )
-
-
-    private val currentLocation = run {
-        Location(null).also {
-            it.latitude = 0.0
-            it.longitude = 0.0
-        }
-    }
+    var focusing: RecommendSpot by mutableStateOf(destination)
 
     private val rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
 
