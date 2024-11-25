@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.kotlinx.serialization.json)
     implementation(project(":wear:core:resource"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

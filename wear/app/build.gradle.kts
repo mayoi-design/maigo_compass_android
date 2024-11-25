@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.maigocompass"
+    namespace = "jp.ac.mayoi.maigocompass"
     compileSdk = 35
 
     defaultConfig {

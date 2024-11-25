@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import jp.ac.mayoi.wear.core.navigation.SettingsNavigation
 import jp.ac.mayoi.wear.core.navigation.TripNavigation
 import jp.ac.mayoi.wear.core.navigation.WatchWaitNavigation
+import jp.ac.mayoi.wear.features.traveling.MessageViewModel
 import jp.ac.mayoi.wear.features.traveling.TravelingRoot
 import jp.ac.mayoi.wear.features.traveling.TravelingViewModel
 import jp.ac.mayoi.wear.features.waiting.WaitingSwipe
@@ -17,7 +18,8 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun WearNavigation(
-    navController: NavHostController
+    navController: NavHostController,
+    messageViewModel: MessageViewModel
 ) {
     NavHost(
         navController = navController,

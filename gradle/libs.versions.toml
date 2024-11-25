@@ -34,6 +34,8 @@ googlemaps-compose = "6.2.1"
 datastore = "1.1.1"
 location-service = "21.3.0"
 viewmodelCompose = "2.8.7"
+guava = "33.3.1-android"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -80,8 +82,12 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 retrofit-converter-kotlinx = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 google-maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "googlemaps-compose" }
 androidx-preference-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+kotlinx-coroutine-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines"}
 kotlinx-coroutine-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutine-play-service = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutines"}
 location-service = { group = "com.google.android.gms", name = "play-services-location", version.ref = "location-service"}
+playservices-wearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable"}
+guava = { group = "com.google.guava", name = "guava" , version.ref = "guava"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

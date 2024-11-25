@@ -25,14 +25,15 @@ import jp.ac.mayoi.core.navigation.RankingNavigation
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.maigoNavigationBarItemColors
 import jp.ac.mayoi.core.resource.textStyleCaption
+import jp.ac.mayoi.traveling.ConnectionListener
 
 @Composable
 fun RootScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    connectionListener:ConnectionListener
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination?.hierarchy
-
     Scaffold(
         bottomBar = {
             NavigationBar {
@@ -115,6 +116,6 @@ fun RootScreen(
 @Composable
 private fun BottomNavigationPreview() {
     MaigoCompassTheme {
-        RootScreen(navController = rememberNavController())
+        RootScreen(navController = rememberNavController(), connectionListener = ConnectionListener())
     }
 }

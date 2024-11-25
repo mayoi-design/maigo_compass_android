@@ -44,4 +44,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.location.service)
+    implementation(libs.kotlinx.coroutine.core)
+    implementation(libs.kotlinx.coroutine.android)
+    implementation(libs.kotlinx.coroutine.play.service)
 }

@@ -6,14 +6,29 @@
 
 package jp.ac.mayoi.maigocompass.presentation
 
+import android.app.Application
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.wearable.CapabilityClient
+import com.google.android.gms.wearable.CapabilityInfo
+import com.google.android.gms.wearable.DataClient
+import com.google.android.gms.wearable.DataEventBuffer
+import com.google.android.gms.wearable.MessageClient
+import com.google.android.gms.wearable.MessageEvent
+import com.google.android.gms.wearable.Wearable
+import jp.ac.mayoi.wear.features.traveling.MessageViewModel
 import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
+
+    private val messageClient by lazy { Wearable.getMessageClient(this) }
+    private val messageViewModel by viewModels<MessageViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -23,9 +38,20 @@ class MainActivity : ComponentActivity() {
         setContent {
             KoinContext {
                 WearNavigation(
-                    navController = rememberNavController()
+                    navController = rememberNavController(),
+                    messageViewModel = messageViewModel
                 )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        messageClient.addListener(messageViewModel)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        messageClient.removeListener(messageViewModel)
     }
 }
