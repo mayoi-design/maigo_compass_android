@@ -34,19 +34,15 @@ import jp.ac.mayoi.wear.core.resource.colorRedTriangle
 import jp.ac.mayoi.wear.core.resource.fontSizeTitle
 import jp.ac.mayoi.wear.core.resource.spacingTriple
 import jp.ac.mayoi.wear.model.RecommendSpot
+import kotlinx.collections.immutable.ImmutableList
 
 // 目的地に向かっている際のUI実装
 @Composable
 fun TravelingScreen(
     isHeadingDestination: Boolean,
     travelingViewModel: TravelingViewModel,
-    onRedTriangleClick: () -> Unit = {
-        travelingViewModel.focusing = travelingViewModel.destination
-    },
-    onBlueTriangleClick: (RecommendSpot) -> Unit = {
-        travelingViewModel.focusing = it
-    }
-
+    onRedTriangleClick: () -> Unit,
+    onBlueTriangleClick: (RecommendSpot) -> Unit
 ) {
     LaunchedEffect(travelingViewModel) {
         travelingViewModel.updateLocation()
@@ -58,15 +54,14 @@ fun TravelingScreen(
     ) {
         CommonTravelingScreen(
             isDarkTriangleView = !isHeadingDestination,
-            travelingViewModel = travelingViewModel,
+            destination = travelingViewModel.destination,
+            recommendSpot = travelingViewModel.recommendSpot,
             onRedTriangleClick = onRedTriangleClick,
             onBlueTriangleClick = onBlueTriangleClick
         )
         if (isHeadingDestination) {
             TextInCircle(
                 distanceText = "${Math.round(travelingViewModel.destination.distance / 100.0) / 10.0}",
-//                headingTo = travelingViewModel.headingTo,
-//                bearing = travelingViewModel.destination.bearing
             )
         } else {
             BestSpotTextInCircle(
@@ -81,9 +76,11 @@ fun TravelingScreen(
 @Composable
 fun CommonTravelingScreen(
     isDarkTriangleView: Boolean,
-    travelingViewModel: TravelingViewModel,
+    destination: RecommendSpot,
+    recommendSpot: ImmutableList<RecommendSpot>,
     onRedTriangleClick: () -> Unit,
     onBlueTriangleClick: (RecommendSpot) -> Unit
+
 
 ) {
     Box(
@@ -92,7 +89,7 @@ fun CommonTravelingScreen(
             .fillMaxSize()
     ) {
         // 青い三角形を無数に作成する場合
-        for (recommend in travelingViewModel.recommendSpot) {
+        for (recommend in recommendSpot) {
             BlueTriangle(
                 onClick = { onBlueTriangleClick(recommend) },
                 isDarkBlueTriangleView = !isDarkTriangleView,
@@ -102,14 +99,14 @@ fun CommonTravelingScreen(
         RedTriangle(
             onClick = onRedTriangleClick,
             isDarkRedTriangleView = isDarkTriangleView,
-            viewModel = travelingViewModel,
+            destination = destination
         )
     }
 }
 
 // TravelingScreenの大きい円の中のテキストの実装
 @Composable
-fun TextInCircle(distanceText: String /*headingTo: Double, bearing: Double*/) {
+fun TextInCircle(distanceText: String) {
     val paint = Paint().apply {
         strokeWidth = 2f
         isAntiAlias = true
@@ -132,18 +129,13 @@ fun TextInCircle(distanceText: String /*headingTo: Double, bearing: Double*/) {
         )
         DistanceText(
             distanceTexts = distanceText,
-//            headingTo = headingTo,
-//            bearing = bearing,
         )
     }
 }
 
 @Composable
-fun DistanceText(distanceTexts: String /*headingTo: Double, bearing: Double*/) {
+fun DistanceText(distanceTexts: String) {
     Column {
-//        Text(
-//            "headingTo = $headingTo\n bearing = $bearing"
-//        )
         Row(
             verticalAlignment = Alignment.Bottom
         ) {
@@ -248,12 +240,12 @@ fun BestSpotDistanceText(distanceTexts: String) {
 fun RedTriangle(
     onClick: () -> Unit,
     isDarkRedTriangleView: Boolean,
-    viewModel: TravelingViewModel
+    destination: RecommendSpot
 ) {
     Canvas(
         modifier = Modifier
             .fillMaxSize()
-            .rotate(viewModel.destination.bearing.toFloat())
+            .rotate(destination.bearing.toFloat())
     ) {
         val path = Path().apply {
             // 三角形の頂点を設定
@@ -297,24 +289,3 @@ fun BlueTriangle(
         }
     }
 }
-
-
-// //目的地を指す際のPreview
-//@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
-//@Composable
-//private fun TravelingScreenPreview() {
-//     TravelingScreen(
-//        isHeadingDestination = true,
-//        travelingViewModel = ,
-//    )
-//}
-//
-//// おすすめスポットを指す際のPreview
-//@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
-//@Composable
-//private fun TravelingScreenBestPreview() {
-//    TravelingScreen(
-//        isHeadingDestination = false,
-//        travelingViewModel =
-//    )
-//}

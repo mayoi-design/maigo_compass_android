@@ -32,11 +32,18 @@ import jp.ac.mayoi.wear.core.resource.MaigoButton
 import jp.ac.mayoi.wear.core.resource.spacingSingle
 import jp.ac.mayoi.wear.core.resource.spacingTriple
 import jp.ac.mayoi.wear.core.resource.textStyleBody
+import jp.ac.mayoi.wear.model.RecommendSpot
 
 
 @Composable
 fun TravelingRoot(
     viewModel: TravelingViewModel,
+    onRedTriangleClick: () -> Unit = {
+        viewModel.focusing = viewModel.destination
+    },
+    onBlueTriangleClick: (RecommendSpot) -> Unit = {
+        viewModel.focusing = viewModel.focusing
+    }
 ) {
     val context = LocalContext.current
     var permitted by remember { mutableStateOf(checkTravelingPermission(context)) }
@@ -57,6 +64,8 @@ fun TravelingRoot(
         TravelingScreen(
             isHeadingDestination = true,
             travelingViewModel = viewModel,
+            onRedTriangleClick = onRedTriangleClick,
+            onBlueTriangleClick = onBlueTriangleClick
         )
     } else {
         PermissionLackingScreen(
