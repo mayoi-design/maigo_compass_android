@@ -2,7 +2,6 @@ package jp.ac.mayoi.maigocompass.mock
 
 import jp.ac.mayoi.phone.model.LocalSpot
 import jp.ac.mayoi.phone.model.RemoteRankingArea
-import jp.ac.mayoi.phone.model.RemoteSpot
 import jp.ac.mayoi.repository.interfaces.RankingRepository
 import kotlinx.coroutines.delay
 
@@ -35,30 +34,30 @@ class DevelopmentRankingRepository : RankingRepository {
         }
 
         rankingGetCount += 1
-        val remoteSpots = when (idrem % 3) {
+        return when (idrem % 3) {
             0 -> {
                 List(15) {
-                    RemoteSpot(
+                    LocalSpot(
                         lat = 0.0f,
                         lng = 0.0f,
                         message = "ランキングスポット ${it + 1}",
                         imageUrl = "",
-                        createdAt = "2024-11-03T00:00:00+09:00",
-                        reachedCount = 10 * it,
                         spotId = "",
+                        reachedCount = 10 * it,
+                        createdAt = "2024-11-03T00:00:00+09:00",
                     )
                 }
             }
             1 -> {
                 List(3) {
-                    RemoteSpot(
+                    LocalSpot(
                         lat = 0.0f,
                         lng = 0.0f,
                         message = "ランキングスポット ${it + 1}",
                         imageUrl = "",
-                        createdAt = "2024-11-03T00:00:00+09:00",
-                        reachedCount = 10 * it,
                         spotId = "",
+                        reachedCount = 10 * it,
+                        createdAt = "2024-11-03T00:00:00+09:00",
                     )
                 }
             }
@@ -68,18 +67,6 @@ class DevelopmentRankingRepository : RankingRepository {
             else -> {
                 listOf() // Unreachable
             }
-        }
-
-        return remoteSpots.map { spot ->
-            LocalSpot(
-                lat = spot.lat,
-                lng = spot.lng,
-                message = spot.message,
-                imageUrl = spot.imageUrl,
-                spotId = spot.spotId,
-                reachedCount = spot.reachedCount,
-                createdAt = spot.createdAt,
-            )
         }
     }
 }
