@@ -8,4 +8,14 @@ data class LocalSpot(
     val spotId: String,
     val reachedCount: Int?,
     val createdAt: String?,
-)
+) {
+    constructor(remote: RemoteSpot) : this(
+        lat = remote.lat,
+        lng = remote.lng,
+        message = remote.message,
+        imageUrl = remote.imageUrl,
+        spotId = remote.spotId,
+        reachedCount = remote.reachedCount,
+        createdAt = remote.createdAt,
+    )
+}
