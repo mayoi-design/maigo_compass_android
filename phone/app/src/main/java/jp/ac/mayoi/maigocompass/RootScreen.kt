@@ -11,10 +11,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -32,23 +34,26 @@ fun RootScreen(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination?.hierarchy
+    val isShowBottomBar = remember(navController.currentDestination) {
+        listOf(
+            OnboardingNavigation::class,
+            RankingNavigation::class,
+            MemoryNavigation::class,
+        ).any { navController.currentDestination?.hasRoute(it) == true }
+    }
 
     Scaffold(
         bottomBar = {
-            if (currentDestination?.any {
-                    it.route == OnboardingNavigation::class.qualifiedName ||
-                            it.route == RankingNavigation::class.qualifiedName ||
-                            it.route == MemoryNavigation::class.qualifiedName
-                } == true) {
+            if (isShowBottomBar) {
                 NavigationBar {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
                         NavigationBarItem(
-                            selected = currentDestination.any {
+                            selected = currentDestination?.any {
                                 it.route == OnboardingNavigation::class.qualifiedName
-                            },
+                            } == true,
                             onClick = { navController.navigate(OnboardingNavigation) },
                             icon = {
                                 Icon(
@@ -66,9 +71,9 @@ fun RootScreen(
                             colors = maigoNavigationBarItemColors,
                         )
                         NavigationBarItem(
-                            selected = currentDestination.any {
+                            selected = currentDestination?.any {
                                 it.route == RankingNavigation::class.qualifiedName
-                            },
+                            } == true,
                             onClick = { navController.navigate(RankingNavigation) },
                             icon = {
                                 Icon(
@@ -86,9 +91,9 @@ fun RootScreen(
                             colors = maigoNavigationBarItemColors,
                         )
                         NavigationBarItem(
-                            selected = currentDestination.any {
+                            selected = currentDestination?.any {
                                 it.route == MemoryNavigation::class.qualifiedName
-                            },
+                            } == true,
                             onClick = { navController.navigate(MemoryNavigation) },
                             icon = {
                                 Icon(
