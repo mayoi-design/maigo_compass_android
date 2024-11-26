@@ -35,14 +35,13 @@ import jp.ac.mayoi.wear.core.resource.fontSizeTitle
 import jp.ac.mayoi.wear.core.resource.spacingTriple
 import jp.ac.mayoi.wear.model.RecommendSpot
 import kotlinx.collections.immutable.ImmutableList
+import kotlin.math.roundToInt
 
 // 目的地に向かっている際のUI実装
 @Composable
 fun TravelingScreen(
     isHeadingDestination: Boolean,
-    travelingViewModel: TravelingViewModel,
-    onRedTriangleClick: () -> Unit,
-    onBlueTriangleClick: (RecommendSpot) -> Unit
+    travelingViewModel: TravelingViewModel
 ) {
     LaunchedEffect(travelingViewModel) {
         travelingViewModel.updateLocation()
@@ -56,12 +55,18 @@ fun TravelingScreen(
             isDarkTriangleView = !isHeadingDestination,
             destination = travelingViewModel.destination,
             recommendSpot = travelingViewModel.recommendSpot,
-            onRedTriangleClick = onRedTriangleClick,
-            onBlueTriangleClick = onBlueTriangleClick
+            onRedTriangleClick = {
+                travelingViewModel.focusing = travelingViewModel.destination
+            },
+            onBlueTriangleClick = {
+                travelingViewModel.focusing = it
+            }
         )
         if (isHeadingDestination) {
+            val distanceInMeter = travelingViewModel.destination.distance
+            val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
             TextInCircle(
-                distanceText = "${Math.round(travelingViewModel.destination.distance / 100.0) / 10.0}",
+                distanceText = "$distanceInKilo"
             )
         } else {
             BestSpotTextInCircle(
@@ -80,8 +85,6 @@ fun CommonTravelingScreen(
     recommendSpot: ImmutableList<RecommendSpot>,
     onRedTriangleClick: () -> Unit,
     onBlueTriangleClick: (RecommendSpot) -> Unit
-
-
 ) {
     Box(
         contentAlignment = Alignment.Center,
