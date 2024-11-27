@@ -2,6 +2,9 @@ package jp.ac.mayoi.wear.core.application
 
 import android.app.Application
 import android.hardware.SensorManager
+import com.google.android.gms.wearable.CapabilityClient
+import com.google.android.gms.wearable.MessageClient
+import com.google.android.gms.wearable.Wearable
 import jp.ac.mayoi.wear.features.traveling.TravelingViewModel
 import jp.ac.mayoi.wear.repository.implementations.CompassRepositoryImpl
 import jp.ac.mayoi.wear.repository.implementations.LocationRepositoryImpl
@@ -43,6 +46,8 @@ abstract class BaseApplication : Application() {
         single {
             this@BaseApplication.getSystemService(SENSOR_SERVICE) as SensorManager
         }
+        single<MessageClient> { Wearable.getMessageClient(this@BaseApplication) }
+        single<CapabilityClient> { Wearable.getCapabilityClient(this@BaseApplication) }
     }
 
     private val repositoryKoinModule = module {

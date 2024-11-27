@@ -2,6 +2,9 @@ package jp.ac.mayoi.core.application
 
 import android.app.Application
 import android.util.Log
+import com.google.android.gms.wearable.CapabilityClient
+import com.google.android.gms.wearable.MessageClient
+import com.google.android.gms.wearable.Wearable
 import jp.ac.mayoi.core.datastore.UserInfoDataStoreWrapper
 import jp.ac.mayoi.onboarding.OnboardingViewModel
 import jp.ac.mayoi.repository.implementations.RankingRepositoryImpl
@@ -95,6 +98,8 @@ abstract class BaseApplication : Application() {
             // 多分これよくないんだろうなと思ってやってる
             userInfoDataStoreWrapper
         }
+        single<MessageClient> { Wearable.getMessageClient(this@BaseApplication) }
+        single<CapabilityClient> { Wearable.getCapabilityClient(this@BaseApplication) }
     }
 
     private val serviceKoinModule = module {
