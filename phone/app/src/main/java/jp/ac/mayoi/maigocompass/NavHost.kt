@@ -18,6 +18,7 @@ import jp.ac.mayoi.core.navigation.ShareNavigation
 import jp.ac.mayoi.core.navigation.TravelingNavigation
 import jp.ac.mayoi.onboarding.OnboardingScreen
 import jp.ac.mayoi.onboarding.OnboardingViewModel
+import jp.ac.mayoi.ranking.RankingScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -41,9 +42,9 @@ fun PhoneNavHost(
             )
         }
         composable<RankingNavigation> {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Text("RankingScreen")
-            }
+            RankingScreen(
+                viewModel = koinViewModel()
+            )
         }
         composable<MemoryNavigation> {
             Box(modifier = Modifier.fillMaxSize()) {
