@@ -57,6 +57,7 @@ dependencies {
     implementation(project(":phone:core:datastore"))
     implementation(project(":phone:repository:implementations"))
     implementation(project(":phone:features:onboarding"))
+    implementation(project(":phone:features:ranking"))
     implementation(project(":phone:features:traveling"))
 
     implementation(libs.bundles.composeKit)
