@@ -17,7 +17,7 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun WearNavigation(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     NavHost(
         navController = navController,
@@ -37,10 +37,8 @@ fun WearNavigation(
                         it.longitude = 140.7550099479477
                     }
                 }
-
                 parametersOf(destination)
             }
-
             TravelingRoot(
                 viewModel = travelingViewModel,
             )

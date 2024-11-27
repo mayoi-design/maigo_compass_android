@@ -3,16 +3,17 @@ package jp.ac.mayoi.wear.features.traveling
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -22,11 +23,9 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
-import androidx.wear.tooling.preview.devices.WearDevices
 import jp.ac.mayoi.wear.core.resource.colorBlueTriangle
 import jp.ac.mayoi.wear.core.resource.colorButtonTextPrimary
 import jp.ac.mayoi.wear.core.resource.colorDarkBlueTriangle
@@ -34,25 +33,40 @@ import jp.ac.mayoi.wear.core.resource.colorDarkRedTriangle
 import jp.ac.mayoi.wear.core.resource.colorRedTriangle
 import jp.ac.mayoi.wear.core.resource.fontSizeTitle
 import jp.ac.mayoi.wear.core.resource.spacingTriple
+import jp.ac.mayoi.wear.model.RecommendSpot
+import kotlinx.collections.immutable.ImmutableList
+import kotlin.math.roundToInt
 
 // 目的地に向かっている際のUI実装
 @Composable
 fun TravelingScreen(
-    isHeadingDestination: Boolean
+    isHeadingDestination: Boolean,
+    travelingViewModel: TravelingViewModel
 ) {
+    LaunchedEffect(travelingViewModel) {
+        travelingViewModel.updateLocation()
+    }
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
     ) {
         CommonTravelingScreen(
-            onRedTriangleClick = {/**/ },
-            onBlueTriangleClick = {/**/ },
-            isDarkTriangleView = !isHeadingDestination
+            isDarkTriangleView = !isHeadingDestination,
+            destination = travelingViewModel.destination,
+            recommendSpot = travelingViewModel.recommendSpot,
+            onRedTriangleClick = {
+                travelingViewModel.focusing = travelingViewModel.destination
+            },
+            onBlueTriangleClick = {
+                travelingViewModel.focusing = it
+            }
         )
         if (isHeadingDestination) {
+            val distanceInMeter = travelingViewModel.destination.distance
+            val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
             TextInCircle(
-                distanceText = "",
+                distanceText = "$distanceInKilo"
             )
         } else {
             BestSpotTextInCircle(
@@ -66,26 +80,29 @@ fun TravelingScreen(
 //旅行中画面の共通しているコードをまとめた
 @Composable
 fun CommonTravelingScreen(
-    onBlueTriangleClick: () -> Unit,
-    onRedTriangleClick: () -> Unit,
     isDarkTriangleView: Boolean,
+    destination: RecommendSpot,
+    recommendSpot: ImmutableList<RecommendSpot>,
+    onRedTriangleClick: () -> Unit,
+    onBlueTriangleClick: (RecommendSpot) -> Unit
 ) {
-    val items = remember { mutableStateListOf<Int>() }
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
     ) {
         // 青い三角形を無数に作成する場合
-        for (recommend in items) {
+        for (recommend in recommendSpot) {
             BlueTriangle(
-                onClick = { onBlueTriangleClick() },
-                isDarkBlueTriangleView = !isDarkTriangleView
+                onClick = { onBlueTriangleClick(recommend) },
+                isDarkBlueTriangleView = !isDarkTriangleView,
+                recommendSpot = recommend
             )
         }
         RedTriangle(
             onClick = onRedTriangleClick,
-            isDarkRedTriangleView = isDarkTriangleView
+            isDarkRedTriangleView = isDarkTriangleView,
+            destination = destination
         )
     }
 }
@@ -121,16 +138,18 @@ fun TextInCircle(distanceText: String) {
 
 @Composable
 fun DistanceText(distanceTexts: String) {
-    Row(
-        verticalAlignment = Alignment.Bottom
-    ) {
-        Text(
-            text = distanceTexts,
-            fontSize = 30.sp,
-        )
-        Text(
-            text = "km"
-        )
+    Column {
+        Row(
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                text = distanceTexts,
+                fontSize = 30.sp,
+            )
+            Text(
+                text = "km"
+            )
+        }
     }
 }
 
@@ -223,10 +242,13 @@ fun BestSpotDistanceText(distanceTexts: String) {
 @Composable
 fun RedTriangle(
     onClick: () -> Unit,
-    isDarkRedTriangleView: Boolean
+    isDarkRedTriangleView: Boolean,
+    destination: RecommendSpot
 ) {
     Canvas(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .rotate(destination.bearing.toFloat())
     ) {
         val path = Path().apply {
             // 三角形の頂点を設定
@@ -246,39 +268,27 @@ fun RedTriangle(
 @Composable
 fun BlueTriangle(
     onClick: () -> Unit,
-    isDarkBlueTriangleView: Boolean
+    isDarkBlueTriangleView: Boolean,
+    recommendSpot: RecommendSpot
 ) {
-    Canvas(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        val path = Path().apply {
-            // 三角形の頂点を設定
-            moveTo(size.width - 2, size.height / 2)
-            lineTo(340f, 163f)
-            lineTo(340f, 220f)
-            close()
+    Box {
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .rotate(recommendSpot.bearing.toFloat())
+
+        ) {
+            val path = Path().apply {
+                // 三角形の頂点を設定
+                moveTo(size.width - 2, size.height / 2)
+                lineTo(340f, 163f)
+                lineTo(340f, 220f)
+                close()
+            }
+            drawPath(
+                path,
+                color = if (isDarkBlueTriangleView) colorDarkBlueTriangle else colorBlueTriangle
+            )
         }
-        drawPath(
-            path,
-            color = if (isDarkBlueTriangleView) colorDarkBlueTriangle else colorBlueTriangle
-        )
     }
-}
-
-// 目的地を指す際のPreview
-@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
-@Composable
-private fun TravelingScreenPreview() {
-    TravelingScreen(
-        isHeadingDestination = true
-    )
-}
-
-// おすすめスポットを指す際のPreview
-@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
-@Composable
-private fun TravelingScreenBestPreview() {
-    TravelingScreen(
-        isHeadingDestination = false
-    )
 }

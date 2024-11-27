@@ -54,14 +54,10 @@ fun TravelingRoot(
 
     if (permitted) {
         // todo: あとでrykaの作ってる画面が入る
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Text(text = "Yay! Permitted!")
-            Text(text = "Heading: ${viewModel.headingTo.toInt()}")
-        }
+        TravelingScreen(
+            isHeadingDestination = true,
+            travelingViewModel = viewModel
+        )
     } else {
         PermissionLackingScreen(
             onPermitted = { permitted = true }

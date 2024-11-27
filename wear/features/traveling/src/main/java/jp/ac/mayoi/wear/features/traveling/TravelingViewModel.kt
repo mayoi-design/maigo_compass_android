@@ -15,6 +15,7 @@ import android.os.Build
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -41,6 +42,12 @@ class TravelingViewModel(
 ) : ViewModel() {
     var headingTo by mutableDoubleStateOf(0.0)
         private set
+    private val currentLocation = run {
+        Location(null).also {
+            it.latitude = 0.0
+            it.longitude = 0.0
+        }
+    }
     private var remoteRecommendSpot: List<RemoteSpotShrink> = listOf()
 
     // recommendSpotとdestinationの実装終わってるからどうにかしたい
@@ -61,14 +68,7 @@ class TravelingViewModel(
             distance = currentLocation.distanceTo(_destination).toDouble(),
             bearing = locationRepository.getBearing(currentLocation, _destination, headingTo)
         )
-
-
-    private val currentLocation = run {
-        Location(null).also {
-            it.latitude = 0.0
-            it.longitude = 0.0
-        }
-    }
+    var focusing: RecommendSpot by mutableStateOf(destination)
 
     private val rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
 
