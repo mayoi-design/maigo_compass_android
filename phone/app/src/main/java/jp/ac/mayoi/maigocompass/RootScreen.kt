@@ -11,10 +11,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -32,74 +34,83 @@ fun RootScreen(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination?.hierarchy
+    val isShowBottomBar = remember(navController.currentDestination) {
+        listOf(
+            OnboardingNavigation::class,
+            RankingNavigation::class,
+            MemoryNavigation::class,
+        ).any { navController.currentDestination?.hasRoute(it) == true }
+    }
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    NavigationBarItem(
-                        selected = currentDestination?.any {
-                            it.route == OnboardingNavigation::class.qualifiedName
-                        } == true,
-                        onClick = { navController.navigate(OnboardingNavigation) },
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.navbaritem_travel),
-                                contentDescription = null,
-                                modifier = Modifier.size(40.dp),
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = "旅をする",
-                                style = textStyleCaption,
-                            )
-                        },
-                        colors = maigoNavigationBarItemColors,
-                    )
-                    NavigationBarItem(
-                        selected = currentDestination?.any {
-                            it.route == RankingNavigation::class.qualifiedName
-                        } == true,
-                        onClick = { navController.navigate(RankingNavigation) },
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.navbaritem_ranking),
-                                contentDescription = null,
-                                modifier = Modifier.size(40.dp),
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = "ランキング",
-                                style = textStyleCaption,
-                            )
-                        },
-                        colors = maigoNavigationBarItemColors,
-                    )
-                    NavigationBarItem(
-                        selected = currentDestination?.any {
-                            it.route == MemoryNavigation::class.qualifiedName
-                        } == true,
-                        onClick = { navController.navigate(MemoryNavigation) },
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.navbaritem_memory),
-                                contentDescription = null,
-                                modifier = Modifier.size(40.dp),
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = "おもいで",
-                                style = textStyleCaption,
-                            )
-                        },
-                        colors = maigoNavigationBarItemColors,
-                    )
+            if (isShowBottomBar) {
+                NavigationBar {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
+                        NavigationBarItem(
+                            selected = currentDestination?.any {
+                                it.route == OnboardingNavigation::class.qualifiedName
+                            } == true,
+                            onClick = { navController.navigate(OnboardingNavigation) },
+                            icon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.navbaritem_travel),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(40.dp),
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = "旅をする",
+                                    style = textStyleCaption,
+                                )
+                            },
+                            colors = maigoNavigationBarItemColors,
+                        )
+                        NavigationBarItem(
+                            selected = currentDestination?.any {
+                                it.route == RankingNavigation::class.qualifiedName
+                            } == true,
+                            onClick = { navController.navigate(RankingNavigation) },
+                            icon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.navbaritem_ranking),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(40.dp),
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = "ランキング",
+                                    style = textStyleCaption,
+                                )
+                            },
+                            colors = maigoNavigationBarItemColors,
+                        )
+                        NavigationBarItem(
+                            selected = currentDestination?.any {
+                                it.route == MemoryNavigation::class.qualifiedName
+                            } == true,
+                            onClick = { navController.navigate(MemoryNavigation) },
+                            icon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.navbaritem_memory),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(40.dp),
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = "おもいで",
+                                    style = textStyleCaption,
+                                )
+                            },
+                            colors = maigoNavigationBarItemColors,
+                        )
+                    }
                 }
             }
         }
