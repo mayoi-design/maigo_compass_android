@@ -1,6 +1,5 @@
 package jp.ac.mayoi.core.application
 
-import android.app.Activity
 import android.app.Application
 import android.util.Log
 import com.google.android.gms.wearable.CapabilityClient
