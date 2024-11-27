@@ -30,6 +30,7 @@ import jp.ac.mayoi.core.resource.colorAccentSecondary
 import jp.ac.mayoi.core.resource.colorTextCaption
 import jp.ac.mayoi.core.resource.spacingDouble
 import jp.ac.mayoi.core.resource.spacingSingle
+import jp.ac.mayoi.core.resource.textStyleBody
 import jp.ac.mayoi.core.resource.textStyleTitle
 import jp.ac.mayoi.core.util.LoadState
 import jp.ac.mayoi.core.util.SpotCard
@@ -83,50 +84,62 @@ internal fun RankingSuccessScreen(
                 }
             }
             is LoadState.Success -> {
-                LazyColumn(
-                    contentPadding = PaddingValues(vertical = spacingSingle),
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    itemsIndexed(rankingState.value) { rawIndex, spot ->
-                        val index = rawIndex + 1
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .padding(
-                                    horizontal = spacingDouble,
-                                    vertical = spacingSingle
-                                ),
-                        ) {
-                            Text(
-                                text = "$index.",
-                                style = textStyleTitle.copy(
-                                    fontSize = 24.sp,
-                                    shadow = Shadow(
-                                        color = Color(0x33000000),
-                                        offset = Offset(1f, 1f),
-                                        blurRadius = 8f,
-                                    )
-                                ),
-                                color = when (index) {
-                                    1 -> colorAccent
-                                    2, 3 -> colorAccentSecondary
-                                    else -> colorTextCaption
-                                },
-                                modifier = Modifier.width(40.dp)
-                            )
-                            Spacer(modifier = Modifier.width(spacingSingle))
-                            SpotCard(
-                                spot = spot,
-                                onCardClicked = {},
-                                isClickEnabled = false,
+                if (rankingState.value.isEmpty()) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Text(
+                            text = "まだスポットがないようです",
+                            style = textStyleBody,
+                        )
+                    }
+                } else {
+                    LazyColumn(
+                        contentPadding = PaddingValues(vertical = spacingSingle),
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        itemsIndexed(rankingState.value) { rawIndex, spot ->
+                            val index = rawIndex + 1
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .shadow(
-                                        elevation = 4.dp,
-                                        shape = RoundedCornerShape(16.dp)
-                                    )
-                            )
+                                    .padding(
+                                        horizontal = spacingDouble,
+                                        vertical = spacingSingle
+                                    ),
+                            ) {
+                                Text(
+                                    text = "$index.",
+                                    style = textStyleTitle.copy(
+                                        fontSize = 24.sp,
+                                        shadow = Shadow(
+                                            color = Color(0x33000000),
+                                            offset = Offset(1f, 1f),
+                                            blurRadius = 8f,
+                                        )
+                                    ),
+                                    color = when (index) {
+                                        1    -> colorAccent
+                                        2, 3 -> colorAccentSecondary
+                                        else -> colorTextCaption
+                                    },
+                                    modifier = Modifier.width(40.dp)
+                                )
+                                Spacer(modifier = Modifier.width(spacingSingle))
+                                SpotCard(
+                                    spot = spot,
+                                    onCardClicked = {},
+                                    isClickEnabled = false,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .shadow(
+                                            elevation = 4.dp,
+                                            shape = RoundedCornerShape(16.dp)
+                                        )
+                                )
+                            }
                         }
                     }
                 }
