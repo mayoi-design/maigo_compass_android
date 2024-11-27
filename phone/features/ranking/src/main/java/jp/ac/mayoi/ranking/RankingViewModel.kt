@@ -1,6 +1,9 @@
 package jp.ac.mayoi.ranking
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import jp.ac.mayoi.core.util.LoadState
@@ -22,6 +25,7 @@ class RankingViewModel(
         LoadState.Loading(null)
     )
         private set
+    var selectingArea: RemoteRankingArea? by mutableStateOf(null)
 
     fun loadRankingArea() {
         viewModelScope.launch {
