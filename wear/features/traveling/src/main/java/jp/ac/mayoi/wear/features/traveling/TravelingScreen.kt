@@ -31,7 +31,6 @@ import jp.ac.mayoi.wear.core.resource.colorButtonTextPrimary
 import jp.ac.mayoi.wear.core.resource.colorDarkBlueTriangle
 import jp.ac.mayoi.wear.core.resource.colorDarkRedTriangle
 import jp.ac.mayoi.wear.core.resource.colorRedTriangle
-import jp.ac.mayoi.wear.core.resource.fontSizeTitle
 import jp.ac.mayoi.wear.core.resource.spacingTriple
 import jp.ac.mayoi.wear.model.RecommendSpot
 import kotlinx.collections.immutable.ImmutableList
@@ -62,15 +61,18 @@ fun TravelingScreen(
                 travelingViewModel.focusing = it
             }
         )
-        val distanceInMeter = travelingViewModel.destination.distance
-        val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
+
         if (isHeadingDestination) {
+            val distanceInMeter = travelingViewModel.destination.distance
+            val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
             TextInCircle(
                 distanceText = "$distanceInKilo"
             )
         } else {
+            val distanceInKilo =
+                (travelingViewModel.focusing.distance / 100.0).roundToInt() / 10.0
             BestSpotTextInCircle(
-                text = travelingViewModel.destination.comment,
+                text = travelingViewModel.focusing.comment,
                 distanceText = "$distanceInKilo",
             )
         }
@@ -158,21 +160,25 @@ fun SmallTextCircle(
     text: String,
     circleColor: Color = colorButtonTextPrimary,
 ) {
-    Text(
-        text = text,
-        style = TextStyle(fontSize = 6.sp),
-        modifier = Modifier
-            .drawBehind {
-                drawRoundRect(
-                    color = circleColor,
-                    cornerRadius = CornerRadius(32f),
-                    size = Size(size.width + 10, size.height / 10),
-                    style = Stroke(width = 2f),
-                    topLeft = Offset(0f, 0f)
-                )
-            }
-            .padding(bottom = 90.dp, start = 4.dp)
-    )
+    Box(
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            style = TextStyle(fontSize = 6.sp),
+            modifier = Modifier
+                .drawBehind {
+                    drawRoundRect(
+                        color = circleColor,
+                        cornerRadius = CornerRadius(32f),
+                        size = Size(size.width + 10, size.height / 10),
+                        style = Stroke(width = 2f),
+                        topLeft = Offset(-4f, 0f)
+                    )
+                }
+                .padding(bottom = 90.dp)
+        )
+    }
 }
 
 // BestSpotScreenの大きい円の中のテキストの実装
@@ -210,7 +216,7 @@ fun BestSpotTextInCircle(
         )
         Text(
             text = text,
-            fontSize = 10.sp,
+            fontSize = 12.sp,
             modifier = Modifier
                 .padding(top = 35.dp)
         )
@@ -229,14 +235,16 @@ fun BestSpotDistanceText(distanceTexts: String) {
     ) {
         Text(
             text = distanceTexts,
-            fontSize = fontSizeTitle,
+            fontSize = 25.sp,
         )
         Text(
             text = "km",
             fontSize = 10.sp,
+            modifier = Modifier.padding(bottom = 2.dp, start = 6.dp)
         )
     }
 }
+
 
 // 目的地の方角を指す赤い三角形の実装
 @Composable
