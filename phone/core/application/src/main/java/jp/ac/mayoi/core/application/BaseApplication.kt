@@ -18,7 +18,6 @@ import jp.ac.mayoi.service.interfaces.SpotService
 import jp.ac.mayoi.traveling.TravelingViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
@@ -92,7 +91,7 @@ abstract class BaseApplication : Application() {
             val okHttpClient = OkHttpClient().newBuilder()
                 .addInterceptor(
                     Interceptor { chain ->
-                        val userId = runBlocking { userInfoDataStoreWrapper.getUserId().last() }
+                        val userId = runBlocking { userInfoDataStoreWrapper.getUserId().first() }
                         val apiKey = BuildConfig.MAIGO_COMPASS_API_KEY
                         val request: Request = chain.request()
                             .newBuilder()
