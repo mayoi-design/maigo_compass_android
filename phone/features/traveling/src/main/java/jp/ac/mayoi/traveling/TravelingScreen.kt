@@ -29,6 +29,7 @@ fun ParentScreen(
         }
     }
     TravelingScreen(
+        previousState = viewModel.getPreviousState(),
         spotListState = viewModel.spotListState,
         onRetryButtonClick = onRetryButtonClick,
         onTripCancelButtonClick = onTripCancelButtonClick,
@@ -37,9 +38,11 @@ fun ParentScreen(
 
 @Composable
 internal fun TravelingScreen(
+    //viewModel: TravelingViewModel,
+    previousState: LoadState<ImmutableList<LocalSpot>>,
     spotListState: LoadState<ImmutableList<LocalSpot>>,
     onRetryButtonClick: () -> Unit,
-    onTripCancelButtonClick: () -> Unit
+    onTripCancelButtonClick: () -> Unit,
 ) {
     when (spotListState) {
         is LoadState.Error -> {
@@ -49,13 +52,21 @@ internal fun TravelingScreen(
             )
         }
         is LoadState.Loading -> {
-            if (spotListState.value.isNullOrEmpty()) {
-                TravelingLoadScreen(
-                    onTripCancelButtonClick = onTripCancelButtonClick,
-                )
+            if (previousState is LoadState.Success) {
+                val spotList = spotListState.value
+                if (spotList != null) {
+                    TravelingSpotScreen(
+                        spotList = spotList,
+                        onTripCancelButtonClick = onTripCancelButtonClick,
+                    )
+
+                } else {
+                    TravelingLoadScreen(
+                        onTripCancelButtonClick = onTripCancelButtonClick,
+                    )
+                }
             } else {
-                TravelingSpotScreen(
-                    spotList = spotListState.value!!,
+                TravelingLoadScreen(
                     onTripCancelButtonClick = onTripCancelButtonClick,
                 )
             }
@@ -83,6 +94,7 @@ private fun TravelingScreenPreview() {
         LoadState.Error(null, Throwable("Error occurred"))
     MaigoCompassTheme {
         TravelingScreen(
+            previousState = errorState,
             spotListState = errorState,
             onRetryButtonClick = { },
             onTripCancelButtonClick = { },
@@ -98,6 +110,7 @@ private fun TravelingScreenLoadingPreview() {
         LoadState.Loading(null)
     MaigoCompassTheme {
         TravelingScreen(
+            previousState = loadingState,
             spotListState = loadingState,
             onRetryButtonClick = { },
             onTripCancelButtonClick = { },
@@ -114,6 +127,7 @@ private fun TravelingScreenEmptySpotsPreview() {
     )
     MaigoCompassTheme {
         TravelingScreen(
+            previousState = emptySpotsState,
             spotListState = emptySpotsState,
             onRetryButtonClick = {},
             onTripCancelButtonClick = {}

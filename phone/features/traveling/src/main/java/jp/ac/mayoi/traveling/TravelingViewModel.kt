@@ -22,6 +22,8 @@ class TravelingViewModel(
     )
         private set
 
+    private var previousState: LoadState<ImmutableList<LocalSpot>> =
+        LoadState.Loading(null)
     private var currentLocation: Location = Location(null).also {
         it.latitude = 0.0
         it.longitude = 0.0
@@ -31,6 +33,8 @@ class TravelingViewModel(
         // todo: repositoryから取得できる現在地のlat, lngをつかって、spotListStateを更新する
         val currentLat = currentLocation.latitude
         val currentLng = currentLocation.longitude
+        val previous = spotListState
+        previousState = previous
         spotListState = LoadState.Loading(spotListState.value)
         viewModelScope.launch {
             try {
@@ -42,5 +46,9 @@ class TravelingViewModel(
                 spotListState = LoadState.Error(spotListState.value, exception)
             }
         }
+    }
+
+    fun getPreviousState(): LoadState<ImmutableList<LocalSpot>> {
+        return previousState
     }
 }
