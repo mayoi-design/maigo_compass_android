@@ -24,4 +24,6 @@ data class RemoteSpot(
 
     @JsonNames("spot_id") @SerialName("spot_id")
     val spotId: String,
+
+    val emoji: String,
 )
