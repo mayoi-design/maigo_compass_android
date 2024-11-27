@@ -2,16 +2,17 @@ package jp.ac.mayoi.ranking
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -48,15 +49,19 @@ internal fun RankingSuccessScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Spacer(modifier = Modifier.height(spacingDouble))
-
-        AreaSelectButtons(
-            areas = areas,
-            currentSelection = currentSelection,
-            onAreaSelectButtonClick = onAreaSelected,
-        )
-
-        Spacer(modifier = Modifier.height(spacingDouble))
+        Surface(
+            modifier = Modifier.shadow(elevation = 4.dp)
+        ) {
+            Box(
+                modifier = Modifier.padding(vertical = spacingDouble)
+            ) {
+                AreaSelectButtons(
+                    areas = areas,
+                    currentSelection = currentSelection,
+                    onAreaSelectButtonClick = onAreaSelected,
+                )
+            }
+        }
 
         when (rankingState) {
             is LoadState.Loading -> {
@@ -79,6 +84,7 @@ internal fun RankingSuccessScreen(
             }
             is LoadState.Success -> {
                 LazyColumn(
+                    contentPadding = PaddingValues(vertical = spacingSingle),
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
@@ -87,7 +93,10 @@ internal fun RankingSuccessScreen(
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
-                                .padding(horizontal = spacingDouble, vertical = spacingSingle),
+                                .padding(
+                                    horizontal = spacingDouble,
+                                    vertical = spacingSingle
+                                ),
                         ) {
                             Text(
                                 text = "$index.",
@@ -104,6 +113,7 @@ internal fun RankingSuccessScreen(
                                     2, 3 -> colorAccentSecondary
                                     else -> colorTextCaption
                                 },
+                                modifier = Modifier.width(40.dp)
                             )
                             Spacer(modifier = Modifier.width(spacingSingle))
                             SpotCard(
