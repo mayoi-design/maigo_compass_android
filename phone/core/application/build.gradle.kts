@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.okhttp3)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.kotlinx)
+    implementation(libs.play.services.wearable)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
