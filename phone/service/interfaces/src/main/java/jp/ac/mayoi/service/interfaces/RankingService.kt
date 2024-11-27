@@ -11,6 +11,6 @@ interface RankingService {
 
     @GET("spot/ranking")
     suspend fun getRanking(
-        @Path("area") areaId: Int,
+        @Path("area") areaId: String,
     ): List<RemoteSpot>
 }

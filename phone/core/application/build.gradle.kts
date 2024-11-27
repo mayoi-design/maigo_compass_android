@@ -50,9 +50,10 @@ dependencies {
     implementation(project(":phone:service:interfaces"))
     implementation(project(":phone:repository:interfaces"))
     implementation(project(":phone:core:datastore"))
+    implementation(project(":phone:repository:implementations"))
     implementation(project(":phone:features:onboarding"))
     implementation(project(":phone:features:traveling"))
-    implementation(project(":phone:repository:implementations"))
+
     implementation(libs.bundles.composeKit)
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
