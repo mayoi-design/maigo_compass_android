@@ -62,16 +62,16 @@ fun TravelingScreen(
                 travelingViewModel.focusing = it
             }
         )
+        val distanceInMeter = travelingViewModel.destination.distance
+        val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
         if (isHeadingDestination) {
-            val distanceInMeter = travelingViewModel.destination.distance
-            val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
             TextInCircle(
                 distanceText = "$distanceInKilo"
             )
         } else {
             BestSpotTextInCircle(
-                text = "きれいな海が見える！",
-                distanceText = "",
+                text = travelingViewModel.destination.comment,
+                distanceText = "$distanceInKilo",
             )
         }
     }
