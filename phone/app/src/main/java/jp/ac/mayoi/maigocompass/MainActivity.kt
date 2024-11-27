@@ -9,13 +9,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
+import org.koin.androidx.compose.KoinAndroidContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaigoCompassTheme {
-                RootScreen(navController = rememberNavController())
+            KoinAndroidContext {
+                MaigoCompassTheme {
+                    RootScreen(navController = rememberNavController())
+                }
             }
         }
     }

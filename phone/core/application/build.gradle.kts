@@ -18,6 +18,11 @@ android {
                 ?: project.extra["MAIGO_COMPASS_API_URL"] as String
         buildConfigField("String", "MAIGO_COMPASS_API_URL", "\"$apiUrl\"")
 
+        val apiKey: String =
+            System.getenv("MAIGO_COMPASS_API_KEY")
+                ?: project.extra["MAIGO_COMPASS_API_KEY"] as String
+        buildConfigField("String", "MAIGO_COMPASS_API_KEY", "\"$apiKey\"")
+
         val mapsApiKey: String =
             System.getenv("MAPS_API_KEY") ?: project.extra["MAPS_API_KEY"] as String
         resValue("string", "GOOGLE_MAPS_API_KEY", mapsApiKey)
@@ -58,6 +63,7 @@ dependencies {
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.okhttp3.interceptor)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.kotlinx.serialization.json)

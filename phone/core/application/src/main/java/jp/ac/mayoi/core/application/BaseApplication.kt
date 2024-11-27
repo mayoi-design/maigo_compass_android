@@ -8,8 +8,8 @@ import com.google.android.gms.wearable.Wearable
 import jp.ac.mayoi.core.datastore.UserInfoDataStoreWrapper
 import jp.ac.mayoi.onboarding.OnboardingViewModel
 import jp.ac.mayoi.repository.implementations.RankingRepositoryImpl
-import jp.ac.mayoi.repository.interfaces.RankingRepository
 import jp.ac.mayoi.repository.implementations.TravelingRepositoryImpl
+import jp.ac.mayoi.repository.interfaces.RankingRepository
 import jp.ac.mayoi.repository.interfaces.TravelingRepository
 import jp.ac.mayoi.service.interfaces.HealthService
 import jp.ac.mayoi.service.interfaces.ImageService
@@ -20,7 +20,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
@@ -84,7 +88,23 @@ abstract class BaseApplication : Application() {
 
     private val coreKoinModule = module {
         single {
-            // UAなどの設定も後からBuilderに追加する
+            val okHttpClient = OkHttpClient().newBuilder()
+                .addInterceptor(
+                    Interceptor { chain ->
+                        val userId = runBlocking { userInfoDataStoreWrapper.getUserId().first() }
+                        val apiKey = BuildConfig.MAIGO_COMPASS_API_KEY
+                        val request: Request = chain.request()
+                            .newBuilder()
+                            .header("x-userid", userId)
+                            .header("x-client-secret", apiKey)
+                            .build()
+                        chain.proceed(request)
+                    }
+                )
+                .addInterceptor(
+                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS)
+                )
+
             Retrofit.Builder()
                 .baseUrl(BuildConfig.MAIGO_COMPASS_API_URL)
                 .addConverterFactory(
@@ -92,6 +112,7 @@ abstract class BaseApplication : Application() {
                         "application/json".toMediaType()
                     )
                 )
+                .client(okHttpClient.build())
                 .build()
         }
         single {
