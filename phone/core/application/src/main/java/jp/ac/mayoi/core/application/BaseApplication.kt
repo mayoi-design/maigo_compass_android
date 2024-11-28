@@ -103,7 +103,7 @@ abstract class BaseApplication : Application() {
                     }
                 )
                 .addInterceptor(
-                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS)
+                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
                 )
 
             Retrofit.Builder()
