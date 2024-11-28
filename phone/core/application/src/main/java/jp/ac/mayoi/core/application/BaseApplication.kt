@@ -7,6 +7,7 @@ import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.Wearable
 import jp.ac.mayoi.core.datastore.UserInfoDataStoreWrapper
 import jp.ac.mayoi.onboarding.OnboardingViewModel
+import jp.ac.mayoi.ranking.RankingViewModel
 import jp.ac.mayoi.repository.implementations.RankingRepositoryImpl
 import jp.ac.mayoi.repository.implementations.TravelingRepositoryImpl
 import jp.ac.mayoi.repository.interfaces.RankingRepository
@@ -138,5 +139,6 @@ abstract class BaseApplication : Application() {
     private val viewModelKoinModule = module {
         viewModel { OnboardingViewModel() }
         viewModel { TravelingViewModel(get()) }
+        viewModel { RankingViewModel(get()) }
     }
 }
