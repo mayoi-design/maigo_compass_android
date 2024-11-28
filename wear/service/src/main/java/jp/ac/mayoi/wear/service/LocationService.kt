@@ -16,16 +16,11 @@ import com.google.android.gms.location.Priority
 import jp.ac.mayoi.common.resource.locationIntentAction
 import jp.ac.mayoi.common.resource.locationIntentLatitude
 import jp.ac.mayoi.common.resource.locationIntentLongitude
+import jp.ac.mayoi.common.resource.locationPolingInterval
 
 class LocationService : Service() {
 
     private lateinit var locationClient: FusedLocationProviderClient
-
-    private var locationRequest: LocationRequest =
-        LocationRequest.Builder(
-            Priority.PRIORITY_BALANCED_POWER_ACCURACY,
-            1000L
-        ).build()
 
     private val locationListener = LocationListener { p0 ->
         val currentLatitude = p0.latitude
@@ -37,7 +32,11 @@ class LocationService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? = null
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(
+        intent: Intent?,
+        flags: Int,
+        startId: Int
+    ): Int {
 
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION
@@ -46,7 +45,15 @@ class LocationService : Service() {
                 this, Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            locationClient = LocationServices.getFusedLocationProviderClient(this)
+            val polingInterval =
+                intent?.extras?.getLong(locationPolingInterval) ?: 1000L
+            val locationRequest = LocationRequest.Builder(
+                Priority.PRIORITY_BALANCED_POWER_ACCURACY,
+                polingInterval
+            ).build()
+
+            locationClient =
+                LocationServices.getFusedLocationProviderClient(this)
             locationClient.requestLocationUpdates(
                 locationRequest,
                 locationListener,
