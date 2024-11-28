@@ -83,6 +83,7 @@ dependencies {
     implementation(project(":phone:features:onboarding"))
     implementation(project(":phone:features:ranking"))
     implementation(project(":phone:core:navigation"))
+    implementation(project(":wear:service"))
     implementation(libs.kotlinx.coroutine.android)
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
