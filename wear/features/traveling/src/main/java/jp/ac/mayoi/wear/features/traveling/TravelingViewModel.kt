@@ -20,9 +20,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import jp.ac.mayoi.common.model.RemoteSpotShrink
-import jp.ac.mayoi.wear.core.resource.locationIntentAction
-import jp.ac.mayoi.wear.core.resource.locationIntentLatitude
-import jp.ac.mayoi.wear.core.resource.locationIntentLongitude
+import jp.ac.mayoi.common.resource.locationIntentAction
+import jp.ac.mayoi.common.resource.locationIntentLatitude
+import jp.ac.mayoi.common.resource.locationIntentLongitude
 import jp.ac.mayoi.wear.model.RecommendSpot
 import jp.ac.mayoi.wear.repository.interfaces.CompassRepository
 import jp.ac.mayoi.wear.repository.interfaces.LocationRepository

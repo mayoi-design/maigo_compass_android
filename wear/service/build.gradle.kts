@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":wear:core:resource"))
+    implementation(project(":common:resource"))
 
     implementation(libs.bundles.wearComposeKit)
     implementation(libs.androidx.core.ktx)

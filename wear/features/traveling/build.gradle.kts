@@ -42,6 +42,7 @@ dependencies {
     implementation(project(":wear:service"))
     implementation(project(":wear:model"))
     implementation(project(":wear:core:resource"))
+    implementation(project(":common:resource"))
 
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.wear.tooling.preview)
@@ -50,7 +51,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(project(":wear:core:resource"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -13,9 +13,9 @@ import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
-import jp.ac.mayoi.wear.core.resource.locationIntentAction
-import jp.ac.mayoi.wear.core.resource.locationIntentLatitude
-import jp.ac.mayoi.wear.core.resource.locationIntentLongitude
+import jp.ac.mayoi.common.resource.locationIntentAction
+import jp.ac.mayoi.common.resource.locationIntentLatitude
+import jp.ac.mayoi.common.resource.locationIntentLongitude
 
 class LocationService : Service() {
 
