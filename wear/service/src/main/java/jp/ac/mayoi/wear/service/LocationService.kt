@@ -21,6 +21,7 @@ import jp.ac.mayoi.common.resource.locationPolingInterval
 class LocationService : Service() {
 
     private lateinit var locationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
 
     private val locationListener = LocationListener { p0 ->
         val currentLatitude = p0.latitude
@@ -47,7 +48,7 @@ class LocationService : Service() {
         ) {
             val polingInterval =
                 intent?.extras?.getLong(locationPolingInterval) ?: 1000L
-            val locationRequest = LocationRequest.Builder(
+            locationRequest = LocationRequest.Builder(
                 Priority.PRIORITY_BALANCED_POWER_ACCURACY,
                 polingInterval
             ).build()
@@ -62,6 +63,11 @@ class LocationService : Service() {
         }
 
         return super.onStartCommand(intent, flags, startId)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        locationClient.removeLocationUpdates(locationListener)
     }
 
     private fun broadcastLocation(latitude: Double, longitude: Double) {
