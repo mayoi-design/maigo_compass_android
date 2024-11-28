@@ -81,6 +81,8 @@ retrofit-converter-kotlinx = { group = "com.squareup.retrofit2", name = "convert
 google-maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "googlemaps-compose" }
 androidx-preference-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 kotlinx-coroutine-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutine-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutine-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutines" }
 location-service = { group = "com.google.android.gms", name = "play-services-location", version.ref = "location-service"}
 
 [plugins]
