@@ -4,8 +4,8 @@
 
     <application
         android:name=".DevelopmentApplication"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round">
+        android:icon="@mipmap/icon_development"
+        android:roundIcon="@mipmap/icon_development_round">
 
     </application>
 

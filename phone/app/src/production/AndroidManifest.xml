@@ -4,9 +4,8 @@
 
     <application
         android:name=".ProductionApplication"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round">
-
+        android:icon="@mipmap/icon_production"
+        android:roundIcon="@mipmap/icon_production_round">
     </application>
 
 </manifest>
