@@ -1,10 +1,8 @@
 package jp.ac.mayoi.traveling
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.util.LoadState
@@ -12,28 +10,38 @@ import jp.ac.mayoi.phone.model.LocalSpot
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
-fun ParentScreen() {
-    var spotListState by remember {
-        mutableStateOf<LoadState<ImmutableList<LocalSpot>>>(
-            LoadState.Loading(null)
-        )
+fun ParentScreen(
+    viewModel: TravelingViewModel,
+    onRetryButtonClick: () -> Unit,
+    onTripCancelButtonClick: () -> Unit,
+) {
+    val coroutineScope = rememberCoroutineScope()
+    LaunchedEffect(Unit) {
+        coroutineScope.launch {
+            while (true) {
+                viewModel.getNearSpot()
+                delay(10000)
+            }
+        }
     }
     TravelingScreen(
-        spotListState = spotListState,
-        onRetryButtonClick = {
-            spotListState = LoadState.Loading(null)
-        },
-        onTripCancelButtonClick = { },
+        previousState = viewModel.previousState,
+        spotListState = viewModel.spotListState,
+        onRetryButtonClick = onRetryButtonClick,
+        onTripCancelButtonClick = onTripCancelButtonClick,
     )
 }
 
 @Composable
 internal fun TravelingScreen(
+    previousState: LoadState<ImmutableList<LocalSpot>>,
     spotListState: LoadState<ImmutableList<LocalSpot>>,
     onRetryButtonClick: () -> Unit,
-    onTripCancelButtonClick: () -> Unit
+    onTripCancelButtonClick: () -> Unit,
 ) {
     when (spotListState) {
         is LoadState.Error -> {
@@ -43,9 +51,23 @@ internal fun TravelingScreen(
             )
         }
         is LoadState.Loading -> {
-            TravelingLoadScreen(
-                onTripCancelButtonClick = onTripCancelButtonClick,
-            )
+            if (previousState is LoadState.Success) {
+                val spotList = spotListState.value
+                if (spotList != null) {
+                    TravelingSpotScreen(
+                        spotList = spotList,
+                        onTripCancelButtonClick = onTripCancelButtonClick,
+                    )
+                } else {
+                    TravelingLoadScreen(
+                        onTripCancelButtonClick = onTripCancelButtonClick,
+                    )
+                }
+            } else {
+                TravelingLoadScreen(
+                    onTripCancelButtonClick = onTripCancelButtonClick,
+                )
+            }
         }
         is LoadState.Success -> {
             if (spotListState.value.isEmpty()) {
@@ -70,6 +92,7 @@ private fun TravelingScreenPreview() {
         LoadState.Error(null, Throwable("Error occurred"))
     MaigoCompassTheme {
         TravelingScreen(
+            previousState = errorState,
             spotListState = errorState,
             onRetryButtonClick = { },
             onTripCancelButtonClick = { },
@@ -85,6 +108,7 @@ private fun TravelingScreenLoadingPreview() {
         LoadState.Loading(null)
     MaigoCompassTheme {
         TravelingScreen(
+            previousState = loadingState,
             spotListState = loadingState,
             onRetryButtonClick = { },
             onTripCancelButtonClick = { },
@@ -101,6 +125,7 @@ private fun TravelingScreenEmptySpotsPreview() {
     )
     MaigoCompassTheme {
         TravelingScreen(
+            previousState = emptySpotsState,
             spotListState = emptySpotsState,
             onRetryButtonClick = {},
             onTripCancelButtonClick = {}
