@@ -296,7 +296,8 @@ fun TriangleCore(
                 close()
             }
 
-            // DrawScopeはrotateの方向が時計回りなので、反時計回りに直す
+            // DrawScopeはrotateの方向が時計回りなので、
+            // 反時計回りの回転角から時計回りの回転角に直す
             val rotateInDrawScope = 360 - rotation
             rotate(
                 degrees = rotateInDrawScope,
