@@ -34,10 +34,14 @@ android {
     productFlavors {
         create("production") {
             dimension = "releasing"
+            manifestPlaceholders["appIcon"] = "@mipmap/icon_production"
+            manifestPlaceholders["roundIcon"] = "@mipmap/icon_production_round"
         }
         create("development") {
             applicationIdSuffix = ".development"
             dimension = "releasing"
+            manifestPlaceholders["appIcon"] = "@mipmap/icon_development"
+            manifestPlaceholders["roundIcon"] = "@mipmap/icon_development_round"
         }
     }
 

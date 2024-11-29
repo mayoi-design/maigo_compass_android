@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="jp.ac.mayoi.maigocompass">
 
     <application
         android:name=".ProductionApplication"
-        android:icon="@mipmap/icon_production"
-        android:roundIcon="@mipmap/icon_production_round">
+        tools:ignore="MissingApplicationIcon">
     </application>
 
 </manifest>
