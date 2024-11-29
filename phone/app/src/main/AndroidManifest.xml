@@ -26,6 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name="jp.ac.mayoi.wear.service.LocationService"
+            android:foregroundServiceType="location" />
     </application>
 
 </manifest>
