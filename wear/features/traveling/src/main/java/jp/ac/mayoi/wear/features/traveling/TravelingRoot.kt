@@ -55,7 +55,6 @@ fun TravelingRoot(
     if (permitted) {
         // todo: あとでrykaの作ってる画面が入る
         TravelingScreen(
-            isHeadingDestination = true,
             travelingViewModel = viewModel
         )
     } else {
