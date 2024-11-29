@@ -2,7 +2,7 @@ package jp.ac.mayoi.wear.features.traveling
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -71,11 +70,7 @@ fun TravelingScreen(
                 travelingViewModel.focusing = recommendSpot
             }
         )
-        val distanceInMeter = if (isHeadingDestination) {
-            travelingViewModel.destination.distance
-        } else {
-            travelingViewModel.focusing.distance
-        }
+        val distanceInMeter = travelingViewModel.focusing.distance
         val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
         if (isHeadingDestination) {
             TextInCircle(
@@ -256,7 +251,6 @@ fun BestSpotDistanceText(distanceTexts: String) {
     }
 }
 
-
 // 目的地の方角を指す赤い三角形の実装
 @Composable
 fun RedTriangle(
@@ -266,27 +260,15 @@ fun RedTriangle(
 ) {
     Canvas(
         modifier = Modifier
-            .fillMaxSize()
             .rotate(destination.bearing.toFloat())
-            .pointerInput(Unit) {
-                detectTapGestures { offset ->
-                    // 三角形の頂点を定義
-                    val triangleVertices = listOf(
-                        Offset((size.width / 2).toFloat(), 1f), // 上頂点
-                        Offset(163f, 40f),         // 左下頂点
-                        Offset(220f, 40f)          // 右下頂点
-                    )
-                    if (isPointInTriangle(offset, triangleVertices)) {
-                        onClick()
-                    }
-                }
-            }
+            .size(100.dp)
+            .clickable { onClick() }
     ) {
         val path = Path().apply {
             // 三角形の頂点を設定
-            moveTo(size.width / 2, 1f)
-            lineTo(163f, 40f)
-            lineTo(220f, 40f)
+            moveTo(size.width / 2, size.height + 85)
+            lineTo(size.width / 2 - 25, size.height + 50)
+            lineTo(size.width / 2 + 25, size.height + 50)
             close()
         }
         drawPath(
@@ -304,56 +286,22 @@ fun BlueTriangle(
     isDarkBlueTriangleView: Boolean,
     recommendSpot: RecommendSpot
 ) {
-        Canvas(
-            modifier = Modifier
-                .fillMaxSize()
-                .rotate(recommendSpot.bearing.toFloat())
-                .pointerInput(Unit) {
-                    detectTapGestures { offset ->
-                        val triangleVertices = listOf(
-                            Offset(
-                                (size.width - 2).toFloat(),
-                                (size.height / 2).toFloat()
-                            ), // 上頂点
-                            Offset(340f, 163f),         // 左下頂点
-                            Offset(340f, 220f)          // 右下頂点
-                        )
-                        if (isPointInTriangle(offset, triangleVertices)) {
-                            onClick()
-                        }
-                    }
-                }
-
-        ) {
-            val path = Path().apply {
-                // 三角形の頂点を設定
-                moveTo(size.width - 2, size.height / 2)
-                lineTo(340f, 163f)
-                lineTo(340f, 220f)
-                close()
-            }
-            drawPath(
-                path,
-                color = if (isDarkBlueTriangleView) colorDarkBlueTriangle else colorBlueTriangle
-            )
+    Canvas(
+        modifier = Modifier
+            .rotate(recommendSpot.bearing.toFloat())
+            .size(100.dp)
+            .clickable { onClick() }
+    ) {
+        val path = Path().apply {
+            // 三角形の頂点を設定
+            moveTo(size.width + 85, size.height / 2)
+            lineTo(size.width + 50, size.height / 2 - 25)
+            lineTo(size.width + 50, size.height / 2 + 25)
+            close()
         }
+        drawPath(
+            path,
+            color = if (isDarkBlueTriangleView) colorDarkBlueTriangle else colorBlueTriangle
+        )
     }
-
-// 三角形を押してる時だけClick遷移するようにする
-fun isPointInTriangle(p: Offset, vertices: List<Offset>): Boolean {
-    if (vertices.size != 3) return false
-    val (v1, v2, v3) = vertices
-
-    fun sign(p1: Offset, p2: Offset, p3: Offset): Float {
-        return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y)
-    }
-
-    val d1 = sign(p, v1, v2)
-    val d2 = sign(p, v2, v3)
-    val d3 = sign(p, v3, v1)
-
-    val hasNeg = (d1 < 0) || (d2 < 0) || (d3 < 0)
-    val hasPos = (d1 > 0) || (d2 > 0) || (d3 > 0)
-
-    return !(hasNeg && hasPos)
 }
