@@ -276,13 +276,16 @@ fun TriangleCore(
     val density = LocalDensity.current
     val rotationInRad = Math.toRadians(rotation.toDouble())
     with(density) {
+        val canvasSize = 24.dp
         val screenHeightInPx = LocalConfiguration.current.screenHeightDp.dp.toPx()
-        val r = screenHeightInPx / 2 - (12.dp + spacingHalf).toPx()
+        val r = screenHeightInPx / 2 - (canvasSize / 2 + spacingHalf).toPx()
+
+        // 画面の真上が現在の目線 → rotationが0 なので、位置合わせのために90°だけ座標系を回して計算する
         val offsetYInPx = r * -sin(rotationInRad + Math.PI / 2f).toFloat()
         val offsetXInPx = r * cos(rotationInRad + Math.PI / 2f).toFloat()
         Canvas(
             modifier = Modifier
-                .size(24.dp)
+                .size(canvasSize)
                 .offset(x = offsetXInPx.toDp(), y = offsetYInPx.toDp())
                 .clickable { onClick() }
         ) {
@@ -298,9 +301,9 @@ fun TriangleCore(
 
             // DrawScopeはrotateの方向が時計回りなので、
             // 反時計回りの回転角から時計回りの回転角に直す
-            val rotateInDrawScope = 360 - rotation
+            val rotationInDrawScope = 360 - rotation
             rotate(
-                degrees = rotateInDrawScope,
+                degrees = rotationInDrawScope,
                 block = {
                     drawPath(
                         path = path,
