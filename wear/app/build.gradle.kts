@@ -8,7 +8,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "jp.ac.mayoi.maigocompass"
+        applicationId = "jp.ac.mayoi.maigocompass.development"
         minSdk = 30
         targetSdk = 35
         versionCode = 1
@@ -59,11 +59,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":common:model"))
     implementation(project(":wear:core:resource"))
     implementation(project(":wear:core:application"))
     implementation(project(":wear:service"))
     implementation(project(":wear:features:traveling"))
     implementation(project(":wear:features:waiting"))
+    implementation(project(":wear:repository:implementations"))
 
     implementation(libs.bundles.wearComposeKit)
     implementation(platform(libs.koin.bom))
@@ -76,6 +78,7 @@ dependencies {
     implementation(libs.horologist.tiles)
     implementation(libs.androidx.watchface.complications.data.source.ktx)
     implementation(libs.androidx.navigation)
+    implementation(libs.kotlinx.serialization.json)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)

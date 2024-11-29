@@ -18,27 +18,28 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun WearNavigation(
     navController: NavHostController,
+    travelingViewModel: TravelingViewModel
 ) {
     NavHost(
         navController = navController,
-        startDestination = WatchWaitNavigation,
+        startDestination = TripNavigation,
     ) {
         composable<TripNavigation> {
-            val travelingViewModel: TravelingViewModel = koinViewModel {
-                // 本当はここをNavArgsで持ってくる
-                // 1. Waitingでスマホから目的地情報を受け取る
-                // 2. 目的地情報を使って遷移
-                // 3. ここで目的地情報をViewModelに詰めてViewを作成
-                // の流れ
-                val destination = run {
-                    Location(null).also {
-                        // とりあえず五稜郭にしてある
-                        it.latitude = 41.797653393691476
-                        it.longitude = 140.7550099479477
-                    }
-                }
-                parametersOf(destination)
-            }
+//           val travelingViewModel: TravelingViewModel = koinViewModel {
+//                // 本当はここをNavArgsで持ってくる
+//                // 1. Waitingでスマホから目的地情報を受け取る
+//                // 2. 目的地情報を使って遷移
+//                // 3. ここで目的地情報をViewModelに詰めてViewを作成
+//                // の流れ
+//                val destination = run {
+//                    Location(null).also {
+//                        // とりあえず五稜郭にしてある
+//                        it.latitude = 41.797653393691476
+//                        it.longitude = 140.7550099479477
+//                    }
+//                }
+//                parametersOf(destination)
+//            }
             TravelingRoot(
                 viewModel = travelingViewModel,
             )

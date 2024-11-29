@@ -1,7 +1,9 @@
 package jp.ac.mayoi.wear.repository.implementations
 
+import android.content.Intent
 import android.util.Log
 import com.google.android.gms.wearable.MessageEvent
+import com.google.android.gms.wearable.WearableListenerService
 import jp.ac.mayoi.common.model.RemoteSpotShrinkList
 import jp.ac.mayoi.wear.repository.interfaces.TravelingRepository
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +20,18 @@ class TravelingRepositoryImpl(
     private val _recommendSpot: MutableStateFlow<RemoteSpotShrinkList> = MutableStateFlow(initialValue)
     override val recommendSpot: StateFlow<RemoteSpotShrinkList> = _recommendSpot
 
+    override fun onCreate() {
+        super.onCreate()
+        Log.d("TravelingRepository", "Created")
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d("TravelingRepository", "Started")
+        return super.onStartCommand(intent, flags, startId)
+    }
+
     override fun onMessageReceived(messageEvent: MessageEvent) {
+        Log.d("Message", "message receive")
         when (messageEvent.path) {
             LOCATION_DATA -> {
                 Log.d("Message", "message Changed")
@@ -32,7 +45,6 @@ class TravelingRepositoryImpl(
 
             }
         }
-        Log.d("Message", "message receive")
     }
 
     companion object {

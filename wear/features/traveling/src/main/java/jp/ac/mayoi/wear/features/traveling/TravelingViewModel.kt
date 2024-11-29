@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import jp.ac.mayoi.common.model.RemoteSpotShrink
+import jp.ac.mayoi.common.model.RemoteSpotShrinkList
 import jp.ac.mayoi.wear.core.resource.locationIntentAction
 import jp.ac.mayoi.wear.core.resource.locationIntentLatitude
 import jp.ac.mayoi.wear.core.resource.locationIntentLongitude
@@ -97,6 +98,10 @@ class TravelingViewModel(
         context.applicationContext.stopService(
             Intent(context.applicationContext, LocationService::class.java)
         )
+    }
+
+    fun updateRecommendSpot(remote: RemoteSpotShrinkList) {
+        remoteRecommendSpot = remote.spots
     }
 
     private fun registerLocationBroadcastReceiver(
