@@ -1,11 +1,9 @@
 package jp.ac.mayoi.traveling
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
+import com.google.android.gms.wearable.CapabilityClient
+import com.google.android.gms.wearable.MessageClient
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.util.LoadState
 import jp.ac.mayoi.phone.model.LocalSpot
@@ -14,18 +12,21 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun ParentScreen() {
-    var spotListState by remember {
-        mutableStateOf<LoadState<ImmutableList<LocalSpot>>>(
-            LoadState.Loading(null)
-        )
-    }
+fun ParentScreen(
+    travelingViewModel: TravelingViewModel
+) {
+
     TravelingScreen(
-        spotListState = spotListState,
+        spotListState = travelingViewModel.spotListState,
         onRetryButtonClick = {
-            spotListState = LoadState.Loading(null)
+            travelingViewModel.getNearSpot()
         },
-        onTripCancelButtonClick = { },
+        onTripCancelButtonClick = {
+            travelingViewModel.getNearSpot()
+        },
+        onSendMessage =  {str,spot,msg,cap ->
+            travelingViewModel.sendLocalSpot(str,spot,msg,cap)
+        }
     )
 }
 
@@ -33,7 +34,8 @@ fun ParentScreen() {
 internal fun TravelingScreen(
     spotListState: LoadState<ImmutableList<LocalSpot>>,
     onRetryButtonClick: () -> Unit,
-    onTripCancelButtonClick: () -> Unit
+    onTripCancelButtonClick: () -> Unit,
+    onSendMessage: (String,ImmutableList<LocalSpot>,MessageClient,CapabilityClient) -> Unit,
 ) {
     when (spotListState) {
         is LoadState.Error -> {
@@ -56,6 +58,7 @@ internal fun TravelingScreen(
                 TravelingSpotScreen(
                     spotList = spotListState.value,
                     onTripCancelButtonClick = onTripCancelButtonClick,
+                    onSendLocalSpot = onSendMessage,
                 )
             }
         }
@@ -73,6 +76,7 @@ private fun TravelingScreenPreview() {
             spotListState = errorState,
             onRetryButtonClick = { },
             onTripCancelButtonClick = { },
+            onSendMessage = TODO(),
         )
     }
 }
@@ -88,6 +92,7 @@ private fun TravelingScreenLoadingPreview() {
             spotListState = loadingState,
             onRetryButtonClick = { },
             onTripCancelButtonClick = { },
+            onSendMessage = TODO(),
         )
     }
 }
@@ -98,12 +103,13 @@ private fun TravelingScreenEmptySpotsPreview() {
     val emptySpotsState: LoadState<ImmutableList<LocalSpot>> =
         LoadState.Success(
             persistentListOf()
-    )
+        )
     MaigoCompassTheme {
         TravelingScreen(
             spotListState = emptySpotsState,
             onRetryButtonClick = {},
-            onTripCancelButtonClick = {}
+            onTripCancelButtonClick = {},
+            onSendMessage = TODO(),
         )
     }
 }
@@ -127,7 +133,8 @@ private fun TravelingScreenSpotsPreview() {
     MaigoCompassTheme {
         TravelingSpotScreen(
             spotList = rankingTestList,
-            onTripCancelButtonClick = { },
+            onTripCancelButtonClick = {},
+            onSendLocalSpot = TODO(),
         )
     }
 }

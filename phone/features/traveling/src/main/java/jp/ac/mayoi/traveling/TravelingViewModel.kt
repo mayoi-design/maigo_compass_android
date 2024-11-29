@@ -7,12 +7,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.wearable.CapabilityClient
+import com.google.android.gms.wearable.MessageClient
+import jp.ac.mayoi.common.model.RemoteSpotShrink
+import jp.ac.mayoi.common.model.RemoteSpotShrinkList
 import jp.ac.mayoi.core.util.LoadState
 import jp.ac.mayoi.phone.model.LocalSpot
 import jp.ac.mayoi.repository.interfaces.TravelingRepository
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlin.coroutines.cancellation.CancellationException
 
 class TravelingViewModel(
     private val travelingRepository: TravelingRepository,
@@ -43,4 +56,69 @@ class TravelingViewModel(
             }
         }
     }
+
+    fun sendLocalSpot(
+        dataPath: String,
+        localSpot: ImmutableList<LocalSpot>,
+        messageClient: MessageClient,
+        capabilityClient: CapabilityClient
+    ) {
+
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
+        //val payload = localSpotConvertString(localSpot)
+        val payload = Json.encodeToString<RemoteSpotShrinkList>(
+            RemoteSpotShrinkList(
+                listOf(
+                    RemoteSpotShrink(
+                        0.0,
+                        0.0,
+                        "test"
+                    )
+                )
+            )
+        )
+
+        scope.launch {
+            try {
+                Log.d("Message", "Message send start")
+                val nodes = capabilityClient
+                    .getCapability("wear", CapabilityClient.FILTER_REACHABLE)
+                    .await()
+                    .nodes
+                Log.d("Message", nodes.toString())
+                Log.d("Message", payload)
+                nodes.map { node ->
+                    async {
+                        Log.d("Message", node.id)
+                        messageClient.sendMessage(
+                            node.id,
+                            dataPath,
+                            payload.toByteArray(Charsets.UTF_8)
+                        )
+                            .await()
+                    }
+                }.awaitAll()
+
+                Log.d("Message", "send end")
+            } catch (cancellationException: CancellationException) {
+                Log.d("Message", "Message cancel")
+                //throw cancellationException
+            } catch (exception: Exception) {
+                Log.d("Message", "Message failed")
+            }
+        }
+    }
+
+    private fun localSpotConvertString(localSpot: ImmutableList<LocalSpot>): String {
+        val newList = mutableListOf<RemoteSpotShrink>()
+        for (item in localSpot) {
+            val tmp = RemoteSpotShrink(item.lat.toDouble(), item.lng.toDouble(), item.message)
+            newList.add(tmp)
+        }
+        val sendString = Json.encodeToString(RemoteSpotShrinkList(newList))
+        return sendString
+    }
+
+
 }

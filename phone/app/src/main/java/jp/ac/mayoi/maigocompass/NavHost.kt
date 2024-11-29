@@ -18,6 +18,8 @@ import jp.ac.mayoi.core.navigation.ShareNavigation
 import jp.ac.mayoi.core.navigation.TravelingNavigation
 import jp.ac.mayoi.onboarding.OnboardingScreen
 import jp.ac.mayoi.onboarding.OnboardingViewModel
+import jp.ac.mayoi.traveling.ParentScreen
+import jp.ac.mayoi.traveling.TravelingViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -54,7 +56,8 @@ fun PhoneNavHost(
 
         }
         composable<TravelingNavigation> {
-
+            val travelingViewModel: TravelingViewModel = koinViewModel()
+            ParentScreen(travelingViewModel)
         }
     }
 }
