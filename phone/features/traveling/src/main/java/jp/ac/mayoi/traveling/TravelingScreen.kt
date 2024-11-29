@@ -29,7 +29,7 @@ fun ParentScreen(
         }
     }
     TravelingScreen(
-        previousState = viewModel.getPreviousState(),
+        previousState = viewModel.previousState,
         spotListState = viewModel.spotListState,
         onRetryButtonClick = onRetryButtonClick,
         onTripCancelButtonClick = onTripCancelButtonClick,
@@ -38,7 +38,6 @@ fun ParentScreen(
 
 @Composable
 internal fun TravelingScreen(
-    //viewModel: TravelingViewModel,
     previousState: LoadState<ImmutableList<LocalSpot>>,
     spotListState: LoadState<ImmutableList<LocalSpot>>,
     onRetryButtonClick: () -> Unit,
@@ -59,7 +58,6 @@ internal fun TravelingScreen(
                         spotList = spotList,
                         onTripCancelButtonClick = onTripCancelButtonClick,
                     )
-
                 } else {
                     TravelingLoadScreen(
                         onTripCancelButtonClick = onTripCancelButtonClick,
