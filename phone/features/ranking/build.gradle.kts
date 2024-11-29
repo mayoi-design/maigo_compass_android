@@ -33,6 +33,7 @@ dependencies {
     implementation(project(":phone:core:resource"))
     implementation(project(":phone:model"))
     implementation(project(":phone:core:util"))
+    implementation(project(":phone:repository:interfaces"))
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.composeKit)
     implementation(libs.bundles.coil)

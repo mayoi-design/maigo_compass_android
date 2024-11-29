@@ -7,6 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import jp.ac.mayoi.common.resource.locationIntentAction
+import jp.ac.mayoi.common.resource.locationIntentLatitude
+import jp.ac.mayoi.common.resource.locationIntentLongitude
+import jp.ac.mayoi.common.resource.locationPolingInterval
 import com.google.android.gms.wearable.CapabilityClient
 import com.google.android.gms.wearable.MessageClient
 import jp.ac.mayoi.common.model.RemoteSpotShrink
@@ -14,6 +18,7 @@ import jp.ac.mayoi.common.model.RemoteSpotShrinkList
 import jp.ac.mayoi.core.util.LoadState
 import jp.ac.mayoi.phone.model.LocalSpot
 import jp.ac.mayoi.repository.interfaces.TravelingRepository
+import jp.ac.mayoi.wear.service.LocationService
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
@@ -33,6 +38,9 @@ class TravelingViewModel(
     var spotListState: LoadState<ImmutableList<LocalSpot>> by mutableStateOf(
         LoadState.Loading(null)
     )
+        private set
+
+    var previousState: LoadState<ImmutableList<LocalSpot>> = spotListState
         private set
 
     private var currentLocation: Location = Location(null).also {
@@ -110,4 +118,59 @@ class TravelingViewModel(
     }
 
 
+
+    fun startLocationUpdate(
+        context: Context,
+    ) {
+        val intentFilter = IntentFilter().also {
+            it.addAction(locationIntentAction)
+        }
+        val intent = Intent(
+            context.applicationContext,
+            LocationService::class.java
+        ).also {
+            it.putExtra(locationPolingInterval, 10000L)
+        }
+
+        Log.d("LocationViewModel", "Starting LocationService")
+        context.applicationContext.startService(intent)
+        @SuppressLint("UnspecifiedRegisterReceiverFlag")
+        if (Build.VERSION.SDK_INT < 33) {
+            context.registerReceiver(
+                broadcastReceiver,
+                intentFilter
+            )
+        } else {
+            context.registerReceiver(
+                broadcastReceiver,
+                intentFilter,
+                RECEIVER_EXPORTED
+            )
+        }
+    }
+
+    fun stopLocationUpdate(
+        context: Context
+    ) {
+        Log.d("LocationViewModel", "Stopping LocationService")
+        context.applicationContext.stopService(
+            Intent(context.applicationContext, LocationService::class.java)
+        )
+    }
+
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val bundle = intent.extras ?: return
+            currentLocation.latitude =
+                bundle.getDouble(locationIntentLatitude, 0.0)
+            currentLocation.longitude =
+                bundle.getDouble(locationIntentLongitude, 0.0)
+
+            val maybeInitialLoad =
+                spotListState is LoadState.Loading && spotListState.value == null
+            if (maybeInitialLoad || spotListState is LoadState.Success) {
+                getNearSpot()
+            }
+        }
+    }
 }

@@ -18,6 +18,7 @@ import jp.ac.mayoi.core.navigation.ShareNavigation
 import jp.ac.mayoi.core.navigation.TravelingNavigation
 import jp.ac.mayoi.onboarding.OnboardingScreen
 import jp.ac.mayoi.onboarding.OnboardingViewModel
+import jp.ac.mayoi.ranking.RankingScreen
 import jp.ac.mayoi.traveling.ParentScreen
 import jp.ac.mayoi.traveling.TravelingViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -43,9 +44,9 @@ fun PhoneNavHost(
             )
         }
         composable<RankingNavigation> {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Text("RankingScreen")
-            }
+            RankingScreen(
+                viewModel = koinViewModel()
+            )
         }
         composable<MemoryNavigation> {
             Box(modifier = Modifier.fillMaxSize()) {
@@ -57,7 +58,15 @@ fun PhoneNavHost(
         }
         composable<TravelingNavigation> {
             val travelingViewModel: TravelingViewModel = koinViewModel()
-            ParentScreen(travelingViewModel)
+            ParentScreen(
+                viewModel = travelingViewModel,
+                onTripCancelButtonClick = {
+                    navController.popBackStack()
+                },
+                onRetryButtonClick = {
+                    travelingViewModel.getNearSpot()
+                }
+            )
         }
     }
 }

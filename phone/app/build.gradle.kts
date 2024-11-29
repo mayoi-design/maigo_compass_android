@@ -34,10 +34,14 @@ android {
     productFlavors {
         create("production") {
             dimension = "releasing"
+            manifestPlaceholders["appIcon"] = "@mipmap/icon_production"
+            manifestPlaceholders["roundIcon"] = "@mipmap/icon_production_round"
         }
         create("development") {
             applicationIdSuffix = ".development"
             dimension = "releasing"
+            manifestPlaceholders["appIcon"] = "@mipmap/icon_development"
+            manifestPlaceholders["roundIcon"] = "@mipmap/icon_development_round"
         }
     }
 
@@ -77,8 +81,10 @@ dependencies {
     implementation(project(":phone:model"))
     implementation(project(":phone:repository:interfaces"))
     implementation(project(":phone:features:onboarding"))
+    implementation(project(":phone:features:ranking"))
     implementation(project(":phone:features:traveling"))
     implementation(project(":phone:core:navigation"))
+    implementation(project(":wear:service"))
     implementation(libs.kotlinx.coroutine.android)
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)

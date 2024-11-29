@@ -35,7 +35,9 @@ dependencies {
     implementation(project(":phone:repository:implementations"))
     implementation(project(":phone:core:util"))
     implementation(project(":phone:core:resource"))
+    implementation(project(":common:resource"))
     implementation(project(":phone:model"))
+    implementation(project(":wear:service"))
     implementation(libs.bundles.composeKit)
 
     implementation(libs.androidx.core.ktx)
