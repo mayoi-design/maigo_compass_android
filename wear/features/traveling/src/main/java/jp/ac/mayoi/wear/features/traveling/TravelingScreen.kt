@@ -71,9 +71,10 @@ fun TravelingScreen(
             .fillMaxSize()
     ) {
         CommonTravelingScreen(
-            isDarkTriangleView = !isHeadingDestination,
+            isHeadingDestination = isHeadingDestination,
             destination = travelingViewModel.destination,
             recommendSpot = travelingViewModel.recommendSpot,
+            focusing = travelingViewModel.focusing,
             onRedTriangleClick = {
                 travelingViewModel.focusing = travelingViewModel.destination
             },
@@ -99,8 +100,9 @@ fun TravelingScreen(
 //旅行中画面の共通しているコードをまとめた
 @Composable
 fun CommonTravelingScreen(
-    isDarkTriangleView: Boolean,
+    isHeadingDestination: Boolean,
     destination: RecommendSpot,
+    focusing: RecommendSpot,
     recommendSpot: ImmutableList<RecommendSpot>,
     onRedTriangleClick: () -> Unit,
     onBlueTriangleClick: (RecommendSpot) -> Unit
@@ -112,15 +114,18 @@ fun CommonTravelingScreen(
     ) {
         // 青い三角形を無数に作成する場合
         for (recommend in recommendSpot) {
+            val isSameAsFocus =
+                recommend.lat == focusing.lat && recommend.lng == focusing.lng
+            val isLightBlueTriangle = !isHeadingDestination && isSameAsFocus
             BlueTriangle(
                 onClick = { onBlueTriangleClick(recommend) },
-                isDarkBlueTriangleView = !isDarkTriangleView,
+                isDarkBlueTriangleView = !isLightBlueTriangle,
                 recommendSpot = recommend
             )
         }
         RedTriangle(
             onClick = onRedTriangleClick,
-            isDarkRedTriangleView = isDarkTriangleView,
+            isDarkRedTriangleView = !isHeadingDestination,
             destination = destination
         )
     }
