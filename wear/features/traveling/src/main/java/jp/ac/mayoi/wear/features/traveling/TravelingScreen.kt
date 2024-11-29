@@ -370,6 +370,33 @@ private fun RedTrianglePreview() {
     }
 }
 
+// 左上に赤い矢印があるべき
+@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
+@Composable
+private fun RedTriangle45Preview() {
+    MaterialTheme {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            HorizontalDivider()
+            VerticalDivider()
+            RedTriangle(
+                onClick = {},
+                isDarkRedTriangleView = false,
+                destination = RecommendSpot(
+                    lat = 0.0,
+                    lng = 0.0,
+                    comment = "",
+                    distance = 0.0,
+                    bearing = 45.0,
+                )
+            )
+        }
+    }
+}
+
+// 西南西に矢印がある
 @Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
 @Composable
 private fun BlueTrianglePreview() {
@@ -388,7 +415,7 @@ private fun BlueTrianglePreview() {
                     lng = 0.0,
                     comment = "",
                     distance = 0.0,
-                    bearing = 0.0
+                    bearing = 250.0
                 )
             )
         }
