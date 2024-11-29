@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -17,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -25,20 +27,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
+import androidx.wear.tooling.preview.devices.WearDevices
 import jp.ac.mayoi.wear.core.resource.colorBlueTriangle
 import jp.ac.mayoi.wear.core.resource.colorButtonTextPrimary
 import jp.ac.mayoi.wear.core.resource.colorDarkBlueTriangle
 import jp.ac.mayoi.wear.core.resource.colorDarkRedTriangle
 import jp.ac.mayoi.wear.core.resource.colorRedTriangle
+import jp.ac.mayoi.wear.core.resource.spacingHalf
 import jp.ac.mayoi.wear.core.resource.spacingTriple
 import jp.ac.mayoi.wear.model.RecommendSpot
 import kotlinx.collections.immutable.ImmutableList
+import kotlin.math.cos
 import kotlin.math.roundToInt
+import kotlin.math.sin
 
 // 目的地に向かっている際のUI実装
 @Composable
@@ -251,6 +262,50 @@ fun BestSpotDistanceText(distanceTexts: String) {
     }
 }
 
+@Composable
+fun TriangleCore(
+    rotation: Float,
+    color: Color,
+    onClick: () -> Unit,
+) {
+    val density = LocalDensity.current
+    val rotationInRad = Math.toRadians(rotation.toDouble())
+    with(density) {
+        val screenHeightInPx =
+            LocalConfiguration.current.screenHeightDp.dp.toPx()
+        val r =
+            screenHeightInPx / 2 - (12.dp + spacingHalf).toPx()
+        val offsetYInPx = r * sin(rotationInRad + Math.PI / 2f).toFloat()
+        val offsetXInPx = r * cos(rotationInRad + Math.PI / 2f).toFloat()
+        Canvas(
+            modifier = Modifier
+                .size(24.dp)
+                .offset(x = -offsetXInPx.toDp(), y = -offsetYInPx.toDp())
+                .clickable { onClick() }
+        ) {
+            val shrink = 16f
+            val path = Path().apply {
+                // 三角形の頂点を設定
+                moveTo(size.width / 2, 0f)
+                lineTo(0f, size.height - shrink)
+                lineTo(size.width, size.height - shrink)
+                moveTo(size.width / 2f, size.height / 2f)
+                close()
+            }
+            rotate(
+                rotation,
+                block = {
+                    drawPath(
+                        path = path,
+                        color = color,
+                    )
+                    // drawCircle(Color.Green, radius = 5f)
+                }
+            )
+        }
+    }
+}
+
 // 目的地の方角を指す赤い三角形の実装
 @Composable
 fun RedTriangle(
@@ -258,25 +313,14 @@ fun RedTriangle(
     isDarkRedTriangleView: Boolean,
     destination: RecommendSpot,
 ) {
-    Canvas(
-        modifier = Modifier
-            .rotate(destination.bearing.toFloat())
-            .size(100.dp)
-            .clickable { onClick() }
-    ) {
-        val path = Path().apply {
-            // 三角形の頂点を設定
-            moveTo(size.width / 2, size.height + 85)
-            lineTo(size.width / 2 - 25, size.height + 50)
-            lineTo(size.width / 2 + 25, size.height + 50)
-            close()
-        }
-        drawPath(
-            path,
-            color = if (isDarkRedTriangleView) colorDarkRedTriangle else colorRedTriangle
-        )
-
-    }
+    TriangleCore(
+        rotation = destination.bearing.toFloat(),
+        color = when (isDarkRedTriangleView) {
+            true -> colorDarkRedTriangle
+            else -> colorRedTriangle
+        },
+        onClick = onClick,
+    )
 }
 
 // おすすめスポットの方角を指す青い三角形の実装
@@ -286,22 +330,62 @@ fun BlueTriangle(
     isDarkBlueTriangleView: Boolean,
     recommendSpot: RecommendSpot
 ) {
-    Canvas(
-        modifier = Modifier
-            .rotate(recommendSpot.bearing.toFloat())
-            .size(100.dp)
-            .clickable { onClick() }
-    ) {
-        val path = Path().apply {
-            // 三角形の頂点を設定
-            moveTo(size.width + 85, size.height / 2)
-            lineTo(size.width + 50, size.height / 2 - 25)
-            lineTo(size.width + 50, size.height / 2 + 25)
-            close()
+    TriangleCore(
+        rotation = recommendSpot.bearing.toFloat(),
+        color = when (isDarkBlueTriangleView) {
+            true -> colorDarkBlueTriangle
+            else -> colorBlueTriangle
+        },
+        onClick = onClick,
+    )
+}
+
+@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
+@Composable
+private fun RedTrianglePreview() {
+    MaterialTheme {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            HorizontalDivider()
+            VerticalDivider()
+            RedTriangle(
+                onClick = {},
+                isDarkRedTriangleView = false,
+                destination = RecommendSpot(
+                    lat = 0.0,
+                    lng = 0.0,
+                    comment = "",
+                    distance = 0.0,
+                    bearing = 330.0
+                )
+            )
         }
-        drawPath(
-            path,
-            color = if (isDarkBlueTriangleView) colorDarkBlueTriangle else colorBlueTriangle
-        )
+    }
+}
+
+@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
+@Composable
+private fun BlueTrianglePreview() {
+    MaterialTheme {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            HorizontalDivider()
+            VerticalDivider()
+            BlueTriangle(
+                onClick = {},
+                isDarkBlueTriangleView = false,
+                recommendSpot = RecommendSpot(
+                    lat = 0.0,
+                    lng = 0.0,
+                    comment = "",
+                    distance = 0.0,
+                    bearing = 0.0
+                )
+            )
+        }
     }
 }
