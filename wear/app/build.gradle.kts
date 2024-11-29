@@ -8,7 +8,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "jp.ac.mayoi.maigocompass.development"
+        applicationId = "jp.ac.mayoi.maigocompass"
         minSdk = 30
         targetSdk = 35
         versionCode = 1

@@ -74,6 +74,7 @@ fun ParentScreen(
 
 @Composable
 internal fun TravelingScreen(
+    previousState: LoadState<ImmutableList<LocalSpot>>,
     spotListState: LoadState<ImmutableList<LocalSpot>>,
     onRetryButtonClick: () -> Unit,
     onTripCancelButtonClick: () -> Unit,
@@ -194,6 +195,7 @@ private fun TravelingScreenPreview() {
             spotListState = errorState,
             onRetryButtonClick = { },
             onTripCancelButtonClick = { },
+            onSendMessage = TODO(),
         )
     }
 }
@@ -210,6 +212,7 @@ private fun TravelingScreenLoadingPreview() {
             spotListState = loadingState,
             onRetryButtonClick = { },
             onTripCancelButtonClick = { },
+            onSendMessage = TODO(),
         )
     }
 }
@@ -226,7 +229,8 @@ private fun TravelingScreenEmptySpotsPreview() {
             previousState = emptySpotsState,
             spotListState = emptySpotsState,
             onRetryButtonClick = {},
-            onTripCancelButtonClick = {}
+            onTripCancelButtonClick = {},
+            onSendMessage = TODO()
         )
     }
 }
@@ -251,6 +255,7 @@ private fun TravelingScreenSpotsPreview() {
         TravelingSpotScreen(
             spotList = rankingTestList,
             onTripCancelButtonClick = { },
+            onSendLocalSpot = TODO(),
         )
     }
 }

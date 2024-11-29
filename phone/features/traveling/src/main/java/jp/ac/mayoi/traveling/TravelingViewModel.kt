@@ -1,6 +1,13 @@
 package jp.ac.mayoi.traveling
 
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Context.RECEIVER_EXPORTED
+import android.content.Intent
+import android.content.IntentFilter
 import android.location.Location
+import android.os.Build
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
