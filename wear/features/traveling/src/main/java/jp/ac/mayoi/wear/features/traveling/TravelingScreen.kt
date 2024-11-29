@@ -276,16 +276,14 @@ fun TriangleCore(
     val density = LocalDensity.current
     val rotationInRad = Math.toRadians(rotation.toDouble())
     with(density) {
-        val screenHeightInPx =
-            LocalConfiguration.current.screenHeightDp.dp.toPx()
-        val r =
-            screenHeightInPx / 2 - (12.dp + spacingHalf).toPx()
-        val offsetYInPx = r * sin(rotationInRad + Math.PI / 2f).toFloat()
+        val screenHeightInPx = LocalConfiguration.current.screenHeightDp.dp.toPx()
+        val r = screenHeightInPx / 2 - (12.dp + spacingHalf).toPx()
+        val offsetYInPx = r * -sin(rotationInRad + Math.PI / 2f).toFloat()
         val offsetXInPx = r * cos(rotationInRad + Math.PI / 2f).toFloat()
         Canvas(
             modifier = Modifier
                 .size(24.dp)
-                .offset(x = -offsetXInPx.toDp(), y = -offsetYInPx.toDp())
+                .offset(x = offsetXInPx.toDp(), y = offsetYInPx.toDp())
                 .clickable { onClick() }
         ) {
             val shrink = 16f
@@ -297,14 +295,16 @@ fun TriangleCore(
                 moveTo(size.width / 2f, size.height / 2f)
                 close()
             }
+
+            // DrawScopeはrotateの方向が時計回りなので、反時計回りに直す
+            val rotateInDrawScope = 360 - rotation
             rotate(
-                rotation,
+                degrees = rotateInDrawScope,
                 block = {
                     drawPath(
                         path = path,
                         color = color,
                     )
-                    // drawCircle(Color.Green, radius = 5f)
                 }
             )
         }
