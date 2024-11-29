@@ -66,18 +66,7 @@ class TravelingViewModel(
 
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
-        //val payload = localSpotConvertString(localSpot)
-        val payload = Json.encodeToString<RemoteSpotShrinkList>(
-            RemoteSpotShrinkList(
-                listOf(
-                    RemoteSpotShrink(
-                        0.0,
-                        0.0,
-                        "test"
-                    )
-                )
-            )
-        )
+        val payload = localSpotConvertString(localSpot)
 
         scope.launch {
             try {
