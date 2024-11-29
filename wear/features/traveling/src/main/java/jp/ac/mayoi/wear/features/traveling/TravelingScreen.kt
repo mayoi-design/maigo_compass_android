@@ -46,11 +46,14 @@ import kotlin.math.roundToInt
 fun TravelingScreen(
     travelingViewModel: TravelingViewModel
 ) {
-    LaunchedEffect(travelingViewModel.focusing) {
+    LaunchedEffect(travelingViewModel) {
         travelingViewModel.updateLocation()
     }
     val isHeadingDestination by remember {
-        derivedStateOf { travelingViewModel.destination == travelingViewModel.focusing }
+        derivedStateOf {
+            travelingViewModel.destination.lat == travelingViewModel.focusing.lat &&
+                    travelingViewModel.destination.lng == travelingViewModel.focusing.lng
+        }
     }
     Box(
         contentAlignment = Alignment.Center,
@@ -68,15 +71,17 @@ fun TravelingScreen(
                 travelingViewModel.focusing = recommendSpot
             }
         )
+        val distanceInMeter = if (isHeadingDestination) {
+            travelingViewModel.destination.distance
+        } else {
+            travelingViewModel.focusing.distance
+        }
+        val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
         if (isHeadingDestination) {
-            val distanceInMeter = travelingViewModel.destination.distance
-            val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
             TextInCircle(
                 distanceText = "$distanceInKilo"
             )
         } else {
-            val focusingInMeter = travelingViewModel.focusing.distance
-            val distanceInKilo = (focusingInMeter / 100.0).roundToInt() / 10.0
             BestSpotTextInCircle(
                 text = travelingViewModel.focusing.comment,
                 distanceText = "$distanceInKilo",
