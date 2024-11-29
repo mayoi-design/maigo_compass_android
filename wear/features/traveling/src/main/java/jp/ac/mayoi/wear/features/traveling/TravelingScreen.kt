@@ -99,7 +99,7 @@ fun TravelingScreen(
 
 //旅行中画面の共通しているコードをまとめた
 @Composable
-fun CommonTravelingScreen(
+private fun CommonTravelingScreen(
     isHeadingDestination: Boolean,
     destination: RecommendSpot,
     focusing: RecommendSpot,
@@ -133,7 +133,7 @@ fun CommonTravelingScreen(
 
 // TravelingScreenの大きい円の中のテキストの実装
 @Composable
-fun TextInCircle(distanceText: String) {
+private fun TextInCircle(distanceText: String) {
     val paint = Paint().apply {
         strokeWidth = 2f
         isAntiAlias = true
@@ -161,7 +161,7 @@ fun TextInCircle(distanceText: String) {
 }
 
 @Composable
-fun DistanceText(distanceTexts: String) {
+private fun DistanceText(distanceTexts: String) {
     Column {
         Row(
             verticalAlignment = Alignment.Bottom
@@ -178,7 +178,7 @@ fun DistanceText(distanceTexts: String) {
 }
 
 @Composable
-fun SmallTextCircle(
+private fun SmallTextCircle(
     text: String,
     circleColor: Color = colorButtonTextPrimary,
 ) {
@@ -205,7 +205,7 @@ fun SmallTextCircle(
 
 // BestSpotScreenの大きい円の中のテキストの実装
 @Composable
-fun BestSpotTextInCircle(
+private fun BestSpotTextInCircle(
     distanceText: String,
     text: String,
 ) {
@@ -249,7 +249,7 @@ fun BestSpotTextInCircle(
 }
 
 @Composable
-fun BestSpotDistanceText(distanceTexts: String) {
+private fun BestSpotDistanceText(distanceTexts: String) {
     Row(
         verticalAlignment = Alignment.Bottom,
         modifier = Modifier
@@ -268,7 +268,7 @@ fun BestSpotDistanceText(distanceTexts: String) {
 }
 
 @Composable
-fun TriangleCore(
+private fun TriangleCore(
     rotation: Float,
     color: Color,
     onClick: () -> Unit,
@@ -317,7 +317,7 @@ fun TriangleCore(
 
 // 目的地の方角を指す赤い三角形の実装
 @Composable
-fun RedTriangle(
+private fun RedTriangle(
     onClick: () -> Unit,
     isDarkRedTriangleView: Boolean,
     destination: RecommendSpot,
@@ -334,7 +334,7 @@ fun RedTriangle(
 
 // おすすめスポットの方角を指す青い三角形の実装
 @Composable
-fun BlueTriangle(
+private fun BlueTriangle(
     onClick: () -> Unit,
     isDarkBlueTriangleView: Boolean,
     recommendSpot: RecommendSpot
