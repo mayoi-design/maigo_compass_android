@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,7 +25,6 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
@@ -140,26 +140,36 @@ private fun CommonTravelingScreen(
     }
 }
 
-// TravelingScreenの大きい円の中のテキストの実装
 @Composable
-private fun TextInCircle(distanceText: String) {
-    val paint = Paint().apply {
-        strokeWidth = 2f
-        isAntiAlias = true
+private fun CenterCircle(
+    content: @Composable (BoxScope.() -> Unit),
+) {
+    val screenWidth = with(LocalDensity.current) {
+        LocalConfiguration.current.screenWidthDp.dp.toPx()
     }
+    val radius = with(LocalDensity.current) {
+        screenWidth - 2 * (24.dp.toPx() + 2.dp.toPx())
+    } / 2
     Box(
         contentAlignment = Alignment.Center,
+        content = content,
         modifier = Modifier
             .fillMaxSize()
             .drawBehind {
                 drawCircle(
                     color = colorButtonTextPrimary,
-                    radius = 140f,
-                    center = Offset(190f, 190f),
-                    style = Stroke(paint.strokeWidth)
+                    radius = radius,
+                    center = Offset(screenWidth / 2, screenWidth / 2),
+                    style = Stroke(width = 2f)
                 )
             }
-    ) {
+    )
+}
+
+// TravelingScreenの大きい円の中のテキストの実装
+@Composable
+private fun TextInCircle(distanceText: String) {
+    CenterCircle {
         SmallTextCircle(
             text = "目的地"
         )
@@ -218,23 +228,7 @@ private fun BestSpotTextInCircle(
     distanceText: String,
     text: String,
 ) {
-    val paint = Paint().apply {
-        strokeWidth = 2f
-        isAntiAlias = true
-    }
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .drawBehind {
-                drawCircle(
-                    color = colorButtonTextPrimary,
-                    radius = 140f,
-                    center = Offset(190f, 190f),
-                    style = Stroke(paint.strokeWidth)
-                )
-            }
-    ) {
+    CenterCircle {
         SmallTextCircle(
             text = "おすすめスポット"
         )
@@ -432,5 +426,23 @@ private fun BlueTrianglePreview() {
                 )
             )
         }
+    }
+}
+
+@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
+@Preview(device = WearDevices.LARGE_ROUND, showSystemUi = true)
+@Composable
+private fun TextInCirclePreview() {
+    MaterialTheme {
+        TextInCircle("12.3")
+    }
+}
+
+@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
+@Preview(device = WearDevices.LARGE_ROUND, showSystemUi = true)
+@Composable
+private fun BestSpotInCirclePreview() {
+    MaterialTheme {
+        BestSpotTextInCircle("12.3", "Preview")
     }
 }
