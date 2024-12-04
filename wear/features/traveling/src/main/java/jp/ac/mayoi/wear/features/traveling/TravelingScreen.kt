@@ -57,6 +57,7 @@ import jp.ac.mayoi.wear.core.resource.spacingSingle
 import jp.ac.mayoi.wear.core.resource.spacingTriple
 import jp.ac.mayoi.wear.model.RecommendSpot
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.cos
 import kotlin.math.roundToInt
 import kotlin.math.sin
@@ -75,6 +76,42 @@ fun TravelingScreen(
                     travelingViewModel.destination.lng == travelingViewModel.focusing.lng
         }
     }
+
+    val distanceInMeter = if (isHeadingDestination) {
+        travelingViewModel.destination.distance
+    } else {
+        val focusing = travelingViewModel.focusing
+        travelingViewModel.recommendSpot.find { spot ->
+            spot.lat == focusing.lat && spot.lng == focusing.lng
+        }?.distance ?: Double.POSITIVE_INFINITY
+    }
+    val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
+
+    TravelingScreen(
+        destination = travelingViewModel.destination,
+        recommendSpot = travelingViewModel.recommendSpot,
+        focusing = travelingViewModel.focusing,
+        isHeadingDestination = isHeadingDestination,
+        distanceToFocus = distanceInKilo,
+        onRedTriangleClick = {
+            travelingViewModel.focusing = travelingViewModel.destination
+        },
+        onBlueTriangleClick = { spot ->
+            travelingViewModel.focusing = spot
+        }
+    )
+}
+
+@Composable
+private fun TravelingScreen(
+    destination: RecommendSpot,
+    recommendSpot: ImmutableList<RecommendSpot>,
+    focusing: RecommendSpot,
+    isHeadingDestination: Boolean,
+    distanceToFocus: Double,
+    onRedTriangleClick: () -> Unit,
+    onBlueTriangleClick: (RecommendSpot) -> Unit,
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -82,35 +119,21 @@ fun TravelingScreen(
     ) {
         CommonTravelingScreen(
             isHeadingDestination = isHeadingDestination,
-            destination = travelingViewModel.destination,
-            recommendSpot = travelingViewModel.recommendSpot,
-            focusing = travelingViewModel.focusing,
-            onRedTriangleClick = {
-                travelingViewModel.focusing = travelingViewModel.destination
-            },
-            onBlueTriangleClick = { recommendSpot ->
-                travelingViewModel.focusing = recommendSpot
-            }
+            destination = destination,
+            recommendSpot = recommendSpot,
+            focusing = focusing,
+            onRedTriangleClick = onRedTriangleClick,
+            onBlueTriangleClick = onBlueTriangleClick,
         )
-
-        val distanceInMeter = if (isHeadingDestination) {
-            travelingViewModel.destination.distance
-        } else {
-            val focusing = travelingViewModel.focusing
-            travelingViewModel.recommendSpot.find { spot ->
-                spot.lat == focusing.lat && spot.lng == focusing.lng
-            }?.distance ?: Double.POSITIVE_INFINITY
-        }
-        val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
 
         if (isHeadingDestination) {
             TextInCircle(
-                distanceText = "$distanceInKilo"
+                distanceText = "$distanceToFocus"
             )
         } else {
             BestSpotTextInCircle(
-                text = travelingViewModel.focusing.comment,
-                distanceText = "$distanceInKilo",
+                text = focusing.comment,
+                distanceText = "$distanceToFocus",
             )
         }
     }
@@ -482,6 +505,72 @@ private fun BestSpotInCirclePreview() {
         BestSpotTextInCircle(
             distanceText = "12.3",
             text = "あ".repeat(10)
+        )
+    }
+}
+
+@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
+@Preview(device = WearDevices.LARGE_ROUND, showSystemUi = true)
+@Composable
+private fun TravelingScreenHeadingDestinationPreview() {
+    MaterialTheme {
+        val destination = RecommendSpot(
+            lat = 0.0,
+            lng = 0.0,
+            comment = "",
+            distance = 12.3,
+            bearing = 15.0,
+        )
+        val spots = List(6) {
+            RecommendSpot(
+                lat = it + 1.0,
+                lng = it + 1.0,
+                comment = "Spot ${it + 1}",
+                distance = 12.3 * (it + 2),
+                bearing = 30.0 * it
+            )
+        }.toImmutableList()
+        TravelingScreen(
+            destination = destination,
+            recommendSpot = spots,
+            focusing = destination,
+            isHeadingDestination = true,
+            distanceToFocus = destination.distance,
+            onBlueTriangleClick = {},
+            onRedTriangleClick = {},
+        )
+    }
+}
+
+@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
+@Preview(device = WearDevices.LARGE_ROUND, showSystemUi = true)
+@Composable
+private fun TravelingScreenHeadingSpotPreview() {
+    MaterialTheme {
+        val destination = RecommendSpot(
+            lat = 0.0,
+            lng = 0.0,
+            comment = "",
+            distance = 12.3,
+            bearing = 15.0,
+        )
+        val spots = List(6) {
+            RecommendSpot(
+                lat = it + 1.0,
+                lng = it + 1.0,
+                comment = "Spot ${it + 1}",
+                distance = 6.2 * (it + 2),
+                bearing = 30.0 * it
+            )
+        }.toImmutableList()
+        TravelingScreen(
+            destination = destination,
+            recommendSpot = spots,
+            focusing = spots[1],
+            isHeadingDestination = false,
+            distanceToFocus = spots[1].distance,
+            onBlueTriangleClick = {},
+            onRedTriangleClick = {},
         )
     }
 }
