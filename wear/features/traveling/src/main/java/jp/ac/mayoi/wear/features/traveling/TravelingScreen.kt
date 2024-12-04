@@ -5,7 +5,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -34,8 +36,10 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
@@ -47,7 +51,9 @@ import jp.ac.mayoi.wear.core.resource.colorButtonTextPrimary
 import jp.ac.mayoi.wear.core.resource.colorDarkBlueTriangle
 import jp.ac.mayoi.wear.core.resource.colorDarkRedTriangle
 import jp.ac.mayoi.wear.core.resource.colorRedTriangle
+import jp.ac.mayoi.wear.core.resource.spacingDouble
 import jp.ac.mayoi.wear.core.resource.spacingHalf
+import jp.ac.mayoi.wear.core.resource.spacingSingle
 import jp.ac.mayoi.wear.core.resource.spacingTriple
 import jp.ac.mayoi.wear.model.RecommendSpot
 import kotlinx.collections.immutable.ImmutableList
@@ -194,13 +200,16 @@ private fun TextInCircle(distanceText: String) {
 }
 
 @Composable
-private fun DistanceText(distanceTexts: String) {
+private fun DistanceText(
+    distanceTexts: String,
+    fontSize: TextUnit = 30.sp,
+) {
     Row(
         verticalAlignment = Alignment.Bottom
     ) {
         Text(
             text = distanceTexts,
-            fontSize = 30.sp,
+            fontSize = fontSize,
         )
         Text(
             text = "km",
