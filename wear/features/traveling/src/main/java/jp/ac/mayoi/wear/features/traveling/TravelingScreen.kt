@@ -3,9 +3,10 @@ package jp.ac.mayoi.wear.features.traveling
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -142,7 +143,7 @@ private fun CommonTravelingScreen(
 
 @Composable
 private fun CenterCircle(
-    content: @Composable (BoxScope.() -> Unit),
+    content: @Composable (ColumnScope.() -> Unit),
 ) {
     val screenWidth = with(LocalDensity.current) {
         LocalConfiguration.current.screenWidthDp.dp.toPx()
@@ -150,8 +151,9 @@ private fun CenterCircle(
     val radius = with(LocalDensity.current) {
         screenWidth - 2 * (24.dp.toPx() + 2.dp.toPx())
     } / 2
-    Box(
-        contentAlignment = Alignment.Center,
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         content = content,
         modifier = Modifier
             .fillMaxSize()
