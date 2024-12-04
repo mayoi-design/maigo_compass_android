@@ -4,8 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -36,8 +35,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.times
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.tooling.preview.devices.WearDevices
@@ -145,24 +146,22 @@ private fun CommonTravelingScreen(
 
 @Composable
 private fun CenterCircle(
-    content: @Composable (ColumnScope.() -> Unit),
+    circleRadius: Dp,
+    screenWidth: Dp,
+    content: @Composable (BoxScope.() -> Unit),
 ) {
-    val screenWidth = with(LocalDensity.current) {
-        LocalConfiguration.current.screenWidthDp.dp.toPx()
-    }
-    val radius = with(LocalDensity.current) {
-        screenWidth - 2 * (24.dp.toPx() + 2.dp.toPx())
-    } / 2
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+    val widthInPx = with(LocalDensity.current) { screenWidth.toPx() }
+    val radiusInPx = with(LocalDensity.current) { circleRadius.toPx() }
+    Box(
+        contentAlignment = Alignment.Center,
         content = content,
         modifier = Modifier
             .fillMaxSize()
             .drawBehind {
                 drawCircle(
                     color = colorButtonTextPrimary,
-                    radius = radius,
-                    center = Offset(screenWidth / 2, screenWidth / 2),
+                    radius = radiusInPx,
+                    center = Offset(widthInPx / 2, widthInPx / 2),
                     style = Stroke(width = 2f)
                 )
             }
@@ -173,7 +172,12 @@ private fun CenterCircle(
 // TravelingScreenの大きい円の中のテキストの実装
 @Composable
 private fun TextInCircle(distanceText: String) {
-    CenterCircle {
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val circleRadius = (screenWidth - 2 * (24.dp + 2.dp)) / 2
+    CenterCircle(
+        screenWidth = screenWidth,
+        circleRadius = circleRadius,
+    ) {
         SmallTextCircle(
             text = "目的地"
         )
@@ -236,7 +240,12 @@ private fun BestSpotTextInCircle(
     distanceText: String,
     text: String,
 ) {
-    CenterCircle {
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val circleRadius = (screenWidth - 2 * (24.dp + 2.dp)) / 2
+    CenterCircle(
+        screenWidth = screenWidth,
+        circleRadius = circleRadius,
+    ) {
         SmallTextCircle(
             text = "おすすめスポット"
         )
