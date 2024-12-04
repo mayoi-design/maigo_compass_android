@@ -3,7 +3,6 @@ package jp.ac.mayoi.wear.features.traveling
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -18,7 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -29,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -153,7 +155,6 @@ private fun CenterCircle(
     } / 2
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
         content = content,
         modifier = Modifier
             .fillMaxSize()
@@ -165,6 +166,7 @@ private fun CenterCircle(
                     style = Stroke(width = 2f)
                 )
             }
+            .padding(26.dp)
     )
 }
 
@@ -183,18 +185,16 @@ private fun TextInCircle(distanceText: String) {
 
 @Composable
 private fun DistanceText(distanceTexts: String) {
-    Column {
-        Row(
-            verticalAlignment = Alignment.Bottom
-        ) {
-            Text(
-                text = distanceTexts,
-                fontSize = 30.sp,
-            )
-            Text(
-                text = "km"
-            )
-        }
+    Row(
+        verticalAlignment = Alignment.Bottom
+    ) {
+        Text(
+            text = distanceTexts,
+            fontSize = 30.sp,
+        )
+        Text(
+            text = "km"
+        )
     }
 }
 
@@ -203,23 +203,29 @@ private fun SmallTextCircle(
     text: String,
     circleColor: Color = colorButtonTextPrimary,
 ) {
+    var textWidth by remember { mutableFloatStateOf(0f) }
+    var textHeight by remember { mutableFloatStateOf(0f) }
     Box(
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.padding(vertical = 4.dp)
     ) {
         Text(
             text = text,
-            style = TextStyle(fontSize = 6.sp),
+            style = TextStyle(fontSize = 8.sp),
             modifier = Modifier
+                .onGloballyPositioned { layoutCoordinates ->
+                    textHeight = layoutCoordinates.size.height.toFloat()
+                    textWidth = layoutCoordinates.size.width.toFloat()
+                }
                 .drawBehind {
                     drawRoundRect(
                         color = circleColor,
                         cornerRadius = CornerRadius(32f),
-                        size = Size(size.width + 10, size.height / 10),
+                        size = Size(textWidth + 24f, textHeight + 8f),
                         style = Stroke(width = 2f),
-                        topLeft = Offset(-4f, 0f)
+                        topLeft = Offset(-12f, -4f)
                     )
                 }
-                .padding(bottom = 90.dp)
         )
     }
 }
