@@ -172,15 +172,21 @@ private fun CenterCircle(
 // TravelingScreenの大きい円の中のテキストの実装
 @Composable
 private fun TextInCircle(distanceText: String) {
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp // As same as height
     val circleRadius = (screenWidth - 2 * (24.dp + 2.dp)) / 2
     CenterCircle(
         screenWidth = screenWidth,
         circleRadius = circleRadius,
     ) {
-        SmallTextCircle(
-            text = "目的地"
-        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(vertical = spacingTriple)
+        ) {
+            SmallTextCircle(
+                text = "目的地"
+            )
+        }
         DistanceText(
             distanceTexts = distanceText,
         )
@@ -197,7 +203,8 @@ private fun DistanceText(distanceTexts: String) {
             fontSize = 30.sp,
         )
         Text(
-            text = "km"
+            text = "km",
+            modifier = Modifier.padding(bottom = 3.dp, start = 6.dp)
         )
     }
 }
