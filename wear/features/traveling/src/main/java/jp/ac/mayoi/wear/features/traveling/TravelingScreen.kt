@@ -262,44 +262,45 @@ private fun BestSpotTextInCircle(
         screenWidth = screenWidth,
         circleRadius = circleRadius,
     ) {
-        SmallTextCircle(
-            text = "おすすめスポット"
-        )
-        Image(
-            painter = painterResource(id = R.drawable.smail),
-            contentDescription = "Smail Image",
+        Box(
             modifier = Modifier
-                .padding(bottom = spacingTriple)
-                .size(35.dp)
-        )
-        Text(
-            text = text,
-            fontSize = 12.sp,
-            modifier = Modifier
-                .padding(top = 35.dp)
-        )
-        BestSpotDistanceText(
-            distanceTexts = distanceText
-        )
-    }
-}
+                .align(Alignment.TopCenter)
+                .padding(vertical = spacingDouble)
+        ) {
+            SmallTextCircle(
+                text = "おすすめスポット"
+            )
+        }
 
-@Composable
-private fun BestSpotDistanceText(distanceTexts: String) {
-    Row(
-        verticalAlignment = Alignment.Bottom,
-        modifier = Modifier
-            .padding(top = 80.dp)
-    ) {
-        Text(
-            text = distanceTexts,
-            fontSize = 25.sp,
-        )
-        Text(
-            text = "km",
-            fontSize = 10.sp,
-            modifier = Modifier.padding(bottom = 2.dp, start = 6.dp)
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.smail),
+                contentDescription = "Smail Image",
+                modifier = Modifier
+                    .size(35.dp)
+            )
+
+            Spacer(modifier = Modifier.size(spacingHalf))
+
+            Text(
+                text = text,
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center,
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = spacingSingle + spacingHalf)
+        ) {
+            DistanceText(
+                distanceTexts = distanceText,
+                fontSize = 25.sp
+            )
+        }
     }
 }
 
@@ -467,7 +468,9 @@ private fun BlueTrianglePreview() {
 @Composable
 private fun TextInCirclePreview() {
     MaterialTheme {
-        TextInCircle("12.3")
+        TextInCircle(
+            distanceText = "12.3"
+        )
     }
 }
 
@@ -476,6 +479,9 @@ private fun TextInCirclePreview() {
 @Composable
 private fun BestSpotInCirclePreview() {
     MaterialTheme {
-        BestSpotTextInCircle("12.3", "Preview")
+        BestSpotTextInCircle(
+            distanceText = "12.3",
+            text = "あ".repeat(10)
+        )
     }
 }
