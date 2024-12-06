@@ -82,8 +82,17 @@ fun TravelingScreen(
                 travelingViewModel.focusing = recommendSpot
             }
         )
-        val distanceInMeter = travelingViewModel.focusing.distance
+
+        val distanceInMeter = if (isHeadingDestination) {
+            travelingViewModel.destination.distance
+        } else {
+            val focusing = travelingViewModel.focusing
+            travelingViewModel.recommendSpot.find { spot ->
+                spot.lat == focusing.lat && spot.lng == focusing.lng
+            }?.distance ?: Double.POSITIVE_INFINITY
+        }
         val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
+
         if (isHeadingDestination) {
             TextInCircle(
                 distanceText = "$distanceInKilo"
