@@ -56,9 +56,6 @@ import kotlin.math.sin
 fun TravelingScreen(
     travelingViewModel: TravelingViewModel
 ) {
-    LaunchedEffect(travelingViewModel) {
-        travelingViewModel.updateLocation()
-    }
     val isHeadingDestination by remember {
         derivedStateOf {
             travelingViewModel.destination.lat == travelingViewModel.focusing.lat &&

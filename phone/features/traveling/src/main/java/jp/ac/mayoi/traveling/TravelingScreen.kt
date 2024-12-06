@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.google.android.gms.wearable.CapabilityClient
+import com.google.android.gms.wearable.MessageClient
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
@@ -57,6 +59,9 @@ fun ParentScreen(
             spotListState = viewModel.spotListState,
             onRetryButtonClick = onRetryButtonClick,
             onTripCancelButtonClick = onTripCancelButtonClick,
+            onSendMessage =  {str,spot,msg,cap ->
+                viewModel.sendLocalSpot(str,spot,msg,cap)
+            }
         )
     } else {
         PermissionLackingScreen(
@@ -73,6 +78,7 @@ internal fun TravelingScreen(
     spotListState: LoadState<ImmutableList<LocalSpot>>,
     onRetryButtonClick: () -> Unit,
     onTripCancelButtonClick: () -> Unit,
+    onSendMessage: (String,ImmutableList<LocalSpot>,MessageClient,CapabilityClient) -> Unit,
 ) {
     when (spotListState) {
         is LoadState.Error -> {
@@ -88,6 +94,7 @@ internal fun TravelingScreen(
                     TravelingSpotScreen(
                         spotList = spotList,
                         onTripCancelButtonClick = onTripCancelButtonClick,
+                        onSendLocalSpot = onSendMessage,
                     )
                 } else {
                     TravelingLoadScreen(
@@ -109,6 +116,7 @@ internal fun TravelingScreen(
                 TravelingSpotScreen(
                     spotList = spotListState.value,
                     onTripCancelButtonClick = onTripCancelButtonClick,
+                    onSendLocalSpot = onSendMessage,
                 )
             }
         }
@@ -175,75 +183,80 @@ private fun checkTravelingPermission(context: Context): Boolean {
     return isGrantedCoarseLocation && isGrantedFineLocation
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun TravelingScreenPreview() {
-    // エラー時の表示
-    val errorState: LoadState<ImmutableList<LocalSpot>> =
-        LoadState.Error(null, Throwable("Error occurred"))
-    MaigoCompassTheme {
-        TravelingScreen(
-            previousState = errorState,
-            spotListState = errorState,
-            onRetryButtonClick = { },
-            onTripCancelButtonClick = { },
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun TravelingScreenLoadingPreview() {
-    // ロード中の表示
-    val loadingState: LoadState<ImmutableList<LocalSpot>> =
-        LoadState.Loading(null)
-    MaigoCompassTheme {
-        TravelingScreen(
-            previousState = loadingState,
-            spotListState = loadingState,
-            onRetryButtonClick = { },
-            onTripCancelButtonClick = { },
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun TravelingScreenEmptySpotsPreview() {
-    val emptySpotsState: LoadState<ImmutableList<LocalSpot>> =
-        LoadState.Success(
-            persistentListOf()
-        )
-    MaigoCompassTheme {
-        TravelingScreen(
-            previousState = emptySpotsState,
-            spotListState = emptySpotsState,
-            onRetryButtonClick = {},
-            onTripCancelButtonClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun TravelingScreenSpotsPreview() {
-    val spot = LocalSpot(
-        lat = 0.0F,
-        lng = 0.0F,
-        message = "Hello From Preview!",
-        imageUrl = "",
-        spotId = "",
-        reachedCount = 100,
-        createdAt = "2024-10-09T23:31:15+09:00",
-    )
-    val rankingTestList: ImmutableList<LocalSpot> =
-        List(10) {
-            spot
-        }.toImmutableList()
-    MaigoCompassTheme {
-        TravelingSpotScreen(
-            spotList = rankingTestList,
-            onTripCancelButtonClick = { },
-        )
-    }
-}
+//どうかけばいいかわからずPreview出来なくなってしまいました
+//@Preview(showBackground = true)
+//@Composable
+//private fun TravelingScreenPreview() {
+//    // エラー時の表示
+//    val errorState: LoadState<ImmutableList<LocalSpot>> =
+//        LoadState.Error(null, Throwable("Error occurred"))
+//    MaigoCompassTheme {
+//        TravelingScreen(
+//            previousState = errorState,
+//            spotListState = errorState,
+//            onRetryButtonClick = { },
+//            onTripCancelButtonClick = { },
+//            onSendMessage = TODO(),
+//        )
+//    }
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun TravelingScreenLoadingPreview() {
+//    // ロード中の表示
+//    val loadingState: LoadState<ImmutableList<LocalSpot>> =
+//        LoadState.Loading(null)
+//    MaigoCompassTheme {
+//        TravelingScreen(
+//            previousState = loadingState,
+//            spotListState = loadingState,
+//            onRetryButtonClick = { },
+//            onTripCancelButtonClick = { },
+//            onSendMessage = TODO(),
+//        )
+//    }
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun TravelingScreenEmptySpotsPreview() {
+//    val emptySpotsState: LoadState<ImmutableList<LocalSpot>> =
+//        LoadState.Success(
+//            persistentListOf()
+//        )
+//    MaigoCompassTheme {
+//        TravelingScreen(
+//            previousState = emptySpotsState,
+//            spotListState = emptySpotsState,
+//            onRetryButtonClick = {},
+//            onTripCancelButtonClick = {},
+//            onSendMessage = TODO()
+//        )
+//    }
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun TravelingScreenSpotsPreview() {
+//    val spot = LocalSpot(
+//        lat = 0.0F,
+//        lng = 0.0F,
+//        message = "Hello From Preview!",
+//        imageUrl = "",
+//        spotId = "",
+//        reachedCount = 100,
+//        createdAt = "2024-10-09T23:31:15+09:00",
+//    )
+//    val rankingTestList: ImmutableList<LocalSpot> =
+//        List(10) {
+//            spot
+//        }.toImmutableList()
+//    MaigoCompassTheme {
+//        TravelingSpotScreen(
+//            spotList = rankingTestList,
+//            onTripCancelButtonClick = { },
+//            onSendLocalSpot = TODO(),
+//        )
+//    }
+//}

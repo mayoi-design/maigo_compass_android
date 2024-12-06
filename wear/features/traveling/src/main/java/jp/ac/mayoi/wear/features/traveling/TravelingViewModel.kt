@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import jp.ac.mayoi.common.model.RemoteSpotShrink
+import jp.ac.mayoi.common.model.RemoteSpotShrinkList
 import jp.ac.mayoi.common.resource.locationIntentAction
 import jp.ac.mayoi.common.resource.locationIntentLatitude
 import jp.ac.mayoi.common.resource.locationIntentLongitude
@@ -30,7 +31,6 @@ import jp.ac.mayoi.wear.repository.interfaces.TravelingRepository
 import jp.ac.mayoi.wear.service.LocationService
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class TravelingViewModel(
@@ -72,51 +72,14 @@ class TravelingViewModel(
 
     private val rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
 
-    fun updateLocation() {
+    init {
         viewModelScope.launch {
-            try {
-                // まだgetRecommendSpotsの中身が実装されていないのでダミー処理を走らせる
-                // val recommends = travelingRepository.getRecommendSpots()
-
-                delay(2000)
-                remoteRecommendSpot = listOf(
-                    RemoteSpotShrink(
-                        lat = 41.8157514360135,
-                        lng = 140.75178972310687,
-                        comment = "亀田支所前1番のりば"
-                    ),
-                    RemoteSpotShrink(
-                        lat = 41.820865711976964,
-                        lng = 140.73744810747843,
-                        comment = "湯の箱　こみち"
-                    ),
-                    RemoteSpotShrink(
-                        lat = 41.77596698394411,
-                        lng = 140.81458995914838,
-                        comment = "函館空港"
-                    ),
-                    RemoteSpotShrink(
-                        lat = 41.82529921910122,
-                        lng = 140.71956121250042,
-                        comment = "早く取らないとなぁ",
-                    ),
-                    RemoteSpotShrink(
-                        lat = 41.772790968373116,
-                        lng = 140.75495583334114,
-                        comment = "時空探偵、現る"
-                    ),
-                    RemoteSpotShrink(
-                        lat = 41.765411429266514,
-                        lng = 140.6971754353837,
-                        comment = "キレイな海が見える！",
-                    )
-                )
-            } catch (e: Exception) {
-                Log.e("UpdateLocation", "${e.message}")
+            travelingRepository.recommendSpot.collect {
+                remoteRecommendSpot = it.spots
+                Log.d("TravelingViewModel", "updating remoteRecommendSpot: $it")
             }
         }
     }
-
 
     fun startSensor(context: Context) {
         sensorManager.registerListener(
@@ -135,6 +98,10 @@ class TravelingViewModel(
         context.applicationContext.stopService(
             Intent(context.applicationContext, LocationService::class.java)
         )
+    }
+
+    fun updateRecommendSpot(remote: RemoteSpotShrinkList) {
+        remoteRecommendSpot = remote.spots
     }
 
     private fun registerLocationBroadcastReceiver(
