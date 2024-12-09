@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.wearable.CapabilityClient
 import com.google.android.gms.wearable.MessageClient
-import jp.ac.mayoi.common.model.RemoteSpotShrink
 import jp.ac.mayoi.common.model.RemoteSpotShrinkList
 import jp.ac.mayoi.common.resource.locationIntentAction
 import jp.ac.mayoi.common.resource.locationIntentLatitude
@@ -79,7 +78,10 @@ class TravelingViewModel(
         localSpot: ImmutableList<LocalSpot>,
     ) {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
-        val payload = localSpotConvertString(localSpot)
+        val payload = RemoteSpotShrinkList(
+            spots = localSpot.map { it.toRemoteSpotShrink() },
+        )
+        val jsonString = Json.encodeToString(payload)
 
         scope.launch {
             try {
@@ -89,14 +91,14 @@ class TravelingViewModel(
                     .await()
                     .nodes
                 Log.d("Message", nodes.toString())
-                Log.d("Message", payload)
+                Log.d("Message", jsonString)
                 nodes.map { node ->
                     async {
                         Log.d("Message", node.id)
                         messageClient.sendMessage(
                             node.id,
                             dataPath,
-                            payload.toByteArray(Charsets.UTF_8)
+                            jsonString.toByteArray(Charsets.UTF_8)
                         )
                             .await()
                     }
@@ -111,18 +113,6 @@ class TravelingViewModel(
             }
         }
     }
-
-    private fun localSpotConvertString(localSpot: ImmutableList<LocalSpot>): String {
-        val newList = mutableListOf<RemoteSpotShrink>()
-        for (item in localSpot) {
-            val tmp = RemoteSpotShrink(item.lat.toDouble(), item.lng.toDouble(), item.message)
-            newList.add(tmp)
-        }
-        val sendString = Json.encodeToString(RemoteSpotShrinkList(newList))
-        return sendString
-    }
-
-
 
     fun startLocationUpdate(
         context: Context,
