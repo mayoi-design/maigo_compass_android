@@ -21,7 +21,7 @@ fun WearNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = TripNavigation,
+        startDestination = WatchWaitNavigation,
     ) {
         composable<TripNavigation> {
             val travelingViewModel: TravelingViewModel = koinViewModel {
