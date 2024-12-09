@@ -57,15 +57,15 @@ class TravelingViewModel(
     }
 
     fun getNearSpot() {
-        // todo: repositoryから取得できる現在地のlat, lngをつかって、spotListStateを更新する
         val currentLat = currentLocation.latitude
         val currentLng = currentLocation.longitude
         spotListState = LoadState.Loading(spotListState.value)
         viewModelScope.launch {
             try {
                 val spots =
-                    travelingRepository.getNearSpots(currentLat, currentLng)
-                spotListState = LoadState.Success(spots.toImmutableList())
+                    travelingRepository.getNearSpots(currentLat, currentLng).toImmutableList()
+                spotListState = LoadState.Success(spots)
+                sendLocalSpot(spots)
             } catch (exception: Exception) {
                 Log.e("getNearSpot", "${exception.message}")
                 spotListState = LoadState.Error(spotListState.value, exception)
@@ -73,8 +73,7 @@ class TravelingViewModel(
         }
     }
 
-    fun sendLocalSpot(
-        dataPath: String,
+    private fun sendLocalSpot(
         localSpot: ImmutableList<LocalSpot>,
     ) {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
@@ -97,7 +96,7 @@ class TravelingViewModel(
                         Log.d("Message", node.id)
                         messageClient.sendMessage(
                             node.id,
-                            dataPath,
+                            "/location-data",
                             jsonString.toByteArray(Charsets.UTF_8)
                         )
                             .await()

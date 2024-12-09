@@ -27,12 +27,7 @@ import kotlinx.collections.immutable.toImmutableList
 internal fun TravelingSpotScreen(
     spotList: ImmutableList<LocalSpot>,
     onTripCancelButtonClick: () -> Unit,
-    onSendLocalSpot: (String, ImmutableList<LocalSpot>) -> Unit,
 ) {
-    val LOCATION_DATA = "/location-data"
-
-    onSendLocalSpot(LOCATION_DATA, spotList)
-
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(spacingDouble),
@@ -92,7 +87,6 @@ private fun TripPreview() {
         TravelingSpotScreen(
             spotList = rankingTestList,
             onTripCancelButtonClick = { },
-            onSendLocalSpot = { _, _ -> }
         )
     }
 }

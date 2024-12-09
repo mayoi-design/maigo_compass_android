@@ -57,9 +57,6 @@ fun ParentScreen(
             spotListState = viewModel.spotListState,
             onRetryButtonClick = onRetryButtonClick,
             onTripCancelButtonClick = onTripCancelButtonClick,
-            onSendMessage = { str, spot ->
-                viewModel.sendLocalSpot(str, spot)
-            }
         )
     } else {
         PermissionLackingScreen(
@@ -76,7 +73,6 @@ internal fun TravelingScreen(
     spotListState: LoadState<ImmutableList<LocalSpot>>,
     onRetryButtonClick: () -> Unit,
     onTripCancelButtonClick: () -> Unit,
-    onSendMessage: (String, ImmutableList<LocalSpot>) -> Unit,
 ) {
     when (spotListState) {
         is LoadState.Error -> {
@@ -92,7 +88,6 @@ internal fun TravelingScreen(
                     TravelingSpotScreen(
                         spotList = spotList,
                         onTripCancelButtonClick = onTripCancelButtonClick,
-                        onSendLocalSpot = onSendMessage,
                     )
                 } else {
                     TravelingLoadScreen(
@@ -114,7 +109,6 @@ internal fun TravelingScreen(
                 TravelingSpotScreen(
                     spotList = spotListState.value,
                     onTripCancelButtonClick = onTripCancelButtonClick,
-                    onSendLocalSpot = onSendMessage,
                 )
             }
         }
@@ -193,7 +187,6 @@ private fun TravelingScreenPreview() {
             spotListState = errorState,
             onRetryButtonClick = { },
             onTripCancelButtonClick = { },
-            onSendMessage = { _, _ -> },
         )
     }
 }
@@ -210,7 +203,6 @@ private fun TravelingScreenLoadingPreview() {
             spotListState = loadingState,
             onRetryButtonClick = { },
             onTripCancelButtonClick = { },
-            onSendMessage = { _, _ -> },
         )
     }
 }
@@ -228,7 +220,6 @@ private fun TravelingScreenEmptySpotsPreview() {
             spotListState = emptySpotsState,
             onRetryButtonClick = {},
             onTripCancelButtonClick = {},
-            onSendMessage = { _, _ -> },
         )
     }
 }
@@ -255,7 +246,6 @@ private fun TravelingScreenSpotsPreview() {
             spotListState = LoadState.Success(rankingTestList),
             onTripCancelButtonClick = { },
             onRetryButtonClick = {},
-            onSendMessage = { _, _ -> },
         )
     }
 }
