@@ -59,6 +59,7 @@ class TravelingViewModel(
     fun getNearSpot() {
         val currentLat = currentLocation.latitude
         val currentLng = currentLocation.longitude
+        previousState = spotListState
         spotListState = LoadState.Loading(spotListState.value)
         viewModelScope.launch {
             try {
