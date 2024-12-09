@@ -85,31 +85,28 @@ class TravelingViewModel(
 
         scope.launch {
             try {
-                Log.d("Message", "Message send start")
                 val nodes = capabilityClient
                     .getCapability("wear", CapabilityClient.FILTER_REACHABLE)
                     .await()
                     .nodes
-                Log.d("Message", nodes.toString())
-                Log.d("Message", jsonString)
+                Log.d("TravelingViewModel", jsonString)
                 nodes.map { node ->
                     async {
-                        Log.d("Message", node.id)
+                        Log.d(
+                            "TravelingViewModel",
+                            "Trying to send message to ${node.id}(${node.displayName})"
+                        )
                         messageClient.sendMessage(
                             node.id,
                             "/location-data",
                             jsonString.toByteArray(Charsets.UTF_8)
-                        )
-                            .await()
+                        ).await()
                     }
                 }.awaitAll()
-
-                Log.d("Message", "send end")
             } catch (cancellationException: CancellationException) {
-                Log.d("Message", "Message cancel")
-                //throw cancellationException
+                Log.d("TravelingViewModel", "Canceled")
             } catch (exception: Exception) {
-                Log.d("Message", "Message failed")
+                Log.d("TravelingViewModel", "Failed to send message")
             }
         }
     }
