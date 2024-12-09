@@ -14,14 +14,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import jp.ac.mayoi.common.resource.locationIntentAction
-import jp.ac.mayoi.common.resource.locationIntentLatitude
-import jp.ac.mayoi.common.resource.locationIntentLongitude
-import jp.ac.mayoi.common.resource.locationPolingInterval
 import com.google.android.gms.wearable.CapabilityClient
 import com.google.android.gms.wearable.MessageClient
 import jp.ac.mayoi.common.model.RemoteSpotShrink
 import jp.ac.mayoi.common.model.RemoteSpotShrinkList
+import jp.ac.mayoi.common.resource.locationIntentAction
+import jp.ac.mayoi.common.resource.locationIntentLatitude
+import jp.ac.mayoi.common.resource.locationIntentLongitude
+import jp.ac.mayoi.common.resource.locationPolingInterval
 import jp.ac.mayoi.core.util.LoadState
 import jp.ac.mayoi.phone.model.LocalSpot
 import jp.ac.mayoi.repository.interfaces.TravelingRepository
@@ -41,6 +41,8 @@ import kotlin.coroutines.cancellation.CancellationException
 
 class TravelingViewModel(
     private val travelingRepository: TravelingRepository,
+    private val messageClient: MessageClient,
+    private val capabilityClient: CapabilityClient,
 ) : ViewModel() {
     var spotListState: LoadState<ImmutableList<LocalSpot>> by mutableStateOf(
         LoadState.Loading(null)
@@ -75,12 +77,8 @@ class TravelingViewModel(
     fun sendLocalSpot(
         dataPath: String,
         localSpot: ImmutableList<LocalSpot>,
-        messageClient: MessageClient,
-        capabilityClient: CapabilityClient
     ) {
-
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
-
         val payload = localSpotConvertString(localSpot)
 
         scope.launch {

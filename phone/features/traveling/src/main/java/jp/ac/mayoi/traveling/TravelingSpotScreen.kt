@@ -14,26 +14,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.android.gms.wearable.CapabilityClient
-import com.google.android.gms.wearable.MessageClient
+import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.spacingDouble
 import jp.ac.mayoi.core.util.SpotCard
 import jp.ac.mayoi.phone.model.LocalSpot
 import kotlinx.collections.immutable.ImmutableList
-import org.koin.compose.koinInject
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun TravelingSpotScreen(
     spotList: ImmutableList<LocalSpot>,
     onTripCancelButtonClick: () -> Unit,
-    onSendLocalSpot: (String, ImmutableList<LocalSpot>, MessageClient, CapabilityClient) -> Unit,
+    onSendLocalSpot: (String, ImmutableList<LocalSpot>) -> Unit,
 ) {
-    val messageClient: MessageClient = koinInject()
-    val capabilityClient: CapabilityClient = koinInject()
     val LOCATION_DATA = "/location-data"
 
-    onSendLocalSpot(LOCATION_DATA, spotList, messageClient, capabilityClient)
+    onSendLocalSpot(LOCATION_DATA, spotList)
 
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
@@ -73,31 +71,28 @@ internal fun TravelingSpotScreen(
     }
 }
 
-//Preview不可能になってしまったどうしよう
-//@Preview(showBackground = true)
-//@Composable
-//private fun TripPreview() {
-//    val messageClient: MessageClient = koinInject()
-//    val capabilityClient: CapabilityClient = koinInject()
-//    MaigoCompassTheme {
-//        val spot = LocalSpot(
-//            lat = 0.0F,
-//            lng = 0.0F,
-//            message = "Hello From Preview!",
-//            imageUrl = "",
-//            spotId = "",
-//            reachedCount = 100,
-//            createdAt = "2024-10-09T23:31:15+09:00",
-//        )
-//        val rankingTestList: ImmutableList<LocalSpot> =
-//            List(10) {
-//                spot
-//            }.toImmutableList()
-//
-//        TravelingSpotScreen(
-//            spotList = rankingTestList,
-//            onTripCancelButtonClick = { },
-//            onSendLocalSpot = {}
-//        )
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+private fun TripPreview() {
+    MaigoCompassTheme {
+        val spot = LocalSpot(
+            lat = 0.0F,
+            lng = 0.0F,
+            message = "Hello From Preview!",
+            imageUrl = "",
+            spotId = "",
+            reachedCount = 100,
+            createdAt = "2024-10-09T23:31:15+09:00",
+        )
+        val rankingTestList: ImmutableList<LocalSpot> =
+            List(10) {
+                spot
+            }.toImmutableList()
+
+        TravelingSpotScreen(
+            spotList = rankingTestList,
+            onTripCancelButtonClick = { },
+            onSendLocalSpot = { _, _ -> }
+        )
+    }
+}
