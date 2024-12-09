@@ -19,10 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.wearable.MessageClient
 import jp.ac.mayoi.common.model.RemoteSpotShrink
-import jp.ac.mayoi.common.model.RemoteSpotShrinkList
-import jp.ac.mayoi.common.resource.dataLayerRecommendSpotPath
 import jp.ac.mayoi.common.resource.locationIntentAction
 import jp.ac.mayoi.common.resource.locationIntentLatitude
 import jp.ac.mayoi.common.resource.locationIntentLongitude
@@ -34,14 +31,12 @@ import jp.ac.mayoi.wear.service.LocationService
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 
 class TravelingViewModel(
     private val sensorManager: SensorManager,
     private val compassRepository: CompassRepository,
-    private val locationRepository: LocationRepository, // あとで使うのでとりあえず
+    private val locationRepository: LocationRepository,
     private val travelingRepository: TravelingRepository,
-    private val messageClient: MessageClient,
     private val _destination: Location,
 ) : ViewModel() {
     var headingTo by mutableDoubleStateOf(0.0)
@@ -80,7 +75,6 @@ class TravelingViewModel(
         viewModelScope.launch {
             travelingRepository.recommendSpot.collect {
                 remoteRecommendSpot = it.spots
-                Log.d("TravelingViewModel", "updating remoteRecommendSpot: $it")
             }
         }
     }
@@ -92,7 +86,7 @@ class TravelingViewModel(
             SensorManager.SENSOR_DELAY_UI
         )
         registerLocationBroadcastReceiver(context)
-        messageClient.addListener(messageClientListner)
+        travelingRepository.startReceiveSpots()
     }
 
     fun stopSensor(context: Context) {
@@ -103,11 +97,7 @@ class TravelingViewModel(
         context.applicationContext.stopService(
             Intent(context.applicationContext, LocationService::class.java)
         )
-        messageClient.removeListener(messageClientListner)
-    }
-
-    fun updateRecommendSpot(remote: RemoteSpotShrinkList) {
-        remoteRecommendSpot = remote.spots
+        travelingRepository.stopReceiveSpots()
     }
 
     private fun registerLocationBroadcastReceiver(
@@ -162,16 +152,6 @@ class TravelingViewModel(
                 "Traveling",
                 "Current pos: (${currentLocation.latitude}, ${currentLocation.longitude})"
             )
-        }
-    }
-
-    private val messageClientListner = MessageClient.OnMessageReceivedListener { p0 ->
-        when (p0.path) {
-            dataLayerRecommendSpotPath -> {
-                val data = p0.data.toString(Charsets.UTF_8)
-                val spotList: RemoteSpotShrinkList = Json.decodeFromString(data)
-                remoteRecommendSpot = spotList.spots
-            }
         }
     }
 }

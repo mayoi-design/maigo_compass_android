@@ -53,12 +53,12 @@ abstract class BaseApplication : Application() {
     private val repositoryKoinModule = module {
         factory<CompassRepository> { CompassRepositoryImpl() }
         factory<LocationRepository> { LocationRepositoryImpl() }
-        factory<TravelingRepository> { TravelingRepositoryImpl() }
+        factory<TravelingRepository> { TravelingRepositoryImpl(get()) }
     }
 
     private val viewModelKoinModule = module {
         viewModel { parameters ->
-            TravelingViewModel(get(), get(), get(), get(), get(), _destination = parameters.get())
+            TravelingViewModel(get(), get(), get(), get(), _destination = parameters.get())
         }
     }
 }
