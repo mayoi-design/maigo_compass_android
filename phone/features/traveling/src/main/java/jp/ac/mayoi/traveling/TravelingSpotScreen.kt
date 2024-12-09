@@ -83,7 +83,6 @@ private fun TripPreview() {
             List(10) {
                 spot
             }.toImmutableList()
-
         TravelingSpotScreen(
             spotList = rankingTestList,
             onTripCancelButtonClick = { },
