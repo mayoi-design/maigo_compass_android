@@ -17,6 +17,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.wearable.CapabilityClient
 import com.google.android.gms.wearable.MessageClient
 import jp.ac.mayoi.common.model.RemoteSpotShrinkList
+import jp.ac.mayoi.common.resource.dataLayerRecommendSpotPath
 import jp.ac.mayoi.common.resource.locationIntentAction
 import jp.ac.mayoi.common.resource.locationIntentLatitude
 import jp.ac.mayoi.common.resource.locationIntentLongitude
@@ -98,7 +99,7 @@ class TravelingViewModel(
                         )
                         messageClient.sendMessage(
                             node.id,
-                            "/location-data",
+                            dataLayerRecommendSpotPath,
                             jsonString.toByteArray(Charsets.UTF_8)
                         ).await()
                     }
