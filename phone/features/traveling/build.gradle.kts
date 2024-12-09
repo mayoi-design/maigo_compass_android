@@ -32,7 +32,6 @@ android {
 dependencies {
     implementation(project(":common:model"))
     implementation(project(":phone:repository:interfaces"))
-    implementation(project(":phone:repository:implementations"))
     implementation(project(":phone:core:util"))
     implementation(project(":phone:core:resource"))
     implementation(project(":common:resource"))
