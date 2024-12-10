@@ -1,5 +1,7 @@
 package jp.ac.mayoi.phone.model
 
+import jp.ac.mayoi.common.model.RemoteSpotShrink
+
 data class LocalSpot(
     val lat: Float,
     val lng: Float,
@@ -18,4 +20,12 @@ data class LocalSpot(
         reachedCount = remote.reachedCount,
         createdAt = remote.createdAt,
     )
+
+    fun toRemoteSpotShrink(): RemoteSpotShrink {
+        return RemoteSpotShrink(
+            lat = this.lat.toDouble(),
+            lng = this.lng.toDouble(),
+            comment = this.message,
+        )
+    }
 }

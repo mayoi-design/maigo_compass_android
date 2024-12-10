@@ -1,9 +1,9 @@
 package jp.ac.mayoi.traveling
 
 import android.annotation.SuppressLint
-import android.app.Activity.RECEIVER_EXPORTED
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Context.RECEIVER_EXPORTED
 import android.content.Intent
 import android.content.IntentFilter
 import android.location.Location
@@ -14,6 +14,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.wearable.CapabilityClient
+import com.google.android.gms.wearable.MessageClient
+import jp.ac.mayoi.common.model.RemoteSpotShrinkList
+import jp.ac.mayoi.common.resource.dataLayerRecommendSpotPath
 import jp.ac.mayoi.common.resource.locationIntentAction
 import jp.ac.mayoi.common.resource.locationIntentLatitude
 import jp.ac.mayoi.common.resource.locationIntentLongitude
@@ -24,10 +28,21 @@ import jp.ac.mayoi.repository.interfaces.TravelingRepository
 import jp.ac.mayoi.wear.service.LocationService
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlin.coroutines.cancellation.CancellationException
 
 class TravelingViewModel(
     private val travelingRepository: TravelingRepository,
+    private val messageClient: MessageClient,
+    private val capabilityClient: CapabilityClient,
 ) : ViewModel() {
     var spotListState: LoadState<ImmutableList<LocalSpot>> by mutableStateOf(
         LoadState.Loading(null)
@@ -50,11 +65,49 @@ class TravelingViewModel(
         viewModelScope.launch {
             try {
                 val spots =
-                    travelingRepository.getNearSpots(currentLat, currentLng)
-                spotListState = LoadState.Success(spots.toImmutableList())
+                    travelingRepository.getNearSpots(currentLat, currentLng).toImmutableList()
+                spotListState = LoadState.Success(spots)
+                sendLocalSpot(spots)
             } catch (exception: Exception) {
                 Log.e("getNearSpot", "${exception.message}")
                 spotListState = LoadState.Error(spotListState.value, exception)
+            }
+        }
+    }
+
+    private fun sendLocalSpot(
+        localSpot: ImmutableList<LocalSpot>,
+    ) {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+        val payload = RemoteSpotShrinkList(
+            spots = localSpot.map { it.toRemoteSpotShrink() },
+        )
+        val jsonString = Json.encodeToString(payload)
+
+        scope.launch {
+            try {
+                val nodes = capabilityClient
+                    .getCapability("wear", CapabilityClient.FILTER_REACHABLE)
+                    .await()
+                    .nodes
+                Log.d("TravelingViewModel", jsonString)
+                nodes.map { node ->
+                    async {
+                        Log.d(
+                            "TravelingViewModel",
+                            "Trying to send message to ${node.id}(${node.displayName})"
+                        )
+                        messageClient.sendMessage(
+                            node.id,
+                            dataLayerRecommendSpotPath,
+                            jsonString.toByteArray(Charsets.UTF_8)
+                        ).await()
+                    }
+                }.awaitAll()
+            } catch (cancellationException: CancellationException) {
+                Log.d("TravelingViewModel", "Canceled")
+            } catch (exception: Exception) {
+                Log.d("TravelingViewModel", "Failed to send message")
             }
         }
     }

@@ -14,7 +14,6 @@ import androidx.navigation.compose.rememberNavController
 import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
@@ -23,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             KoinContext {
                 WearNavigation(
-                    navController = rememberNavController()
+                    navController = rememberNavController(),
                 )
             }
         }

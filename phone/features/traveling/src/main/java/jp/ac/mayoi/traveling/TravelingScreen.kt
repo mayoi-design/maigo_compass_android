@@ -219,7 +219,7 @@ private fun TravelingScreenEmptySpotsPreview() {
             previousState = emptySpotsState,
             spotListState = emptySpotsState,
             onRetryButtonClick = {},
-            onTripCancelButtonClick = {}
+            onTripCancelButtonClick = {},
         )
     }
 }
@@ -241,9 +241,11 @@ private fun TravelingScreenSpotsPreview() {
             spot
         }.toImmutableList()
     MaigoCompassTheme {
-        TravelingSpotScreen(
-            spotList = rankingTestList,
+        TravelingScreen(
+            previousState = LoadState.Success(rankingTestList),
+            spotListState = LoadState.Success(rankingTestList),
             onTripCancelButtonClick = { },
+            onRetryButtonClick = {},
         )
     }
 }

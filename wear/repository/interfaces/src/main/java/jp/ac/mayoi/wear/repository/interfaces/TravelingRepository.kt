@@ -1,7 +1,10 @@
 package jp.ac.mayoi.wear.repository.interfaces
 
-import jp.ac.mayoi.common.model.RemoteSpotShrink
+import jp.ac.mayoi.common.model.RemoteSpotShrinkList
+import kotlinx.coroutines.flow.StateFlow
 
-interface TravelingRepository {
-    suspend fun getRecommendSpots(): List<RemoteSpotShrink>
+abstract class TravelingRepository {
+    abstract val recommendSpot: StateFlow<RemoteSpotShrinkList>
+    abstract fun startReceiveSpots()
+    abstract fun stopReceiveSpots()
 }

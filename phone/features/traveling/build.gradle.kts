@@ -30,6 +30,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":common:model"))
     implementation(project(":phone:repository:interfaces"))
     implementation(project(":phone:core:util"))
     implementation(project(":phone:core:resource"))
@@ -42,6 +43,13 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.material)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
+    implementation(libs.play.services.wearable)
+    implementation(libs.kotlinx.coroutine.core)
+    implementation(libs.kotlinx.coroutine.android)
+    implementation(libs.kotlinx.coroutine.play.services)
+    implementation(libs.kotlinx.serialization.json)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
