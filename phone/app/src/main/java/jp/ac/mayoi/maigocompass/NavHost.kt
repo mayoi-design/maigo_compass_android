@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,6 +22,7 @@ import jp.ac.mayoi.onboarding.OnboardingViewModel
 import jp.ac.mayoi.ranking.RankingScreen
 import jp.ac.mayoi.traveling.ParentScreen
 import jp.ac.mayoi.traveling.TravelingViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -35,10 +37,18 @@ fun PhoneNavHost(
     ) {
         composable<OnboardingNavigation> {
             val onboardingViewModel: OnboardingViewModel = koinViewModel()
+            val coroutineScope = rememberCoroutineScope()
             OnboardingScreen(
                 onCameraPositionChanged = onboardingViewModel::onCameraChanged,
                 onDecideClicked = {
-                    navController.navigate(TravelingNavigation)
+                    coroutineScope.launch {
+                        onboardingViewModel
+                            .onBeforeNavigateToTravelingScreen()
+                            .await()
+                            .onSuccess {
+                                navController.navigate(TravelingNavigation)
+                            }
+                    }
                 },
                 onCurrentPositionClicked = {},
             )

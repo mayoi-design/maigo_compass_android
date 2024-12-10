@@ -30,6 +30,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":common:model"))
     implementation(project(":phone:core:util"))
     implementation(project(":phone:core:resource"))
     implementation(platform(libs.androidx.compose.bom))
@@ -39,6 +40,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.material)
     implementation(libs.bundles.maps)
+    implementation(libs.play.services.wearable)
+    implementation(libs.kotlinx.coroutine.play.services)
+    implementation(libs.kotlinx.serialization.json)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

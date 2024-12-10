@@ -137,7 +137,7 @@ abstract class BaseApplication : Application() {
     }
 
     private val viewModelKoinModule = module {
-        viewModel { OnboardingViewModel() }
+        viewModel { OnboardingViewModel(get(), get()) }
         viewModel { TravelingViewModel(get(), get(), get()) }
         viewModel { RankingViewModel(get()) }
     }
