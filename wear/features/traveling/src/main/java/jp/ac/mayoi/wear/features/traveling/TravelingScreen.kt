@@ -4,8 +4,10 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -16,7 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -24,17 +28,21 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.times
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.tooling.preview.devices.WearDevices
@@ -43,10 +51,13 @@ import jp.ac.mayoi.wear.core.resource.colorButtonTextPrimary
 import jp.ac.mayoi.wear.core.resource.colorDarkBlueTriangle
 import jp.ac.mayoi.wear.core.resource.colorDarkRedTriangle
 import jp.ac.mayoi.wear.core.resource.colorRedTriangle
+import jp.ac.mayoi.wear.core.resource.spacingDouble
 import jp.ac.mayoi.wear.core.resource.spacingHalf
+import jp.ac.mayoi.wear.core.resource.spacingSingle
 import jp.ac.mayoi.wear.core.resource.spacingTriple
 import jp.ac.mayoi.wear.model.RecommendSpot
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.cos
 import kotlin.math.roundToInt
 import kotlin.math.sin
@@ -62,6 +73,42 @@ fun TravelingScreen(
                     travelingViewModel.destination.lng == travelingViewModel.focusing.lng
         }
     }
+
+    val distanceInMeter = if (isHeadingDestination) {
+        travelingViewModel.destination.distance
+    } else {
+        val focusing = travelingViewModel.focusing
+        travelingViewModel.recommendSpot.find { spot ->
+            spot.lat == focusing.lat && spot.lng == focusing.lng
+        }?.distance ?: Double.POSITIVE_INFINITY
+    }
+    val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
+
+    TravelingScreen(
+        destination = travelingViewModel.destination,
+        recommendSpot = travelingViewModel.recommendSpot,
+        focusing = travelingViewModel.focusing,
+        isHeadingDestination = isHeadingDestination,
+        distanceToFocus = distanceInKilo,
+        onRedTriangleClick = {
+            travelingViewModel.focusing = travelingViewModel.destination
+        },
+        onBlueTriangleClick = { spot ->
+            travelingViewModel.focusing = spot
+        }
+    )
+}
+
+@Composable
+private fun TravelingScreen(
+    destination: RecommendSpot,
+    recommendSpot: ImmutableList<RecommendSpot>,
+    focusing: RecommendSpot,
+    isHeadingDestination: Boolean,
+    distanceToFocus: Double,
+    onRedTriangleClick: () -> Unit,
+    onBlueTriangleClick: (RecommendSpot) -> Unit,
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -69,35 +116,21 @@ fun TravelingScreen(
     ) {
         CommonTravelingScreen(
             isHeadingDestination = isHeadingDestination,
-            destination = travelingViewModel.destination,
-            recommendSpot = travelingViewModel.recommendSpot,
-            focusing = travelingViewModel.focusing,
-            onRedTriangleClick = {
-                travelingViewModel.focusing = travelingViewModel.destination
-            },
-            onBlueTriangleClick = { recommendSpot ->
-                travelingViewModel.focusing = recommendSpot
-            }
+            destination = destination,
+            recommendSpot = recommendSpot,
+            focusing = focusing,
+            onRedTriangleClick = onRedTriangleClick,
+            onBlueTriangleClick = onBlueTriangleClick,
         )
-
-        val distanceInMeter = if (isHeadingDestination) {
-            travelingViewModel.destination.distance
-        } else {
-            val focusing = travelingViewModel.focusing
-            travelingViewModel.recommendSpot.find { spot ->
-                spot.lat == focusing.lat && spot.lng == focusing.lng
-            }?.distance ?: Double.POSITIVE_INFINITY
-        }
-        val distanceInKilo = (distanceInMeter / 100.0).roundToInt() / 10.0
 
         if (isHeadingDestination) {
             TextInCircle(
-                distanceText = "$distanceInKilo"
+                distanceText = "$distanceToFocus"
             )
         } else {
             BestSpotTextInCircle(
-                text = travelingViewModel.focusing.comment,
-                distanceText = "$distanceInKilo",
+                text = focusing.comment,
+                distanceText = "$distanceToFocus",
             )
         }
     }
@@ -137,29 +170,49 @@ private fun CommonTravelingScreen(
     }
 }
 
-// TravelingScreenの大きい円の中のテキストの実装
 @Composable
-private fun TextInCircle(distanceText: String) {
-    val paint = Paint().apply {
-        strokeWidth = 2f
-        isAntiAlias = true
-    }
+private fun CenterCircle(
+    circleRadius: Dp,
+    screenWidth: Dp,
+    content: @Composable (BoxScope.() -> Unit),
+) {
+    val widthInPx = with(LocalDensity.current) { screenWidth.toPx() }
+    val radiusInPx = with(LocalDensity.current) { circleRadius.toPx() }
     Box(
         contentAlignment = Alignment.Center,
+        content = content,
         modifier = Modifier
             .fillMaxSize()
             .drawBehind {
                 drawCircle(
                     color = colorButtonTextPrimary,
-                    radius = 140f,
-                    center = Offset(190f, 190f),
-                    style = Stroke(paint.strokeWidth)
+                    radius = radiusInPx,
+                    center = Offset(widthInPx / 2, widthInPx / 2),
+                    style = Stroke(width = 2f)
                 )
             }
+            .padding(26.dp)
+    )
+}
+
+// TravelingScreenの大きい円の中のテキストの実装
+@Composable
+private fun TextInCircle(distanceText: String) {
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp // As same as height
+    val circleRadius = (screenWidth - 2 * (24.dp + 2.dp)) / 2
+    CenterCircle(
+        screenWidth = screenWidth,
+        circleRadius = circleRadius,
     ) {
-        SmallTextCircle(
-            text = "目的地"
-        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(vertical = spacingTriple)
+        ) {
+            SmallTextCircle(
+                text = "目的地"
+            )
+        }
         DistanceText(
             distanceTexts = distanceText,
         )
@@ -167,19 +220,21 @@ private fun TextInCircle(distanceText: String) {
 }
 
 @Composable
-private fun DistanceText(distanceTexts: String) {
-    Column {
-        Row(
-            verticalAlignment = Alignment.Bottom
-        ) {
-            Text(
-                text = distanceTexts,
-                fontSize = 30.sp,
-            )
-            Text(
-                text = "km"
-            )
-        }
+private fun DistanceText(
+    distanceTexts: String,
+    fontSize: TextUnit = 30.sp,
+) {
+    Row(
+        verticalAlignment = Alignment.Bottom
+    ) {
+        Text(
+            text = distanceTexts,
+            fontSize = fontSize,
+        )
+        Text(
+            text = "km",
+            modifier = Modifier.padding(bottom = 3.dp, start = 6.dp)
+        )
     }
 }
 
@@ -188,23 +243,29 @@ private fun SmallTextCircle(
     text: String,
     circleColor: Color = colorButtonTextPrimary,
 ) {
+    var textWidth by remember { mutableFloatStateOf(0f) }
+    var textHeight by remember { mutableFloatStateOf(0f) }
     Box(
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.padding(vertical = 4.dp)
     ) {
         Text(
             text = text,
-            style = TextStyle(fontSize = 6.sp),
+            style = TextStyle(fontSize = 8.sp),
             modifier = Modifier
+                .onGloballyPositioned { layoutCoordinates ->
+                    textHeight = layoutCoordinates.size.height.toFloat()
+                    textWidth = layoutCoordinates.size.width.toFloat()
+                }
                 .drawBehind {
                     drawRoundRect(
                         color = circleColor,
                         cornerRadius = CornerRadius(32f),
-                        size = Size(size.width + 10, size.height / 10),
+                        size = Size(textWidth + 24f, textHeight + 8f),
                         style = Stroke(width = 2f),
-                        topLeft = Offset(-4f, 0f)
+                        topLeft = Offset(-12f, -4f)
                     )
                 }
-                .padding(bottom = 90.dp)
         )
     }
 }
@@ -215,61 +276,51 @@ private fun BestSpotTextInCircle(
     distanceText: String,
     text: String,
 ) {
-    val paint = Paint().apply {
-        strokeWidth = 2f
-        isAntiAlias = true
-    }
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .drawBehind {
-                drawCircle(
-                    color = colorButtonTextPrimary,
-                    radius = 140f,
-                    center = Offset(190f, 190f),
-                    style = Stroke(paint.strokeWidth)
-                )
-            }
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val circleRadius = (screenWidth - 2 * (24.dp + 2.dp)) / 2
+    CenterCircle(
+        screenWidth = screenWidth,
+        circleRadius = circleRadius,
     ) {
-        SmallTextCircle(
-            text = "おすすめスポット"
-        )
-        Image(
-            painter = painterResource(id = R.drawable.smail),
-            contentDescription = "Smail Image",
+        Box(
             modifier = Modifier
-                .padding(bottom = spacingTriple)
-                .size(35.dp)
-        )
-        Text(
-            text = text,
-            fontSize = 12.sp,
-            modifier = Modifier
-                .padding(top = 35.dp)
-        )
-        BestSpotDistanceText(
-            distanceTexts = distanceText
-        )
-    }
-}
+                .align(Alignment.TopCenter)
+                .padding(vertical = spacingDouble)
+        ) {
+            SmallTextCircle(
+                text = "おすすめスポット"
+            )
+        }
 
-@Composable
-private fun BestSpotDistanceText(distanceTexts: String) {
-    Row(
-        verticalAlignment = Alignment.Bottom,
-        modifier = Modifier
-            .padding(top = 80.dp)
-    ) {
-        Text(
-            text = distanceTexts,
-            fontSize = 25.sp,
-        )
-        Text(
-            text = "km",
-            fontSize = 10.sp,
-            modifier = Modifier.padding(bottom = 2.dp, start = 6.dp)
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.smail),
+                contentDescription = "Smail Image",
+                modifier = Modifier
+                    .size(35.dp)
+            )
+
+            Spacer(modifier = Modifier.size(spacingHalf))
+
+            Text(
+                text = text,
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center,
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = spacingSingle + spacingHalf)
+        ) {
+            DistanceText(
+                distanceTexts = distanceText,
+                fontSize = 25.sp
+            )
+        }
     }
 }
 
@@ -429,5 +480,94 @@ private fun BlueTrianglePreview() {
                 )
             )
         }
+    }
+}
+
+@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
+@Preview(device = WearDevices.LARGE_ROUND, showSystemUi = true)
+@Composable
+private fun TextInCirclePreview() {
+    MaterialTheme {
+        TextInCircle(
+            distanceText = "12.3"
+        )
+    }
+}
+
+@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
+@Preview(device = WearDevices.LARGE_ROUND, showSystemUi = true)
+@Composable
+private fun BestSpotInCirclePreview() {
+    MaterialTheme {
+        BestSpotTextInCircle(
+            distanceText = "12.3",
+            text = "あ".repeat(10)
+        )
+    }
+}
+
+@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
+@Preview(device = WearDevices.LARGE_ROUND, showSystemUi = true)
+@Composable
+private fun TravelingScreenHeadingDestinationPreview() {
+    MaterialTheme {
+        val destination = RecommendSpot(
+            lat = 0.0,
+            lng = 0.0,
+            comment = "",
+            distance = 12.3,
+            bearing = 15.0,
+        )
+        val spots = List(6) {
+            RecommendSpot(
+                lat = it + 1.0,
+                lng = it + 1.0,
+                comment = "Spot ${it + 1}",
+                distance = 12.3 * (it + 2),
+                bearing = 30.0 * it
+            )
+        }.toImmutableList()
+        TravelingScreen(
+            destination = destination,
+            recommendSpot = spots,
+            focusing = destination,
+            isHeadingDestination = true,
+            distanceToFocus = destination.distance,
+            onBlueTriangleClick = {},
+            onRedTriangleClick = {},
+        )
+    }
+}
+
+@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
+@Preview(device = WearDevices.LARGE_ROUND, showSystemUi = true)
+@Composable
+private fun TravelingScreenHeadingSpotPreview() {
+    MaterialTheme {
+        val destination = RecommendSpot(
+            lat = 0.0,
+            lng = 0.0,
+            comment = "",
+            distance = 12.3,
+            bearing = 15.0,
+        )
+        val spots = List(6) {
+            RecommendSpot(
+                lat = it + 1.0,
+                lng = it + 1.0,
+                comment = "Spot ${it + 1}",
+                distance = 6.2 * (it + 2),
+                bearing = 30.0 * it
+            )
+        }.toImmutableList()
+        TravelingScreen(
+            destination = destination,
+            recommendSpot = spots,
+            focusing = spots[1],
+            isHeadingDestination = false,
+            distanceToFocus = spots[1].distance,
+            onBlueTriangleClick = {},
+            onRedTriangleClick = {},
+        )
     }
 }
