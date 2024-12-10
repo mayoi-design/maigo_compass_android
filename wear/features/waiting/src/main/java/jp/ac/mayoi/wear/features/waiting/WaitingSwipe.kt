@@ -24,12 +24,19 @@ import jp.ac.mayoi.wear.core.resource.spacingHalf
 @Composable
 fun WaitingSwipe(
     onSettingButtonClick: () -> Unit,
+    onReceiveDestinationData: (lat: Double, lng: Double) -> Unit,
     viewModel: WaitingScreenViewModel = viewModel()
 ) {
     WaitingSwipe(
         isButtonView = viewModel.isButtonView,
         onSettingButtonClick = onSettingButtonClick,
-        onSetDestinationButtonClick = viewModel::onSetDestinationButtonClick,
+        onSetDestinationButtonClick = {
+            viewModel.onSetDestinationButtonClick()
+            onReceiveDestinationData(
+                41.797653393691476,
+                140.7550099479477,
+            )
+        },
     )
 }
 

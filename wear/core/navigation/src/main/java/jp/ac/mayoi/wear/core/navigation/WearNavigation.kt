@@ -3,7 +3,10 @@ package jp.ac.mayoi.wear.core.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object TripNavigation
+data class TripNavigation(
+    val destinationLat: Double,
+    val destinationLng: Double,
+)
 
 @Serializable
 data object WatchWaitNavigation
