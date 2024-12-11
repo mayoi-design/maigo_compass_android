@@ -69,6 +69,8 @@ class TravelingViewModel(
         )
     var focusing: RecommendSpot by mutableStateOf(destination)
 
+    val finishTravelingNotification = travelingRepository.finishTravelingNotification
+
     private val rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
 
     init {

@@ -7,3 +7,4 @@ const val locationPolingInterval = "Location_Poling_Interval"
 
 const val dataLayerRecommendSpotPath = "/recommend_spots_data"
 const val commonDataLayerDestinationPath = "/destination_data"
+const val commonDataLayerFinishTravelingPath = "/travel_finish"

@@ -39,6 +39,11 @@ fun WearNavigation(
             }
             TravelingRoot(
                 viewModel = travelingViewModel,
+                onFinishTraveling = {
+                    if (!navController.popBackStack()) {
+                        navController.navigate(WatchWaitNavigation)
+                    }
+                }
             )
         }
         composable<WatchWaitNavigation> {

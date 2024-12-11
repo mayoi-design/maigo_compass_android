@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.tooling.preview.devices.WearDevices
@@ -36,7 +38,8 @@ import jp.ac.mayoi.wear.core.resource.textStyleBody
 
 @Composable
 fun TravelingRoot(
-    viewModel: TravelingViewModel
+    viewModel: TravelingViewModel,
+    onFinishTraveling: () -> Unit,
 ) {
     val context = LocalContext.current
     var permitted by remember { mutableStateOf(checkTravelingPermission(context)) }
@@ -49,6 +52,15 @@ fun TravelingRoot(
             if (permitted) {
                 viewModel.stopSensor(context)
             }
+        }
+    }
+
+    val finishTravelingNotification by
+    viewModel.finishTravelingNotification.collectAsStateWithLifecycle()
+
+    LaunchedEffect(finishTravelingNotification) {
+        if (finishTravelingNotification) {
+            onFinishTraveling()
         }
     }
 

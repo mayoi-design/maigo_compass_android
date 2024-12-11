@@ -22,6 +22,7 @@ import jp.ac.mayoi.common.resource.locationIntentAction
 import jp.ac.mayoi.common.resource.locationIntentLatitude
 import jp.ac.mayoi.common.resource.locationIntentLongitude
 import jp.ac.mayoi.common.resource.locationPolingInterval
+import jp.ac.mayoi.core.resource.dataLayerFinishTravelingPath
 import jp.ac.mayoi.core.util.LoadState
 import jp.ac.mayoi.phone.model.LocalSpot
 import jp.ac.mayoi.repository.interfaces.TravelingRepository
@@ -29,6 +30,7 @@ import jp.ac.mayoi.wear.service.LocationService
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
@@ -149,6 +151,39 @@ class TravelingViewModel(
         context.applicationContext.stopService(
             Intent(context.applicationContext, LocationService::class.java)
         )
+    }
+
+    fun notifyFinishTravel(): Deferred<Result<Unit>> {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+        return scope.async {
+            try {
+                val nodes = capabilityClient
+                    .getCapability("wear", CapabilityClient.FILTER_REACHABLE)
+                    .await()
+                    .nodes
+                Log.d("TravelingViewModel", "Finishing travel...")
+                nodes.map { node ->
+                    async {
+                        Log.d(
+                            "TravelingViewModel",
+                            "Trying to send message to ${node.id}(${node.displayName})"
+                        )
+                        messageClient.sendMessage(
+                            node.id,
+                            dataLayerFinishTravelingPath,
+                            ByteArray(0)
+                        ).await()
+                    }
+                }.awaitAll()
+                Result.success(Unit)
+            } catch (e: CancellationException) {
+                Log.d("TravelingViewModel", "Canceled")
+                Result.failure(e)
+            } catch (e: Exception) {
+                Log.d("TravelingViewModel", "Failed to send message")
+                Result.failure(e)
+            }
+        }
     }
 
     private val broadcastReceiver = object : BroadcastReceiver() {

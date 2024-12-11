@@ -68,10 +68,18 @@ fun PhoneNavHost(
         }
         composable<TravelingNavigation> {
             val travelingViewModel: TravelingViewModel = koinViewModel()
+            val coroutineScope = rememberCoroutineScope()
             ParentScreen(
                 viewModel = travelingViewModel,
                 onTripCancelButtonClick = {
-                    navController.popBackStack()
+                    coroutineScope.launch {
+                        travelingViewModel
+                            .notifyFinishTravel()
+                            .await()
+                            .onSuccess {
+                                navController.popBackStack()
+                            }
+                    }
                 },
                 onRetryButtonClick = {
                     travelingViewModel.getNearSpot()
