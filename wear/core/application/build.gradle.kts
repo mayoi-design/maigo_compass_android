@@ -54,6 +54,7 @@ dependencies {
     implementation(project(":wear:repository:interfaces"))
     implementation(project(":wear:repository:implementations"))
     implementation(project(":wear:features:traveling"))
+    implementation(project(":wear:features:waiting"))
 
     implementation(libs.bundles.wearComposeKit)
     implementation(platform(libs.koin.bom))

@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.android.gms.wearable.MessageClient
 import jp.ac.mayoi.common.model.RemoteSpotShrinkList
 import jp.ac.mayoi.common.resource.dataLayerRecommendSpotPath
+import jp.ac.mayoi.wear.core.resource.dataLayerFinishTravelingPath
 import jp.ac.mayoi.wear.repository.interfaces.TravelingRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +19,10 @@ class TravelingRepositoryImpl(
     private val _recommendSpot: MutableStateFlow<RemoteSpotShrinkList> =
         MutableStateFlow(initialValue)
     override val recommendSpot: StateFlow<RemoteSpotShrinkList> = _recommendSpot.asStateFlow()
+
+    private val _finishTravelingNotification: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    override val finishTravelingNotification: StateFlow<Boolean> =
+        _finishTravelingNotification.asStateFlow()
 
     override fun startReceiveSpots() {
         messageClient.addListener(messageClientListener)
@@ -43,6 +48,12 @@ class TravelingRepositoryImpl(
                     }
                 } catch (e: Exception) {
                     Log.d("TravelingRepository", "Failed to parse recommend spots message.\n$data")
+                }
+            }
+            dataLayerFinishTravelingPath -> {
+                Log.d("TravelingRepository", "Received finish message.")
+                runBlocking {
+                    _finishTravelingNotification.emit(true)
                 }
             }
         }

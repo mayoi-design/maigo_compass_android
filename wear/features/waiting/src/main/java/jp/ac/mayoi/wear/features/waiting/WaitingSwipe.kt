@@ -16,20 +16,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import jp.ac.mayoi.wear.core.resource.colorButtonTextPrimary
 import jp.ac.mayoi.wear.core.resource.colorTextCaption
 import jp.ac.mayoi.wear.core.resource.spacingHalf
 
 @Composable
 fun WaitingSwipe(
+    viewModel: WaitingScreenViewModel,
     onSettingButtonClick: () -> Unit,
-    viewModel: WaitingScreenViewModel = viewModel()
 ) {
+    LifecycleResumeEffect(Unit) {
+        viewModel.startReceivingMessage()
+        onPauseOrDispose {
+            viewModel.stopReceivingMessage()
+        }
+    }
+
     WaitingSwipe(
         isButtonView = viewModel.isButtonView,
         onSettingButtonClick = onSettingButtonClick,
-        onSetDestinationButtonClick = viewModel::onSetDestinationButtonClick,
+        onSetDestinationButtonClick = {
+            viewModel.onSetDestinationButtonClick()
+        },
     )
 }
 

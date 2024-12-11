@@ -5,11 +5,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
+import jp.ac.mayoi.common.model.Destination
 import jp.ac.mayoi.wear.core.navigation.SettingsNavigation
 import jp.ac.mayoi.wear.core.navigation.TripNavigation
 import jp.ac.mayoi.wear.core.navigation.WatchWaitNavigation
 import jp.ac.mayoi.wear.features.traveling.TravelingRoot
 import jp.ac.mayoi.wear.features.traveling.TravelingViewModel
+import jp.ac.mayoi.wear.features.waiting.WaitingScreenViewModel
 import jp.ac.mayoi.wear.features.waiting.WaitingSwipe
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -23,33 +26,46 @@ fun WearNavigation(
         navController = navController,
         startDestination = WatchWaitNavigation,
     ) {
-        composable<TripNavigation> {
+        composable<TripNavigation> { backStackEntry ->
+            val route: TripNavigation = backStackEntry.toRoute()
             val travelingViewModel: TravelingViewModel = koinViewModel {
-                // 本当はここをNavArgsで持ってくる
-                // 1. Waitingでスマホから目的地情報を受け取る
-                // 2. 目的地情報を使って遷移
-                // 3. ここで目的地情報をViewModelに詰めてViewを作成
-                // の流れ
                 val destination = run {
                     Location(null).also {
-                        // とりあえず五稜郭にしてある
-                        it.latitude = 41.797653393691476
-                        it.longitude = 140.7550099479477
+                        it.latitude = route.destinationLat
+                        it.longitude = route.destinationLng
                     }
                 }
                 parametersOf(destination)
             }
             TravelingRoot(
                 viewModel = travelingViewModel,
+                onFinishTraveling = {
+                    if (!navController.popBackStack()) {
+                        navController.navigate(WatchWaitNavigation)
+                    }
+                }
             )
         }
         composable<WatchWaitNavigation> {
+            val waitingViewModel: WaitingScreenViewModel = koinViewModel {
+                val onDestinationReceivedListener: (Destination) -> Unit = {
+                    navController.navigate(
+                        TripNavigation(
+                            destinationLat = it.lat,
+                            destinationLng = it.lng,
+                        )
+                    )
+                }
+                parametersOf(onDestinationReceivedListener)
+            }
+
             WaitingSwipe(
+                viewModel = waitingViewModel,
                 onSettingButtonClick = {
                     navController.navigate(
                         SettingsNavigation
                     )
-                }
+                },
             )
         }
         composable<SettingsNavigation> {

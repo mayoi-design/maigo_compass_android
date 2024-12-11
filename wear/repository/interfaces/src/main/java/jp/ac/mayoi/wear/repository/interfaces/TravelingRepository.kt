@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 abstract class TravelingRepository {
     abstract val recommendSpot: StateFlow<RemoteSpotShrinkList>
+    abstract val finishTravelingNotification: StateFlow<Boolean>
     abstract fun startReceiveSpots()
     abstract fun stopReceiveSpots()
 }

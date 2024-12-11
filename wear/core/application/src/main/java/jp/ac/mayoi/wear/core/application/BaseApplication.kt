@@ -6,6 +6,7 @@ import com.google.android.gms.wearable.CapabilityClient
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.Wearable
 import jp.ac.mayoi.wear.features.traveling.TravelingViewModel
+import jp.ac.mayoi.wear.features.waiting.WaitingScreenViewModel
 import jp.ac.mayoi.wear.repository.implementations.CompassRepositoryImpl
 import jp.ac.mayoi.wear.repository.implementations.LocationRepositoryImpl
 import jp.ac.mayoi.wear.repository.implementations.TravelingRepositoryImpl
@@ -57,6 +58,9 @@ abstract class BaseApplication : Application() {
     }
 
     private val viewModelKoinModule = module {
+        viewModel { parameters ->
+            WaitingScreenViewModel(get(), onDestinationReceivedListener = parameters.get())
+        }
         viewModel { parameters ->
             TravelingViewModel(get(), get(), get(), get(), _destination = parameters.get())
         }
