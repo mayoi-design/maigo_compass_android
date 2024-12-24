@@ -7,7 +7,7 @@
 | phone | 迷子コンパスのスマホアプリ   |
 | wear  | 迷子コンパスのWatchアプリ |
 
-詳しくは、[App Architecture Guide](https://docs.google.com/document/d/1wxPBv5s3VjJYdiVYz9FArckUJ_JRB_ljIVJtmHwhDJU/edit?usp=sharing)を見てください
+詳しくは、Google Drive の App Architecture Guide を見てください
 
 ## ブランチ運用ルール
 
