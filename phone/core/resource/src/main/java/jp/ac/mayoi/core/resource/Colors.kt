@@ -26,6 +26,15 @@ val colorTextCaption = colorTextCaptionCommon
 val colorAccent = colorAccentCommon
 val colorAccentSecondary = colorAccentSecondaryCommon
 
+// Memory Pie Graph
+val colorGraphBackground = Color(0xFFA1ECFD)
+val colorGraphHakodateSt = Color(0xFFFF3A28)
+val colorGraphHakodateBay = Color(0xFFB55233)
+val colorGraphMotomachi = Color(0xFFF8F36A)
+val colorGraphGoryokaku = Color(0xFFFFBCE4)
+val colorGraphYunokawa = Color(0xFF8EB4FC)
+val colorGraphMihara = Color(0xFFFFBD80)
+
 // ButtonColors
 
 val buttonColorsDefault
