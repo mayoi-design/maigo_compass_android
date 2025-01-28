@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "jp.ac.mayoi.impressions"
+    namespace = "jp.ac.mayoi.memory"
     compileSdk = 35
 
     defaultConfig {

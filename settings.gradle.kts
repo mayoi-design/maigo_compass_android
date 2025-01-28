@@ -25,7 +25,7 @@ include(
     ":phone:features:onboarding",
     ":phone:features:ranking",
     ":phone:features:traveling",
-    ":phone:features:impressions",
+    ":phone:features:memory",
     ":phone:features:share",
     ":phone:core:navigation",
     ":phone:service",
