@@ -34,17 +34,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":phone:core:resource"))
 
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.bundles.composeKit)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.lifecycle.runtime.ktx)
     lintChecks(libs.slack.compose.lints)
 }
