@@ -35,6 +35,7 @@ android {
 
 dependencies {
     implementation(project(":phone:core:resource"))
+    implementation(project(":phone:model"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.composeKit)

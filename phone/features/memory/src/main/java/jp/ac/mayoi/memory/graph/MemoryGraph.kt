@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -16,16 +17,34 @@ import androidx.compose.ui.unit.dp
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
 import jp.ac.mayoi.core.resource.colorAccentSecondary
 import jp.ac.mayoi.core.resource.colorBackgroundPrimary
+import jp.ac.mayoi.core.resource.colorGraphGoryokaku
 import jp.ac.mayoi.core.resource.colorGraphHakodateBay
 import jp.ac.mayoi.core.resource.colorGraphHakodateSt
+import jp.ac.mayoi.core.resource.colorGraphMihara
+import jp.ac.mayoi.core.resource.colorGraphMotomachi
+import jp.ac.mayoi.core.resource.colorGraphYunokawa
+import jp.ac.mayoi.phone.model.PieChartEntry
+import jp.ac.mayoi.phone.model.PieChartModel
 import kotlin.math.min
 
 val arcOuterPadding = 64.dp
 
 @Composable
 internal fun MemoryGraph(
+    model: PieChartModel,
     modifier: Modifier = Modifier
 ) {
+    val angleRangeForEach: List<Pair<Float, Float>> = remember(model) {
+        var lastAngle = -90f
+        model.getRatioForEach()
+            .map {
+                val begin = lastAngle
+                val sweepAngle = it * 360f
+                lastAngle = begin + sweepAngle
+                Pair(begin, sweepAngle)
+            }
+    }
+
     Canvas(
         modifier = modifier
     ) {
@@ -39,23 +58,16 @@ internal fun MemoryGraph(
             y = (size.height - arcSize.height) / 2
         )
 
-        drawArc(
-            color = colorGraphHakodateSt,
-            startAngle = -90f,
-            sweepAngle = 90f,
-            useCenter = true,
-            topLeft = arcOffset,
-            size = arcSize
-        )
-
-        drawArc(
-            color = colorGraphHakodateBay,
-            startAngle = 0f,
-            sweepAngle = 85f,
-            useCenter = true,
-            topLeft = arcOffset,
-            size = arcSize
-        )
+        for (it in 0..<model.entries.size) {
+            drawArc(
+                color = model.entries[it].arcColor,
+                startAngle = angleRangeForEach[it].first,
+                sweepAngle = angleRangeForEach[it].second,
+                useCenter = true,
+                topLeft = arcOffset,
+                size = arcSize
+            )
+        }
 
         // このUIは高さ300dpのPreviewで作成している
         // 高さが300dpから変わるとグラフの色のついた部分の幅が太くなったり狭くなったりする
@@ -87,7 +99,42 @@ private fun MemoryGraphPreview() {
                     .height(boxHeight)
             )
 
+            val model = PieChartModel(
+                listOf(
+                    PieChartEntry(
+                        label = "LabelA",
+                        arcColor = colorGraphHakodateSt,
+                        count = 27,
+                    ),
+                    PieChartEntry(
+                        label = "LabelB",
+                        arcColor = colorGraphHakodateBay,
+                        count = 23,
+                    ),
+                    PieChartEntry(
+                        label = "LabelC",
+                        arcColor = colorGraphMotomachi,
+                        count = 18,
+                    ),
+                    PieChartEntry(
+                        label = "LabelD",
+                        arcColor = colorGraphGoryokaku,
+                        count = 13,
+                    ),
+                    PieChartEntry(
+                        label = "LabelE",
+                        arcColor = colorGraphYunokawa,
+                        count = 13,
+                    ),
+                    PieChartEntry(
+                        label = "LabelF",
+                        arcColor = colorGraphMihara,
+                        count = 9
+                    )
+                )
+            )
             MemoryGraph(
+                model = model,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(boxHeight)
