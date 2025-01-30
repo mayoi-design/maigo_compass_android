@@ -34,6 +34,8 @@ android {
 dependencies {
     implementation(project(":common:model"))
 
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.bundles.composeKit)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
