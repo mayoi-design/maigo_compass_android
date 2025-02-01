@@ -1,8 +1,9 @@
 package jp.ac.mayoi.memory.graph
 
+import android.util.Log
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.HorizontalDivider
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jp.ac.mayoi.core.resource.MaigoCompassTheme
@@ -25,6 +27,7 @@ import jp.ac.mayoi.core.resource.colorGraphMotomachi
 import jp.ac.mayoi.core.resource.colorGraphYunokawa
 import jp.ac.mayoi.phone.model.PieChartEntry
 import jp.ac.mayoi.phone.model.PieChartModel
+import kotlin.math.atan2
 import kotlin.math.min
 
 private val arcOuterPadding = 64.dp
@@ -32,6 +35,9 @@ private val arcOuterPadding = 64.dp
 @Composable
 internal fun MemoryPieChart(
     model: PieChartModel,
+    selectedEntry: Int?,
+    onEntrySelected: (Int?) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val angleRangeForEach: List<Pair<Float, Float>> = remember(model) {
         var lastAngle = -90f
@@ -45,9 +51,51 @@ internal fun MemoryPieChart(
     }
 
     Canvas(
-        modifier = Modifier
-            .defaultMinSize(minHeight = 300.dp)
-            .fillMaxWidth()
+        modifier = modifier
+            .pointerInput(Unit) {
+                detectTapGestures { p ->
+                    val center = Offset(size.width.toFloat() / 2, size.height.toFloat() / 2)
+                    val tapPoint = Offset(x = p.x - center.x, y = center.y - p.y)
+                    val r = tapPoint.getDistance()
+
+                    // 回転角の回る方向を反時計回りから時計回りにして、-90°スタートにする
+                    val rawThetaInDeg =
+                        360f - Math.toDegrees(atan2(tapPoint.y, tapPoint.x).toDouble()).mod(360f)
+                    val theta = if (rawThetaInDeg > 270) {
+                        rawThetaInDeg - 360f
+                    } else {
+                        rawThetaInDeg
+                    }
+
+                    // fixme: rかouterR, innerRが微妙にズレてる気がする？
+                    val d = min(size.width, size.height)
+                    val normalOuterR = (d - arcOuterPadding.toPx()) / 2
+                    val differenceRate = ((d - 300.dp.toPx()) / 300.dp.toPx() + 1f)
+                    val innerR = normalOuterR - 48.dp.toPx() * differenceRate
+                    for (i in angleRangeForEach.indices) {
+                        val begin = angleRangeForEach[i].first
+                        val end = begin + angleRangeForEach[i].second
+
+                        // 円グラフの特性上270°を跨いで区間が存在することがないので簡単な判定で良い
+                        if (begin <= theta && theta < end) {
+                            Log.d(
+                                "MemoryPieChart",
+                                "Theta Condition Satisfied. begin: $begin, end: $end, theta: $theta, innerR: $innerR, normalOuterR: $normalOuterR, r: $r"
+                            )
+                            if (innerR <= r && r < normalOuterR) {
+                                onEntrySelected(i)
+                                Log.d("MemoryPieChart", "entry $i selected.")
+                                return@detectTapGestures
+                            }
+                        }
+                    }
+                    onEntrySelected(null)
+                    Log.d(
+                        "MemoryPieChart",
+                        "Nothing Selected. RawTapPos: $p, Tap pos: $tapPoint, theta: $theta r: $r"
+                    )
+                }
+            }
     ) {
         val d = min(size.width, size.height)
         val arcSize = Size(
@@ -137,6 +185,11 @@ private fun MemoryGraphPreview() {
 
             MemoryPieChart(
                 model = model,
+                selectedEntry = null,
+                onEntrySelected = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(boxHeight)
             )
         }
     }

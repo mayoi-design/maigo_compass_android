@@ -13,6 +13,41 @@ val textStyleTitle = textStyleTitleCommon
 val textStyleBody = textStyleBodyCommon
 val textStyleCaption = textStyleCaptionCommon
 
+/*
+ * Memory Pie Chart
+ */
+
+val textStyleMemoryPieChartCenter = textStyleTitle.copy(
+    color = colorTextMain,
+    fontSize = 64.sp,
+)
+
+val textStyleMemoryPieChartCenterSubText = textStyleTitle.copy(
+    color = colorTextMain,
+    fontSize = 28.sp,
+)
+
+val textStyleMemoryPieChartLabel = TextStyle(
+    color = colorTextMain,
+    fontSize = 20.sp,
+    lineHeight = 24.sp,
+    fontWeight = FontWeight.Normal,
+)
+
+val textStyleMemoryPieChartCaption = TextStyle(
+    color = colorTextMain,
+    fontSize = 28.sp,
+    lineHeight = 32.sp,
+    fontWeight = FontWeight.Normal,
+)
+
+val textStyleMemoryPieChartCaptionSubText = TextStyle(
+    color = colorTextMain,
+    fontSize = 16.sp,
+    lineHeight = 20.sp,
+    fontWeight = FontWeight.Normal,
+)
+
 val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
