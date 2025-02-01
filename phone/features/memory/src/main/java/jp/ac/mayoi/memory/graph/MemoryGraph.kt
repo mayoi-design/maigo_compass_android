@@ -22,7 +22,7 @@ fun MemoryGraph(
     selectedEntry: Int?,
     onChartEntrySelected: (Int?) -> Unit,
 ) {
-    val chartBoxSize = 550.dp
+    val chartBoxSize = 400.dp
     Box {
         MemoryPieChart(
             model = model,
