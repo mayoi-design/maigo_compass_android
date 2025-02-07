@@ -1,6 +1,7 @@
 package jp.ac.mayoi.memory.graph
 
 import android.util.Log
+import androidx.compose.animation.core.animateSizeAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -72,6 +73,9 @@ internal fun MemoryPieChart(
             width = diameter - arcOuterPaddingAsPx + arcOuterExpandWidthAsPx,
             height = diameter - arcOuterPaddingAsPx + arcOuterExpandWidthAsPx,
         )
+        val chartArcSize = List(model.entries.size) {
+            animateSizeAsState(if (it == selectedEntry) expandedArcSize else arcSize)
+        }
 
         // このUIは高さ300dpのPreviewで作成している
         // 高さが300dpから変わるとグラフの色のついた部分の幅が太くなったり狭くなったりする
@@ -131,7 +135,7 @@ internal fun MemoryPieChart(
                 }
         ) {
             for (it in 0..<model.entries.size) {
-                val itSize = if (it == selectedEntry) expandedArcSize else arcSize
+                val itSize = chartArcSize[it].value
                 val arcOffset = Offset(
                     x = (boxSize.width - itSize.width) / 2,
                     y = (boxSize.height - itSize.height) / 2,
