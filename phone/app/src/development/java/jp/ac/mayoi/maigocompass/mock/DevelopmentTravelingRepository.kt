@@ -1,11 +1,13 @@
 package jp.ac.mayoi.maigocompass.mock
 
 import jp.ac.mayoi.phone.model.LocalSpot
+import jp.ac.mayoi.phone.model.enums.ServiceAreaAdapter
 import jp.ac.mayoi.repository.interfaces.TravelingRepository
 import kotlinx.coroutines.delay
 
 class DevelopmentTravelingRepository : TravelingRepository {
     private var nearSpotsGetCount = 0
+    private var getAreaCount = 0
 
     override suspend fun getNearSpots(lat: Double, lng: Double): List<LocalSpot> {
         delay(2000)
@@ -27,5 +29,17 @@ class DevelopmentTravelingRepository : TravelingRepository {
                 spotId = "",
             )
         }
+    }
+
+    override suspend fun getAreaByCoordinate(
+        lat: Double,
+        lng: Double,
+    ): ServiceAreaAdapter.ServiceArea {
+        delay(1000)
+
+        val areas = ServiceAreaAdapter.ServiceArea.entries.toTypedArray()
+        val res = areas[getAreaCount % areas.size]
+        getAreaCount += 1
+        return res
     }
 }
