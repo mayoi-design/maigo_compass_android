@@ -16,6 +16,7 @@ import jp.ac.mayoi.service.interfaces.HealthService
 import jp.ac.mayoi.service.interfaces.ImageService
 import jp.ac.mayoi.service.interfaces.RankingService
 import jp.ac.mayoi.service.interfaces.SpotService
+import jp.ac.mayoi.service.interfaces.TravelService
 import jp.ac.mayoi.traveling.TravelingViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -129,6 +130,7 @@ abstract class BaseApplication : Application() {
         factory<RankingService> { retrofit.create(RankingService::class.java) }
         factory<SpotService> { retrofit.create(SpotService::class.java) }
         factory<ImageService> { retrofit.create(ImageService::class.java) }
+        factory<TravelService> { retrofit.create(TravelService::class.java) }
     }
 
     private val repositoryKoinModule = module {
