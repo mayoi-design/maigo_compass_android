@@ -135,7 +135,7 @@ abstract class BaseApplication : Application() {
 
     private val repositoryKoinModule = module {
         factory<RankingRepository> { RankingRepositoryImpl(get()) }
-        factory<TravelingRepository> { TravelingRepositoryImpl(get()) }
+        factory<TravelingRepository> { TravelingRepositoryImpl(get(), get()) }
     }
 
     private val viewModelKoinModule = module {
