@@ -5,12 +5,17 @@ import org.junit.Test
 
 class ServiceAreaParseTest {
 
+    // 何かenumを一項目追加すると落ちるテスト
+    // サーバー側でenumを追加した際は、ここで文字列の確認を行う
+    // remoteに入れる文字列は必ずswaggerの返り値からコピペすること
     @Test
-    fun can_parse_hakodate_st() {
-        val remote = "ekimae"
-        val actual = ServiceAreaAdapter.fromRemote(remote)
+    fun can_parse_server_area() {
+        val remote = listOf("ekimae", "bay", "hakodateyama", "goryokaku", "yunokawa", "mihara")
+        val actual = remote.map { ServiceAreaAdapter.fromRemote(it) }
 
-        assertEquals(ServiceAreaAdapter.ServiceArea.HAKODATE_STA, actual)
+        val expected = ServiceAreaAdapter.ServiceArea.entries.toTypedArray()
+            .filter { it.remoteToken != "UNKNOWN" }
+        assertEquals(expected, actual)
     }
 
     @Test
